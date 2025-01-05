@@ -1,0 +1,203 @@
+:root {
+  --container-padding: 2rem;
+  --grid-columns: 12;
+  --grid-gap: 2rem;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--container-padding);
+  padding-left: var(--container-padding);
+}
+
+/* Breakpoints for container */
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Grid System */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gap);
+}
+
+/* Column spans for different breakpoints */
+/* Mobile first (default) */
+.col-1 {
+  grid-column: span 1;
+}
+.col-2 {
+  grid-column: span 2;
+}
+.col-3 {
+  grid-column: span 3;
+}
+.col-4 {
+  grid-column: span 4;
+}
+.col-5 {
+  grid-column: span 5;
+}
+.col-6 {
+  grid-column: span 6;
+}
+.col-7 {
+  grid-column: span 7;
+}
+.col-8 {
+  grid-column: span 8;
+}
+.col-9 {
+  grid-column: span 9;
+}
+.col-10 {
+  grid-column: span 10;
+}
+.col-11 {
+  grid-column: span 11;
+}
+.col-12 {
+  grid-column: span 12;
+}
+
+/* Tablet (md) */
+@media (min-width: 768px) {
+  .md\:col-1 {
+    grid-column: span 1;
+  }
+  .md\:col-2 {
+    grid-column: span 2;
+  }
+  .md\:col-3 {
+    grid-column: span 3;
+  }
+  .md\:col-4 {
+    grid-column: span 4;
+  }
+  .md\:col-5 {
+    grid-column: span 5;
+  }
+  .md\:col-6 {
+    grid-column: span 6;
+  }
+  .md\:col-7 {
+    grid-column: span 7;
+  }
+  .md\:col-8 {
+    grid-column: span 8;
+  }
+  .md\:col-9 {
+    grid-column: span 9;
+  }
+  .md\:col-10 {
+    grid-column: span 10;
+  }
+  .md\:col-11 {
+    grid-column: span 11;
+  }
+  .md\:col-12 {
+    grid-column: span 12;
+  }
+}
+
+/* Desktop (lg) */
+@media (min-width: 1024px) {
+  .lg\:col-1 {
+    grid-column: span 1;
+  }
+  .lg\:col-2 {
+    grid-column: span 2;
+  }
+  .lg\:col-3 {
+    grid-column: span 3;
+  }
+  .lg\:col-4 {
+    grid-column: span 4;
+  }
+  .lg\:col-5 {
+    grid-column: span 5;
+  }
+  .lg\:col-6 {
+    grid-column: span 6;
+  }
+  .lg\:col-7 {
+    grid-column: span 7;
+  }
+  .lg\:col-8 {
+    grid-column: span 8;
+  }
+  .lg\:col-9 {
+    grid-column: span 9;
+  }
+  .lg\:col-10 {
+    grid-column: span 10;
+  }
+  .lg\:col-11 {
+    grid-column: span 11;
+  }
+  .lg\:col-12 {
+    grid-column: span 12;
+  }
+}
+
+/* Grid Utilities */
+.gap-0 {
+  gap: 0;
+}
+.gap-1 {
+  gap: 0.5rem;
+}
+.gap-2 {
+  gap: 1rem;
+}
+.gap-3 {
+  gap: 1.5rem;
+}
+.gap-4 {
+  gap: 2rem;
+}
+
+/* Alignment utilities */
+.items-center {
+  align-items: center;
+}
+.items-start {
+  align-items: start;
+}
+.items-end {
+  align-items: end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+.justify-start {
+  justify-content: start;
+}
+.justify-end {
+  justify-content: end;
+}
+.justify-between {
+  justify-content: space-between;
+}

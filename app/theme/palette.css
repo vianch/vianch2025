@@ -1,0 +1,23 @@
+:root {
+  /* Main Colors */
+  --color-black: #000000;
+  --color-navy: #14213d;
+  --color-orange: #fca311;
+  --color-light: #e5e5e5;
+  --color-white: #ffffff;
+
+  /* Status Colors */
+  --color-error: #d62828;
+  --color-success: #06d6a0;
+
+  /* Grey Scale System */
+  --color-grey-100: #f8f9fa;
+  --color-grey-200: #e9ecef;
+  --color-grey-300: #dee2e6;
+  --color-grey-400: #ced4da;
+  --color-grey-500: #adb5bd;
+  --color-grey-600: #6c757d;
+  --color-grey-700: #495057;
+  --color-grey-800: #343a40;
+  --color-grey-900: #212529;
+}

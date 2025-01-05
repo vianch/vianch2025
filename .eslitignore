@@ -1,0 +1,14 @@
+node_modules
+.cache
+public
+scripts
+server/apiDocs/lib
+jest.config.js
+.github
+.config
+dist
+.dist
+package-lock.json
+yarn.lock
+.eslintrc.js
+next.config.js

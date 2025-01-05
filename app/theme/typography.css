@@ -1,0 +1,76 @@
+:root {
+  /* Base Sizes for Mobile First */
+  --text-xs: 1.2rem; /* 12px */
+  --text-sm: 1.4rem; /* 14px */
+  --text-base: 1.6rem; /* 16px */
+  --text-lg: 1.8rem; /* 18px */
+  --text-xl: 2rem; /* 20px */
+
+  /* Heading Sizes Mobile */
+  --h1: 3.2rem; /* 32px */
+  --h2: 2.8rem; /* 28px */
+  --h3: 2.4rem; /* 24px */
+  --h4: 2.2rem; /* 22px */
+  --h5: 2rem; /* 20px */
+
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-loose: 1.8;
+}
+
+/* Desktop Breakpoint Typography */
+@media screen and (min-width: 768px) {
+  :root {
+    --text-xs: 1.4rem; /* 14px */
+    --text-sm: 1.6rem; /* 16px */
+    --text-base: 1.8rem; /* 18px */
+    --text-lg: 2rem; /* 20px */
+    --text-xl: 2.4rem; /* 24px */
+
+    /* Heading Sizes Desktop */
+    --h1: 4rem; /* 40px */
+    --h2: 3.2rem; /* 32px */
+    --h3: 2.8rem; /* 28px */
+    --h4: 2.4rem; /* 24px */
+    --h5: 2.2rem; /* 22px */
+  }
+}
+
+/* Utility Classes */
+.text-xs {
+  font-size: var(--text-xs);
+}
+.text-sm {
+  font-size: var(--text-sm);
+}
+.text-base {
+  font-size: var(--text-base);
+}
+.text-lg {
+  font-size: var(--text-lg);
+}
+.text-xl {
+  font-size: var(--text-xl);
+}
+
+h1,
+.h1 {
+  font-size: var(--h1);
+}
+h2,
+.h2 {
+  font-size: var(--h2);
+}
+h3,
+.h3 {
+  font-size: var(--h3);
+}
+h4,
+.h4 {
+  font-size: var(--h4);
+}
+h5,
+.h5 {
+  font-size: var(--h5);
+}
