@@ -50,7 +50,8 @@ h5 {
 
 /* Code blocks and pre */
 code,
-pre {
+pre,
+li {
   font-family: var(--font-secondary);
   font-size: var(--text-sm);
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function StyleGuidePage() {
   const [activeTab, setActiveTab] = useState("grid");
@@ -54,7 +55,7 @@ export default function StyleGuidePage() {
             border: "2px solid var(--color-grey-300)",
           }}
         >
-          Buttons system
+          Button system
         </button>
       </div>
 
@@ -178,7 +179,7 @@ export default function StyleGuidePage() {
         </div>
 
         {/* Heading Sizes */}
-        <div>
+        <div className="col-12" style={{ marginBottom: "4rem" }}>
           <h3 className="h3 font-primary" style={{ marginBottom: "2rem" }}>
             Heading Sizes
           </h3>
@@ -207,6 +208,54 @@ export default function StyleGuidePage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+
+        <div className="col-12">
+          <h3 className="h3 font-primary" style={{ marginBottom: "2rem" }}>
+            Font Family
+          </h3>
+
+          <div
+            style={{
+              padding: "1rem",
+              border: "1px solid var(--color-grey-300)",
+              marginBottom: "2rem",
+            }}
+          >
+            <p className="text-base">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum..
+            </p>
+
+            <p className="text-sm" style={{ color: "var(--color-grey-600)" }}>
+              Class: .primary-font
+            </p>
+          </div>
+
+          <div
+            style={{
+              padding: "1rem",
+              border: "1px solid var(--color-grey-300)",
+              marginBottom: "2rem",
+            }}
+          >
+            <p className="text-base font-secondary">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+              dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum..
+            </p>
+
+            <p className="text-sm" style={{ color: "var(--color-grey-600)" }}>
+              Class: .secondary-font
+            </p>
           </div>
         </div>
       </section>
@@ -359,23 +408,42 @@ export default function StyleGuidePage() {
               Button States
             </h3>
             <div className="grid gap-2">
-              <div className="col-12 md:col-3">
+              <div className="col-12">
                 <button className="button button-primary">Normal</button>
               </div>
-              <div className="col-12 md:col-3">
+              <div className="col-12">
                 <button className="button button-primary" disabled>
                   Disabled
                 </button>
               </div>
-              <div className="col-12 md:col-3">
-                <button className="button button-primary" style={{ width: "100%" }}>
-                  Full Width
-                </button>
-              </div>
-              <div className="col-12 md:col-3">
+
+              <div className="col-12">
                 <button className="button button-primary">
                   <span>With Icon</span>
                   <span style={{ marginLeft: "0.5rem" }}>→</span>
+                </button>
+              </div>
+
+              <div className="col-12">
+                <a
+                  className="button button-primary"
+                  href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    src="/vercel.svg"
+                    alt="Vercel logomark"
+                    width={20}
+                    height={20}
+                    style={{ marginRight: "1rem" }}
+                  />
+                  Deploy now
+                </a>
+              </div>
+              <div className="col-12">
+                <button className="button button-tertiary" style={{ width: "100%" }}>
+                  Full Width
                 </button>
               </div>
             </div>
