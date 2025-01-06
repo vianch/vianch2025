@@ -2,20 +2,25 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 /* Styles */
-import "./globals.css";
+import "./theme/typography.css";
 import "./theme/reset.css";
 import "./theme/palette.css";
-import "./theme/typography.css";
 import "./theme/layout.css";
+import "./theme/global.css";
+import "./theme/buttons.css";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-primary",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-secondary",
+  display: "swap",
 });
 
 export const metadata: Metadata = {

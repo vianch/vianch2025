@@ -5,6 +5,8 @@
   --color-orange: #fca311;
   --color-light: #e5e5e5;
   --color-white: #ffffff;
+  --background: var(--color-white);
+  --foreground: var(--color-black);
 
   /* Status Colors */
   --color-error: #d62828;

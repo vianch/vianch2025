@@ -1,0 +1,75 @@
+:root {
+  --button-padding: 2.4rem;
+  --button-height: 5rem;
+  --button-radius: 3.125rem;
+  --button-transition: all 0.2s ease-in-out;
+}
+
+button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--button-height);
+  height: auto;
+  padding-left: var(--button-padding);
+  padding-right: var(--button-padding);
+  border-radius: var(--button-radius);
+  font-weight: var(--font-medium);
+  font-family: var(--font-primary);
+  transition: var(--button-transition);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--button-radius);
+  width: auto;
+}
+
+/* Primary Button */
+.button-primary {
+  background-color: var(--color-navy);
+  color: var(--color-white);
+}
+
+.button-primary:hover {
+  background-color: color-mix(in srgb, var(--color-navy) 90%, white);
+}
+
+.button-primary:active {
+  background-color: color-mix(in srgb, var(--color-navy) 80%, black);
+}
+
+/* Secondary Button */
+.button-secondary {
+  background-color: var(--color-white);
+  color: var(--color-navy);
+  border: 2px solid var(--color-light);
+}
+
+.button-secondary:hover {
+  border-color: var(--color-grey-400);
+  background-color: var(--color-grey-100);
+}
+
+.button-secondary:active {
+  background-color: var(--color-grey-200);
+}
+
+/* Tertiary Button */
+.button-tertiary {
+  background-color: var(--color-orange);
+  color: var(--color-white);
+}
+
+.button-tertiary:hover {
+  background-color: color-mix(in srgb, var(--color-orange) 90%, white);
+}
+
+.button-tertiary:active {
+  background-color: color-mix(in srgb, var(--color-orange) 80%, black);
+}
+
+/* Disabled state */
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

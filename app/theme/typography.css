@@ -13,10 +13,82 @@
   --h4: 2.2rem; /* 22px */
   --h5: 2rem; /* 20px */
 
+  /* Font Weights */
+  --font-thin: 100;
+  --font-extralight: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
   /* Line Heights */
+  --leading-none: 1;
   --leading-tight: 1.2;
+  --leading-snug: 1.375;
   --leading-normal: 1.5;
-  --leading-loose: 1.8;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+}
+
+/* Font Classes */
+.font-primary {
+  font-family: var(--font-primary);
+}
+
+.font-secondary {
+  font-family: var(--font-secondary);
+}
+
+/* Font Weight Classes */
+.font-thin {
+  font-weight: var(--font-thin);
+}
+.font-extralight {
+  font-weight: var(--font-extralight);
+}
+.font-light {
+  font-weight: var(--font-light);
+}
+.font-normal {
+  font-weight: var(--font-normal);
+}
+.font-medium {
+  font-weight: var(--font-medium);
+}
+.font-semibold {
+  font-weight: var(--font-semibold);
+}
+.font-bold {
+  font-weight: var(--font-bold);
+}
+.font-extrabold {
+  font-weight: var(--font-extrabold);
+}
+.font-black {
+  font-weight: var(--font-black);
+}
+
+/* Line Height Classes */
+.leading-none {
+  line-height: var(--leading-none);
+}
+.leading-tight {
+  line-height: var(--leading-tight);
+}
+.leading-snug {
+  line-height: var(--leading-snug);
+}
+.leading-normal {
+  line-height: var(--leading-normal);
+}
+.leading-relaxed {
+  line-height: var(--leading-relaxed);
+}
+.leading-loose {
+  line-height: var(--leading-loose);
 }
 
 /* Desktop Breakpoint Typography */
