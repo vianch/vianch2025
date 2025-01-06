@@ -1,0 +1,23 @@
+.footer {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer p {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerLogo {
+  margin-right: 0.5rem;
+  display: inline-block;
+}
+
+.anchorItem {
+  margin-left: 1rem;
+}

@@ -22,4 +22,11 @@
   --color-grey-700: #495057;
   --color-grey-800: #343a40;
   --color-grey-900: #212529;
+
+  /* Terminal Colors */
+  --terminal-app-bg: #333444;
+  --terminal-window-bg: #222345;
+  --terminal-field-bg: #222333;
+  --terminal-text: #f4f4f4;
+  --terminal-shadow: #111111;
 }

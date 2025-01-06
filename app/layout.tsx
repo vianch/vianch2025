@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+/* Components */
+import Footer from "./components/Footer/Footer";
+
 /* Styles */
 import "./theme/typography.css";
 import "./theme/reset.css";
@@ -35,7 +38,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

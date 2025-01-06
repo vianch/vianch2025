@@ -5,7 +5,6 @@ body {
   font-weight: var(--font-normal);
   line-height: var(--leading-normal);
   color: var(--color-black);
-  background-image: linear-gradient(to right top, #ffffff, #f8f8f8, #f2f2f2, #ebebeb, #e5e5e5);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -14,7 +13,7 @@ body {
 body::before {
   content: "";
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -69,13 +68,11 @@ html {
 
 .hide {
   visibility: hidden;
-  height: 0;
   display: none;
 }
 
 .show {
   visibility: visible;
-  height: inherit;
   display: block;
 }
 

@@ -4,5 +4,6 @@
   "editor.codeActionsOnSave": ["source.fixAll.eslint"],
   "javascript.preferences.quoteStyle": "double",
   "typescript.preferences.quoteStyle": "double",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "cSpell.words": ["vianch"]
 }

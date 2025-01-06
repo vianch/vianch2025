@@ -20,13 +20,14 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  color: var(--color-orange);
+  color: var(--color-navy);
   font-weight: var(--font-bold);
   font-family: var(--font-primary);
 }
 
 a:hover {
   text-decoration: underline;
+  color: var(--color-orange);
 }
 
 img,

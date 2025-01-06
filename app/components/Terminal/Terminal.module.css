@@ -1,0 +1,128 @@
+.app {
+  padding: 2rem;
+  border-radius: 0.8rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.terminal {
+  box-shadow: 0 2px 5px var(--terminal-shadow);
+  border-radius: 0.8rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.window {
+  background-color: var(--terminal-window-bg);
+  color: var(--terminal-text);
+  min-height: 300px;
+  height: 100%;
+}
+
+.titlebar {
+  padding: 0.8rem;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.8rem;
+  margin-right: 1rem;
+}
+
+.close,
+.minimize,
+.zoom {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close {
+  background-color: #ff5f56;
+}
+
+.minimize {
+  background-color: #ffbd2e;
+}
+
+.zoom {
+  background-color: #27c93f;
+}
+
+.title {
+  font-family: var(--font-secondary);
+  font-size: var(--text-sm);
+  opacity: 0.8;
+}
+
+.field {
+  background-color: var(--terminal-field-bg);
+  color: var(--terminal-text);
+  font-family: var(--font-secondary);
+  font-weight: normal;
+  padding: 1.6rem;
+  min-height: 300px;
+  height: calc(100% - 4.8rem);
+  overflow-y: auto;
+}
+
+.line {
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+}
+
+.inputLine {
+  display: flex;
+  align-items: center;
+}
+
+.inputWrapper {
+  position: relative;
+  flex: 1;
+}
+
+.input {
+  background: transparent;
+  border: none;
+  color: var(--terminal-text);
+  font-family: var(--font-secondary);
+  font-size: inherit;
+  width: 100%;
+  outline: none;
+  position: relative;
+  z-index: 1;
+}
+
+.prompt {
+  margin-right: 0.5rem;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 900px) {
+  .window {
+    min-height: 500px;
+  }
+
+  .field {
+    min-height: 450px;
+  }
+}
