@@ -1,0 +1,34 @@
+.loading {
+  display: inline-block;
+  color: inherit;
+  font-family: var(--font-secondary);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.dots {
+  display: inline-block;
+  animation: dotAnimation 2s infinite;
+  overflow: hidden;
+  font-family: var(--font-secondary);
+  font-size: 1.2rem;
+}
+
+@keyframes dotAnimation {
+  0% {
+    width: 0;
+  }
+  25% {
+    width: 8px;
+  }
+  50% {
+    width: 14px;
+  }
+  75% {
+    width: 20px;
+  }
+  100% {
+    width: 0px;
+  }
+}

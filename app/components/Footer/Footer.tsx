@@ -18,7 +18,7 @@ const Footer: FC = () => {
               className={styles.footerLogo}
             />
           </Link>
-          <span>2025 vianch.com </span>
+          <span>Coded with ♥ by @vianch</span>
           <Link className={styles.anchorItem} href="/styleguide">
             Style guide
           </Link>

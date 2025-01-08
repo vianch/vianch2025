@@ -100,6 +100,11 @@
   white-space: pre-wrap;
 }
 
+.line a:hover {
+  text-decoration: none;
+  color: var(--color-white);
+}
+
 .inputLine {
   display: flex;
   align-items: center;
@@ -129,6 +134,10 @@
 
 .validCommand {
   color: var(--terminal-prompt);
+}
+
+.skills {
+  color: var(--terminal-skills);
 }
 
 /* Desktop styles */

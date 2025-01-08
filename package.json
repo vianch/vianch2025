@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "init": "rm -rf yarn.lock && rm -rf package-lock.json && yarn install",
     "lint:code-style": "eslint . --ext .ts,.tsx --fix",
     "lint:formatting": "prettier --write .",
     "lint:next": "next lint",
@@ -15,7 +16,8 @@
   "dependencies": {
     "next": "15.1.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

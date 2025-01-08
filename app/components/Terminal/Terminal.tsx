@@ -4,16 +4,18 @@
 // add a typing animation  and finally automatically hits enter
 
 import { FC, useState, KeyboardEvent, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 /* Styles */
 import styles from "./Terminal.module.css";
 
 /* Constants */
-import { EventNames, KeyNames } from "@/constants/ui.constants";
-import { commands, commandsText, commandsList } from "@/constants/terminal.constants";
+import { EventNames, KeyNames } from "@/lib/constants/ui.constants";
+import { commands, commandsText, allowedRedirects } from "@/lib/constants/terminal.constants";
 
 /* Components */
 import TerminalLine from "./TerminalLine";
+import Loading from "../Loading/Loading";
 
 type TerminalProps = {
   prompt?: string;
@@ -26,18 +28,42 @@ const Terminal: FC<TerminalProps> = ({
 }) => {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>(initialMessage);
+  const [loading, setLoading] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const clearHistory = () => {
     setHistory([]);
     setInput("");
   };
 
-  const handleCommand = (command: string) => {
+  const setNewHistory = (newHistory: string[]) => {
+    setHistory(newHistory);
+    setInput("");
+  };
+
+  const handleRedirect = (commandLine: string, newHistory: string[]): void => {
+    const redirectUrl = commandLine.split(" ")[1];
+
+    if (!redirectUrl) {
+      newHistory.push(commandsText.parameterMissing);
+      return;
+    }
+
+    if (!allowedRedirects.includes(redirectUrl)) {
+      newHistory.push(commandsText.notAllowed(redirectUrl ?? ""));
+      return;
+    }
+
+    router.push(`/${redirectUrl}`);
+  };
+
+  const handleCommand = (commandLine: string) => {
+    const command = commandLine.split(" ")[0];
     const newHistory = [
       ...history,
-      commandsText.lastMessage(command, styles.validCommand, commandsText.prompt),
+      commandsText.lastMessage(commandLine, styles.validCommand, commandsText.prompt),
     ];
 
     switch (command.toLowerCase()) {
@@ -45,20 +71,27 @@ const Terminal: FC<TerminalProps> = ({
       case commands.cls:
         clearHistory();
         return;
+
+      case commands.redirect:
+        handleRedirect(commandLine, newHistory);
+        break;
+
+      case commands.skills:
+        newHistory.push(...commandsText.skills(styles.skills));
+        break;
       default:
         if (!command) return;
 
         const commandResponse = {
           [commands.help]: commandsText.help,
           [commands.welcome]: commandsText.initialMessage,
-          [commands.info]: commandsText.info,
+          [commands.contact]: commandsText.contact,
         }[command.toLowerCase()];
 
         newHistory.push(...(commandResponse ?? commandsText.notFound(command)));
     }
 
-    setHistory(newHistory);
-    setInput("");
+    setNewHistory(newHistory);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
@@ -67,26 +100,49 @@ const Terminal: FC<TerminalProps> = ({
     }
   };
 
-  // Auto-scroll to bottom when history changes
-  useEffect(() => {
+  const autoScroll = () => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
+  };
+
+  const animateLoading = () => {
+    setLoading(true);
+
+    return setTimeout(() => {
+      setLoading(false);
+    }, 2800);
+  };
+
+  // Auto-scroll to bottom when history changes
+  useEffect(() => {
+    autoScroll();
   }, [history]);
 
-  // Add new useEffect for focus management
   useEffect(() => {
     inputRef.current?.focus();
 
-    // Re-focus when input loses focus
     const handleFocusLoss = () => {
       inputRef.current?.focus();
     };
 
+    const handleArrowKeys = (event: Event) => {
+      const keyEvent = event as unknown as KeyboardEvent;
+
+      if (keyEvent.key === KeyNames.ArrowUp || keyEvent.key === KeyNames.ArrowDown) {
+        event.preventDefault();
+      }
+    };
+
     document.addEventListener(EventNames.Click, handleFocusLoss);
+    document.addEventListener(EventNames.KeyDown, handleArrowKeys);
+
+    const timeout = animateLoading();
 
     return () => {
       document.removeEventListener(EventNames.Click, handleFocusLoss);
+      document.removeEventListener(EventNames.KeyDown, handleArrowKeys);
+      clearTimeout(timeout);
     };
   }, []);
 
@@ -106,25 +162,32 @@ const Terminal: FC<TerminalProps> = ({
           </div>
 
           <div className={styles.field} ref={terminalRef}>
-            {history.map((line, i) => (
-              <div key={i} className={styles.line}>
-                <TerminalLine>{line}</TerminalLine>
+            {loading && <Loading />}
+
+            {!loading &&
+              history.map((line, i) => (
+                <div key={i} className={styles.line}>
+                  <TerminalLine>{line}</TerminalLine>
+                </div>
+              ))}
+
+            {!loading && (
+              <div className={styles.inputLine}>
+                <span className={styles.prompt}>$ {prompt} </span>
+                <div className={styles.inputWrapper}>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className={styles.input}
+                    spellCheck="false"
+                    maxLength={50}
+                  />
+                </div>
               </div>
-            ))}
-            <div className={styles.inputLine}>
-              <span className={styles.prompt}>$ {prompt} </span>
-              <div className={styles.inputWrapper}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className={`${styles.input} ${commandsList.includes(input) ? styles.validCommand : ""}`}
-                  spellCheck="false"
-                />
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

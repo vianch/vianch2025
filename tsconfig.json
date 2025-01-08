@@ -22,7 +22,7 @@
       "@/*": ["./*"],
       "@components/*": ["./app/components/*"],
       "@themes/*": ["./theme/*"],
-      "@constants/*": ["./constants/*"],
+      "@constants/*": ["./lib/constants/*"],
       "@utils/*": ["./utils/*"],
       "@types/*": ["./types/*"]
     },

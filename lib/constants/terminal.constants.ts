@@ -2,10 +2,12 @@ import { todayDate, todayTime } from "@/utils/date.utils";
 
 export const helpCommands = [
   "Available commands:",
-  "- clear / cls : Clear terminal",
-  "- help: Show this help message",
-  "- info: Show contact information",
-  "- welcome: Initial message",
+  "- [clear] / [cls]  : Clear terminal",
+  "- [contact]        : Show contact information",
+  "- [help]           : Show this help message",
+  "- [skills]         : Show skills",
+  "- [welcome]        : Initial message",
+  "- [redirect] {gallery | styleguide | portfolio | blog}: Redirect to a specific URL",
 ];
 
 const initialMessage = [
@@ -15,7 +17,7 @@ const initialMessage = [
   "",
 ];
 
-const infoCommands = [
+const contactCommands = [
   "Contact information:",
   "- Email: <a href='mailto:hello@vianch.com'>hello@vianch.com</a>",
   "- LinkedIn:<a target='_blank' rel='noopener noreferrer' href='https://www.linkedin.com/in/vianch'>https://www.linkedin.com/in/vianch</a>",
@@ -23,23 +25,41 @@ const infoCommands = [
   "- Instagram:<a target='_blank' rel='noopener noreferrer' href='https://www.instagram.com/_vianch'>https://www.instagram.com/_vianch</a>",
 ];
 
+const skillsCommands = (style: string): string[] => [
+  `<div class='${style}'>Languages: </div>TypeScript, GO, Python, C++`,
+  `<div class='${style}'>Favorite Technologies: </div>GraphQL, REST, CirecleCI, Jest, React, 
+Express, MongoDB, PostgreSQL, Docker, AWS, Azure,
+Vercel, Node.js, Yarn or Deno or Bun`,
+  `<div class='${style}'>Actual Frameworks: </div>Next.js, Jest, Cypress, Storybook`,
+  `<div class='${style}'>Favorite Tools / IDEs: </div>GitHub, Cursor, WebStorm, Figma,
+Photoshop, Lightroom,
+a notebook, my camera`,
+];
+
 export const commandsText = {
+  contact: contactCommands,
   clear: [],
   help: helpCommands,
   initialMessage,
-  info: infoCommands,
   notFound: (command: string) => [`Command not found: ${command}`],
+  notAllowed: (command: string) => `Command not allowed ${command}`,
+  parameterMissing: "Parameter missing",
   lastMessage: (command: string, style: string, prompt: string): string =>
     `<span class=${style}>$ ${prompt}</span> ${command}`,
   prompt: "guest@vianch: ~",
+  skills: (style: string) => skillsCommands(style),
 };
 
 export const commands = {
   clear: "clear",
   cls: "cls",
   help: "help",
-  info: "info",
+  contact: "contact",
+  redirect: "redirect",
+  skills: "skills",
   welcome: "welcome",
 };
+
+export const allowedRedirects = ["gallery", "styleguide", "portfolio", "blog"];
 
 export const commandsList = Object.values(commands);

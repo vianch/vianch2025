@@ -5,5 +5,5 @@
   "javascript.preferences.quoteStyle": "double",
   "typescript.preferences.quoteStyle": "double",
   "editor.tabSize": 2,
-  "cSpell.words": ["noopener", "noreferrer", "vianch"]
+  "cSpell.words": ["noopener", "noreferrer", "styleguide", "vianch"]
 }
