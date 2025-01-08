@@ -5,12 +5,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Footer from "./components/Footer/Footer";
 
 /* Styles */
-import "./theme/typography.css";
-import "./theme/reset.css";
-import "./theme/palette.css";
-import "./theme/layout.css";
-import "./theme/global.css";
-import "./theme/buttons.css";
+import "@/theme/typography.css";
+import "@/theme/reset.css";
+import "@/theme/palette.css";
+import "@/theme/layout.css";
+import "@/theme/global.css";
+import "@/theme/buttons.css";
 
 const geistSans = Geist({
   subsets: ["latin"],

@@ -20,14 +20,13 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./components/*"]
+      "@components/*": ["./app/components/*"],
+      "@themes/*": ["./theme/*"],
+      "@types/*": ["./types/*"]
     },
     "baseUrl": "."
   },
-  "typeRoots": ["./app/types"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/types/**/*.d.ts"],
-  "exclude": ["node_modules"],
-  "scripts": {
-    "dev": "next dev --turbo"
-  }
+  "typeRoots": ["./types"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "types/**/*.d.ts"],
+  "exclude": ["node_modules"]
 }

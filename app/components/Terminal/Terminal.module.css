@@ -3,6 +3,7 @@
   border-radius: 0.8rem;
   width: 100%;
   margin: 0 auto;
+  min-width: 100%;
 }
 
 .terminal {
@@ -118,11 +119,14 @@
 
 /* Desktop styles */
 @media (min-width: 900px) {
-  .window {
-    min-height: 500px;
-  }
+  .app {
+    min-width: 900px;
+    .window {
+      min-height: 500px;
+    }
 
-  .field {
-    min-height: 450px;
+    .field {
+      min-height: 450px;
+    }
   }
 }

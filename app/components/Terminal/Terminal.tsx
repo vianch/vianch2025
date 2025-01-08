@@ -1,19 +1,29 @@
 "use client";
+// TODO:
+// - events in a enum or object with type
+// - avoid using letters as a parameter
+// - Add a command to open a new window
 
 import { FC, useState, KeyboardEvent, useEffect, useRef } from "react";
+
+/* Styles */
 import styles from "./Terminal.module.css";
+
+/* Constants */
+import { EventNames, KeyNames } from "@/constants/ui.constants";
+import { commands } from "@/constants/terminal.constants";
 
 type TerminalProps = {
   prompt?: string;
-  initialMessage?: string;
+  initialMessage?: string[];
 };
 
 const Terminal: FC<TerminalProps> = ({
   prompt = "guest@vianch: ~",
-  initialMessage = "Welcome to entrance portfolio – Type help for a list of supported commands.",
+  initialMessage = ["Welcome to VIANCH portfolio", "- Type help for a list of supported commands."],
 }) => {
   const [input, setInput] = useState("");
-  const [history, setHistory] = useState<string[]>([initialMessage]);
+  const [history, setHistory] = useState<string[]>(initialMessage);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -22,18 +32,14 @@ const Terminal: FC<TerminalProps> = ({
 
     switch (command.toLowerCase()) {
       case "help":
-        newHistory.push(
-          "Available commands:",
-          "- help: Show this help message",
-          "- clear: Clear terminal"
-        );
+        newHistory.push(...commands.help);
         break;
       case "clear":
         setHistory([]);
         return;
       default:
         if (command) {
-          newHistory.push(`Command not found: ${command}`);
+          newHistory.push(...commands.notFound(command));
         }
     }
 
@@ -41,8 +47,8 @@ const Terminal: FC<TerminalProps> = ({
     setInput("");
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === KeyNames.Enter) {
       handleCommand(input);
     }
   };
@@ -63,10 +69,10 @@ const Terminal: FC<TerminalProps> = ({
       inputRef.current?.focus();
     };
 
-    document.addEventListener("click", handleFocusLoss);
+    document.addEventListener(EventNames.Click, handleFocusLoss);
 
     return () => {
-      document.removeEventListener("click", handleFocusLoss);
+      document.removeEventListener(EventNames.Click, handleFocusLoss);
     };
   }, []);
 
@@ -77,15 +83,9 @@ const Terminal: FC<TerminalProps> = ({
           {/* Top bar */}
           <div className={styles.titlebar}>
             <div className={styles.buttons}>
-              <div className={styles.close}>
-                <div className={styles.closebutton}></div>
-              </div>
-              <div className={styles.minimize}>
-                <div className={styles.minimizebutton}></div>
-              </div>
-              <div className={styles.zoom}>
-                <div className={styles.zoombutton}></div>
-              </div>
+              <div className={styles.close} />
+              <div className={styles.minimize} />
+              <div className={styles.zoom} />
             </div>
 
             <div className={styles.title}>{prompt}</div>
