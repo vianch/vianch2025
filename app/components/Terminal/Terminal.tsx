@@ -1,5 +1,8 @@
 "use client";
 
+// TODO: implement when the user clicks on contact link in the footer automatically write the command in the terminal,
+// add a typing animation  and finally automatically hits enter
+
 import { FC, useState, KeyboardEvent, useEffect, useRef } from "react";
 
 /* Styles */
@@ -8,6 +11,9 @@ import styles from "./Terminal.module.css";
 /* Constants */
 import { EventNames, KeyNames } from "@/constants/ui.constants";
 import { commands, commandsText, commandsList } from "@/constants/terminal.constants";
+
+/* Components */
+import TerminalLine from "./TerminalLine";
 
 type TerminalProps = {
   prompt?: string;
@@ -29,23 +35,26 @@ const Terminal: FC<TerminalProps> = ({
   };
 
   const handleCommand = (command: string) => {
-    const newHistory = [...history, `$ ${command}`];
+    const newHistory = [
+      ...history,
+      commandsText.lastMessage(command, styles.validCommand, commandsText.prompt),
+    ];
 
     switch (command.toLowerCase()) {
-      case commands.help:
-        newHistory.push(...commandsText.help);
-        break;
       case commands.clear:
       case commands.cls:
         clearHistory();
         return;
-      case commands.welcome:
-        newHistory.push(...commandsText.initialMessage);
-        break;
       default:
-        if (command) {
-          newHistory.push(...commandsText.notFound(command));
-        }
+        if (!command) return;
+
+        const commandResponse = {
+          [commands.help]: commandsText.help,
+          [commands.welcome]: commandsText.initialMessage,
+          [commands.info]: commandsText.info,
+        }[command.toLowerCase()];
+
+        newHistory.push(...(commandResponse ?? commandsText.notFound(command)));
     }
 
     setHistory(newHistory);
@@ -99,7 +108,7 @@ const Terminal: FC<TerminalProps> = ({
           <div className={styles.field} ref={terminalRef}>
             {history.map((line, i) => (
               <div key={i} className={styles.line}>
-                {line}
+                <TerminalLine>{line}</TerminalLine>
               </div>
             ))}
             <div className={styles.inputLine}>
