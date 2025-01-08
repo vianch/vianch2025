@@ -1,8 +1,4 @@
 "use client";
-// TODO:
-// - events in a enum or object with type
-// - avoid using letters as a parameter
-// - Add a command to open a new window
 
 import { FC, useState, KeyboardEvent, useEffect, useRef } from "react";
 
@@ -11,7 +7,7 @@ import styles from "./Terminal.module.css";
 
 /* Constants */
 import { EventNames, KeyNames } from "@/constants/ui.constants";
-import { commands } from "@/constants/terminal.constants";
+import { commands, commandsText, commandsList } from "@/constants/terminal.constants";
 
 type TerminalProps = {
   prompt?: string;
@@ -19,27 +15,36 @@ type TerminalProps = {
 };
 
 const Terminal: FC<TerminalProps> = ({
-  prompt = "guest@vianch: ~",
-  initialMessage = ["Welcome to VIANCH portfolio", "- Type help for a list of supported commands."],
+  prompt = commandsText.prompt,
+  initialMessage = commandsText.initialMessage,
 }) => {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>(initialMessage);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const clearHistory = () => {
+    setHistory([]);
+    setInput("");
+  };
+
   const handleCommand = (command: string) => {
-    const newHistory = [...history, `➜ ~ ${command}`];
+    const newHistory = [...history, `$ ${command}`];
 
     switch (command.toLowerCase()) {
-      case "help":
-        newHistory.push(...commands.help);
+      case commands.help:
+        newHistory.push(...commandsText.help);
         break;
-      case "clear":
-        setHistory([]);
+      case commands.clear:
+      case commands.cls:
+        clearHistory();
         return;
+      case commands.welcome:
+        newHistory.push(...commandsText.initialMessage);
+        break;
       default:
         if (command) {
-          newHistory.push(...commands.notFound(command));
+          newHistory.push(...commandsText.notFound(command));
         }
     }
 
@@ -98,7 +103,7 @@ const Terminal: FC<TerminalProps> = ({
               </div>
             ))}
             <div className={styles.inputLine}>
-              <span className={styles.prompt}>➜ ~ </span>
+              <span className={styles.prompt}>$ {prompt} </span>
               <div className={styles.inputWrapper}>
                 <input
                   ref={inputRef}
@@ -106,8 +111,7 @@ const Terminal: FC<TerminalProps> = ({
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className={styles.input}
-                  autoFocus
+                  className={`${styles.input} ${commandsList.includes(input) ? styles.validCommand : ""}`}
                   spellCheck="false"
                 />
               </div>

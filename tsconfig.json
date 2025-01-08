@@ -22,6 +22,8 @@
       "@/*": ["./*"],
       "@components/*": ["./app/components/*"],
       "@themes/*": ["./theme/*"],
+      "@constants/*": ["./constants/*"],
+      "@utils/*": ["./utils/*"],
       "@types/*": ["./types/*"]
     },
     "baseUrl": "."
