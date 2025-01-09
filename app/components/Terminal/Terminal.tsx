@@ -1,8 +1,5 @@
 "use client";
 
-// TODO: implement when the user clicks on contact link in the footer automatically write the command in the terminal,
-// add a typing animation  and finally automatically hits enter
-
 import { FC, useState, KeyboardEvent, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,24 +8,29 @@ import styles from "./Terminal.module.css";
 
 /* Constants */
 import { EventNames, KeyNames } from "@/lib/constants/ui.constants";
-import { commands, commandsText, allowedRedirects } from "@/lib/constants/terminal.constants";
+import {
+  commands,
+  commandsText,
+  allowedRedirects,
+  terminalStates,
+} from "@/lib/constants/terminal.constants";
 
 /* Components */
 import TerminalLine from "./TerminalLine";
-import Loading from "../Loading/Loading";
 
 type TerminalProps = {
+  state?: TerminalStates;
   prompt?: string;
   initialMessage?: string[];
 };
 
 const Terminal: FC<TerminalProps> = ({
+  state = terminalStates.null,
   prompt = commandsText.prompt,
   initialMessage = commandsText.initialMessage,
 }) => {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<string[]>(initialMessage);
-  const [loading, setLoading] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -106,18 +108,18 @@ const Terminal: FC<TerminalProps> = ({
     }
   };
 
-  const animateLoading = () => {
-    setLoading(true);
-
-    return setTimeout(() => {
-      setLoading(false);
-    }, 2800);
-  };
-
   // Auto-scroll to bottom when history changes
   useEffect(() => {
     autoScroll();
   }, [history]);
+
+  useEffect(() => {
+    if (state === terminalStates.active) {
+      handleCommand(commands.contact);
+      inputRef.current?.focus();
+      terminalRef.current?.focus();
+    }
+  }, [state, inputRef]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -137,12 +139,9 @@ const Terminal: FC<TerminalProps> = ({
     document.addEventListener(EventNames.Click, handleFocusLoss);
     document.addEventListener(EventNames.KeyDown, handleArrowKeys);
 
-    const timeout = animateLoading();
-
     return () => {
       document.removeEventListener(EventNames.Click, handleFocusLoss);
       document.removeEventListener(EventNames.KeyDown, handleArrowKeys);
-      clearTimeout(timeout);
     };
   }, []);
 
@@ -162,32 +161,27 @@ const Terminal: FC<TerminalProps> = ({
           </div>
 
           <div className={styles.field} ref={terminalRef}>
-            {loading && <Loading />}
-
-            {!loading &&
-              history.map((line, i) => (
-                <div key={i} className={styles.line}>
-                  <TerminalLine>{line}</TerminalLine>
-                </div>
-              ))}
-
-            {!loading && (
-              <div className={styles.inputLine}>
-                <span className={styles.prompt}>$ {prompt} </span>
-                <div className={styles.inputWrapper}>
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    className={styles.input}
-                    spellCheck="false"
-                    maxLength={50}
-                  />
-                </div>
+            {history.map((line, i) => (
+              <div key={i} className={styles.line}>
+                <TerminalLine>{line}</TerminalLine>
               </div>
-            )}
+            ))}
+
+            <div className={styles.inputLine}>
+              <span className={styles.prompt}>$ {prompt} </span>
+              <div className={styles.inputWrapper}>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className={styles.input}
+                  spellCheck="false"
+                  maxLength={50}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

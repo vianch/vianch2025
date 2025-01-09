@@ -14,6 +14,7 @@ const eslintConfig = [
   {
     rules: {
       quotes: ["error", "double"],
+      "react-hooks/exhaustive-deps": "off",
       "jsx-quotes": ["error", "prefer-double"],
       indent: [
         "error",

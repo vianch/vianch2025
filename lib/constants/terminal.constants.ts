@@ -60,6 +60,12 @@ export const commands = {
   welcome: "welcome",
 };
 
+export const terminalStates = {
+  active: "active",
+  inactive: "inactive",
+  null: null,
+};
+
 export const allowedRedirects = ["gallery", "styleguide", "portfolio", "blog"];
 
 export const commandsList = Object.values(commands);

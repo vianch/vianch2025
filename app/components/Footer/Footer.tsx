@@ -22,7 +22,7 @@ const Footer: FC = () => {
           <Link className={styles.anchorItem} href="/styleguide">
             Style guide
           </Link>
-          <Link className={styles.anchorItem} href="mailto:hello@vianch.com">
+          <Link className={styles.anchorItem} href="/about?contact=active">
             Contact
           </Link>
         </p>
