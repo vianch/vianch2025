@@ -1,10 +1,3 @@
-export type GalleryImage = {
-  src: string;
-  alt: string;
-  title: string;
-  description: string;
-};
-
 export const galleryImages: GalleryImage[] = [
   {
     src: "https://images.unsplash.com/photo-1458668383970-8ddd3927deed",

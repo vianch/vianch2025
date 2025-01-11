@@ -1,17 +1,21 @@
 import { FC } from "react";
 import Image from "next/image";
 
-/* Constants */
-import { galleryImages } from "@/lib/constants/gallery.constants";
-
 /* Styles */
-import styles from "./Gallery.module.css";
+import GalleryStyles from "./Gallery.module.css";
+import MasonryGalleryStyles from "./MasonryGallery.module.css";
 
-const Gallery: FC = () => {
+type GalleryProps = {
+  images: GalleryImage[];
+  masonry?: boolean;
+};
+
+const Gallery: FC<GalleryProps> = ({ images, masonry = false }) => {
+  const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
   return (
     <section className={styles.gallery}>
-      {galleryImages.map((image, index) => (
-        <figure className={styles.figure} key={`${image.src}-${index + 1}`}>
+      {images.map((image, index) => (
+        <figure key={`${image.src}-${index}`} className={styles.figure}>
           <Image
             className={styles.image}
             src={image.src}
@@ -21,7 +25,9 @@ const Gallery: FC = () => {
           />
           <figcaption className={styles.caption}>
             <h3 className={styles.title}>{image.title}</h3>
-            <p className={styles.description}>{image.description}</p>
+            {masonry && image?.description && (
+              <p className={styles.description}>{image.description}</p>
+            )}
           </figcaption>
         </figure>
       ))}
