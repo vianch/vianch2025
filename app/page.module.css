@@ -1,3 +1,15 @@
+.home {
+  grid-column: main;
+  padding: 1.25rem;
+}
+
+.title {
+  font-size: var(--h3);
+  font-weight: 600;
+  margin-top: 4rem;
+  margin-bottom: 0;
+}
+
 .page {
   display: grid;
   grid-template-rows: 20px 1fr 20px;
