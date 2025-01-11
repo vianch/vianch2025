@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 /* Components */
 import Footer from "./components/Footer/Footer";
-
+import Navbar from "./components/Navbar/Navbar";
 /* Styles */
 import "@/theme/typography.css";
 import "@/theme/reset.css";
@@ -39,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Navbar />
         {children}
         <Footer />
       </body>

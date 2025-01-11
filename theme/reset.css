@@ -23,6 +23,7 @@ a {
   color: var(--color-orange);
   font-weight: var(--font-bold);
   font-family: var(--font-primary);
+  cursor: pointer;
 }
 
 a:hover {

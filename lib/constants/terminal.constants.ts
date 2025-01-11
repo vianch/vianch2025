@@ -7,7 +7,7 @@ export const helpCommands = [
   "- [help]           : Show this help message",
   "- [skills]         : Show skills",
   "- [welcome]        : Initial message",
-  "- [redirect] {gallery | styleguide | portfolio | blog}: Redirect to a specific URL",
+  "- [redirect] { photography | styleguide | portfolio | / }: Redirect to a specific URL",
 ];
 
 const initialMessage = [
@@ -66,6 +66,6 @@ export const terminalStates = {
   null: null,
 };
 
-export const allowedRedirects = ["gallery", "styleguide", "portfolio", "blog"];
+export const allowedRedirects = ["photography", "styleguide", "portfolio", "/"];
 
 export const commandsList = Object.values(commands);
