@@ -19,9 +19,7 @@ const Footer: FC = () => {
             />
           </Link>
           <span>Coded with ♥ by @vianch</span>
-          <Link className={styles.anchorItem} href="/styleguide">
-            Style guide
-          </Link>
+
           <Link className={styles.anchorItem} href="/about?contact=active">
             Contact
           </Link>

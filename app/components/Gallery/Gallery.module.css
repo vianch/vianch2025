@@ -27,7 +27,8 @@
   aspect-ratio: 1 / 1.25;
   cursor: pointer;
   position: relative;
-  transition: scale 0.25s ease-in-out;
+  container: inline-size;
+  overflow: hidden;
 }
 
 .image {
@@ -35,12 +36,13 @@
   height: 100%;
   display: block;
   object-fit: cover;
+  transition: scale 0.5s ease-in-out;
+  grid-area: 1 / 1 / -1 / -1;
 }
 
-.figure:hover {
-  scale: 1.01;
+.figure:hover .image {
+  scale: 1.1;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
-  z-index: 5;
 }
 
 .caption {

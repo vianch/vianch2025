@@ -1,3 +1,10 @@
+export type GalleryImage = {
+  src: string;
+  alt: string;
+  title: string;
+  description: string;
+};
+
 export const galleryImages: GalleryImage[] = [
   {
     src: "https://images.unsplash.com/photo-1458668383970-8ddd3927deed",
@@ -70,5 +77,47 @@ export const galleryImages: GalleryImage[] = [
     alt: "Lorem ipsum dolor sit amet",
     title: "Cityscape",
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  },
+];
+
+export type GalleryCollection = {
+  slug: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  year: string;
+  coverImage: string;
+  images: GalleryImage[];
+};
+
+export const galleryCollections: GalleryCollection[] = [
+  {
+    slug: "japan",
+    title: "Visual Japan",
+    subtitle: "A journey through Japanese culture and landscapes",
+    description:
+      "Each shot tells a story, weaving moments of culture, emotion, and beauty, inviting viewers to connect with Japan's soul through my lens.",
+    year: "2024",
+    coverImage: "https://images.unsplash.com/photo-1458668383970-8ddd3927deed",
+    images: galleryImages,
+  },
+  {
+    slug: "cityscapes",
+    title: "Urban Perspectives",
+    subtitle: "Modern architecture and city life",
+    description:
+      "Exploring the geometric patterns and human elements that make up our urban landscapes.",
+    year: "2023",
+    coverImage: "https://images.unsplash.com/photo-1599033153041-e88627ca70bb",
+    images: galleryImages.filter((img) => img.title === "Cityscape"),
+  },
+  {
+    slug: "nature",
+    title: "Natural Wonders",
+    subtitle: "Mountains, forests, and landscapes",
+    description: "Capturing the raw beauty and majesty of natural landscapes around the world.",
+    year: "2023",
+    coverImage: "https://images.unsplash.com/photo-1472396961693-142e6e269027",
+    images: galleryImages.filter((img) => img.title === "Mountains"),
   },
 ];
