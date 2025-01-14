@@ -13,6 +13,7 @@ const Navbar: FC = () => {
       </Link>
 
       <div className={styles.navLinks}>
+        <Link href="/">Home</Link>
         <Link href="/about">About</Link>
         <Link href="/gallery">Gallery</Link>
         <Link href="/portfolio">Portfolio</Link>

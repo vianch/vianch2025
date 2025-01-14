@@ -7,7 +7,7 @@ import HeroBanner from "./components/HeroBanner/HeroBanner";
 export default function Home() {
   return (
     <>
-      <main className="container">
+      <main className="container  container-padding-lg">
         <HeroBanner
           heroImage={galleryImages[0].src}
           title="Visual Japan"
