@@ -8,12 +8,14 @@ import MasonryGalleryStyles from "./MasonryGallery.module.css";
 type GalleryProps = {
   images: GalleryImage[];
   masonry?: boolean;
+  fullWidth?: boolean;
 };
 
-const Gallery: FC<GalleryProps> = ({ images, masonry = false }) => {
+const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false }) => {
   const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
+
   return (
-    <section className={styles.gallery}>
+    <section className={fullWidth ? styles.full : styles.gallery}>
       {images.map((image, index) => (
         <figure key={`${image.src}-${index}`} className={styles.figure}>
           <Image

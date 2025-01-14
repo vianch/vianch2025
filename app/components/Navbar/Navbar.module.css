@@ -5,12 +5,23 @@
   font-family: var(--font-primary);
   font-size: var(--text-xs);
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-flow: row nowrap;
   align-items: center;
   padding: 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--z-index-navbar);
 }
 
 .navbar a {
-  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+@media (max-width: 769px) {
+  .navbar {
+    justify-content: center;
+    position: relative;
+  }
 }

@@ -1,0 +1,29 @@
+.scrollTop {
+  position: fixed;
+  bottom: 2.8125rem; /* 45px */
+  right: 2.8125rem; /* 45px */
+  width: 4rem; /* 64px */
+  height: 3.125rem; /* 50px */
+  background-color: var(--color-orange);
+  border: none;
+  border-radius: 0.3125rem; /* 5px */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: var(--z-index-scroll-top);
+}
+
+.caret {
+  width: 0;
+  height: 0;
+  border-left: 0.5rem solid transparent;
+  border-right: 0.5rem solid transparent;
+  border-bottom: 0.75rem solid var(--color-light);
+  transition: border-bottom-color 0.3s ease;
+}
+
+.scrollTop:hover .caret {
+  border-bottom-color: var(--color-navy);
+}

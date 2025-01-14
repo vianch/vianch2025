@@ -2,6 +2,8 @@
   --container-padding: 2rem;
   --grid-columns: 12;
   --grid-gap: 2rem;
+  --z-index-navbar: 2;
+  --z-index-scroll-top: 3;
 }
 
 /* Container */
@@ -200,4 +202,21 @@
 }
 .justify-between {
   justify-content: space-between;
+}
+
+/* Container Paddings */
+.container-padding-sm {
+  padding: 1rem;
+}
+.container-padding-md {
+  padding: 2rem;
+}
+.container-padding-lg {
+  padding-top: 8rem;
+}
+
+@media (max-width: 769px) {
+  .container-padding-lg {
+    padding-top: 0;
+  }
 }

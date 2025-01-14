@@ -6,7 +6,6 @@ import { galleryCollections } from "@/lib/constants/gallery.constants";
 
 /* Components */
 import Gallery from "../../components/Gallery/Gallery";
-import SectionTitle from "../../components/SectionTitle/SectionTitle";
 import HeroBanner from "../../components/HeroBanner/HeroBanner";
 
 type GalleryPageProps = {
@@ -23,16 +22,16 @@ const GallerySlugPage = ({ params }: GalleryPageProps): ReactElement => {
   }
 
   return (
-    <main className="container">
+    <main>
       <HeroBanner
         heroImage={collection.coverImage}
         title={collection.title}
         year={collection.year}
         description={collection.description}
+        variant="secondary"
       />
 
-      <SectionTitle title={collection.title} description={collection.subtitle} />
-      <Gallery images={collection.images} masonry />
+      <Gallery images={collection.images} fullWidth />
     </main>
   );
 };

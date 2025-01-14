@@ -10,7 +10,7 @@ import HeroBanner from "../components/HeroBanner/HeroBanner";
 
 const GalleryPage = (): ReactElement => {
   return (
-    <main className="container">
+    <main className="container container-padding-lg">
       <HeroBanner
         heroImage={galleryImages[0].src}
         title="Photography"
@@ -20,6 +20,9 @@ const GalleryPage = (): ReactElement => {
 
       <SectionTitle title="All Galleries" description="Browse through different collections" />
       <Gallery images={galleryImages} />
+
+      <SectionTitle title="More Photos" description="A collection of my photos" />
+      <Gallery images={galleryImages} masonry />
     </main>
   );
 };

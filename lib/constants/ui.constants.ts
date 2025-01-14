@@ -10,4 +10,5 @@ export const KeyNames = {
 export const EventNames = {
   Click: "click",
   KeyDown: "keydown",
+  Scroll: "scroll",
 };

@@ -11,9 +11,12 @@ const Navbar: FC = () => {
       <Link href="/">
         <Image src="/images/logo-xs-contrast.png" alt="Logo" width={48} height={48} priority />
       </Link>
-      <Link href="/about">About</Link>
-      <Link href="/gallery">Gallery</Link>
-      <Link href="/portfolio">Portfolio</Link>
+
+      <div className={styles.navLinks}>
+        <Link href="/about">About</Link>
+        <Link href="/gallery">Gallery</Link>
+        <Link href="/portfolio">Portfolio</Link>
+      </div>
     </section>
   );
 };

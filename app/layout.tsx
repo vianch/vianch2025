@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 /* Components */
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
+import ScrollTop from "./components/ScrollTop/ScrollTop";
+
 /* Styles */
 import "@/theme/typography.css";
 import "@/theme/reset.css";
@@ -41,6 +43,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Navbar />
         {children}
+        <ScrollTop />
         <Footer />
       </body>
     </html>

@@ -26,7 +26,7 @@ body::before {
     linear-gradient(var(--color-grey-400) 0px, transparent 1px var(--grid-gap)) 50% 50% /
       var(--grid-gap) var(--grid-gap);
 
-  mask: linear-gradient(45deg, transparent 60%, var(--color-grey-400) 100%);
+  mask: linear-gradient(324deg, transparent 60%, var(--color-grey-400) 100%);
 }
 
 /* Default text styles */

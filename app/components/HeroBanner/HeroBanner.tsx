@@ -2,16 +2,26 @@ import { FC } from "react";
 import Image from "next/image";
 
 /* Styles */
-import styles from "./HeroBanner.module.css";
+import defaultStyles from "./HeroBanner.module.css";
+import secondaryStyles from "./HeroBannerSecondary.module.css";
 
 type HeroBannerProps = {
   heroImage: string;
   title: string;
   year: string;
   description: string;
+  variant?: "default" | "secondary";
 };
 
-const HeroBanner: FC<HeroBannerProps> = ({ heroImage, title, year, description }) => {
+const HeroBanner: FC<HeroBannerProps> = ({
+  heroImage,
+  title,
+  year,
+  description,
+  variant = "default",
+}) => {
+  const styles = variant === "default" ? defaultStyles : secondaryStyles;
+
   return (
     <section className={styles.banner}>
       <div className={styles.texts}>

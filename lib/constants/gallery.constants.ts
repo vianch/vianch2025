@@ -98,8 +98,8 @@ export const galleryCollections: GalleryCollection[] = [
     description:
       "Each shot tells a story, weaving moments of culture, emotion, and beauty, inviting viewers to connect with Japan's soul through my lens.",
     year: "2024",
-    coverImage: "https://images.unsplash.com/photo-1458668383970-8ddd3927deed",
-    images: galleryImages,
+    coverImage: galleryImages[5].src,
+    images: [...galleryImages, ...galleryImages, ...galleryImages],
   },
   {
     slug: "cityscapes",
