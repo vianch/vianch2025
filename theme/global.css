@@ -80,6 +80,15 @@ html {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --color-black: #000000;
+    --color-navy: #14213d;
+    --color-orange: #fca311;
+    --color-light: #e5e5e5;
+    --color-white: #ffffff;
+  }
+
+  body {
+    color: var(--color-white);
   }
 }
 

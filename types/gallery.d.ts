@@ -3,4 +3,5 @@ type GalleryImage = {
   alt: string;
   title: string;
   description: string;
+  url: string;
 };

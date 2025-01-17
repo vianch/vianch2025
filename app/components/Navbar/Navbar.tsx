@@ -16,7 +16,7 @@ const Navbar: FC = () => {
         <Link href="/">Home</Link>
         <Link href="/about">About</Link>
         <Link href="/gallery">Gallery</Link>
-        <Link href="/portfolio">Portfolio</Link>
+        <Link href="/playground">Playground</Link>
       </div>
     </section>
   );

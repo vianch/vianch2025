@@ -1,9 +1,17 @@
-import { FC } from "react";
+"use client";
+
+import { FC, useState, useEffect } from "react";
 import Image from "next/image";
+
+/* Components */
+import HeroBannerPlaceholder from "../HeroBannerPlaceholder/HeroBannerPlaceholder";
 
 /* Styles */
 import defaultStyles from "./HeroBanner.module.css";
 import secondaryStyles from "./HeroBannerSecondary.module.css";
+
+/* Utils */
+import { isClient } from "@/utils/ui.utils";
 
 type HeroBannerProps = {
   heroImage: string;
@@ -20,7 +28,20 @@ const HeroBanner: FC<HeroBannerProps> = ({
   description,
   variant = "default",
 }) => {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const styles = variant === "default" ? defaultStyles : secondaryStyles;
+
+  useEffect(() => {
+    if (isClient()) {
+      const img = new window.Image();
+      img.src = heroImage;
+      img.onload = () => setIsImageLoaded(true);
+    }
+  }, [heroImage]);
+
+  if (!isImageLoaded) {
+    return <HeroBannerPlaceholder variant={variant} />;
+  }
 
   return (
     <section className={styles.banner}>

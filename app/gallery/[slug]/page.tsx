@@ -9,13 +9,14 @@ import Gallery from "../../components/Gallery/Gallery";
 import HeroBanner from "../../components/HeroBanner/HeroBanner";
 
 type GalleryPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-const GallerySlugPage = ({ params }: GalleryPageProps): ReactElement => {
-  const collection = galleryCollections.find((collection) => collection.slug === params.slug);
+const GallerySlugPage = async ({ params }: GalleryPageProps): Promise<ReactElement> => {
+  const { slug } = await params;
+  const collection = galleryCollections.find((collection) => collection.slug === slug);
 
   if (!collection) {
     notFound();
