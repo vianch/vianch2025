@@ -17,3 +17,22 @@ export const ErrorMessages = {
   BadRequestError: "Bad request",
   InternalServerError: "Internal server error",
 };
+
+export const CacheHeaders = {
+  Public: "public",
+  MaxAgeBrowser: "s-maxage",
+  MaxAgeCdn: "max-age",
+  StaleWhileRevalidate: "stale-while-revalidate",
+  MustRevalidate: "must-revalidate",
+  NoCache: "no-cache",
+} as const;
+
+export const ResponseHeaders = {
+  CacheControl: "Cache-Control",
+  Pragma: "Pragma",
+} as const;
+
+export const DefaultCacheConfig = {
+  maxCacheAge: 3600, // 1 hour
+  maxStaleWhileRevalidateAge: 7200, // 2 hours
+} as const;

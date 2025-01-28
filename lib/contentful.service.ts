@@ -1,7 +1,34 @@
 import { request } from "graphql-request";
 import { NextResponse } from "next/server";
 
-import { contentfulLocalEndpoints } from "./constants/contentful.constants";
+import {
+  contentfulLocalEndpoints,
+  CacheHeaders,
+  ResponseHeaders,
+  DefaultCacheConfig,
+} from "./constants/contentful.constants";
+
+/**
+ * Sets cache control headers for the response
+ * @param cacheConfig - Cache configuration with max age and stale while revalidate values
+ * @returns {Record<string, string>} Headers object with cache control settings
+ */
+export const setCacheControlHeaders = (
+  cacheConfig: CacheControl = DefaultCacheConfig
+): Record<string, string> => {
+  const { maxCacheAge, maxStaleWhileRevalidateAge } = cacheConfig;
+
+  return {
+    [ResponseHeaders.CacheControl]: [
+      CacheHeaders.Public,
+      `${CacheHeaders.MaxAgeBrowser}=0`,
+      `${CacheHeaders.MaxAgeCdn}=${maxCacheAge}`,
+      `${CacheHeaders.StaleWhileRevalidate}=${maxStaleWhileRevalidateAge}`,
+      CacheHeaders.MustRevalidate,
+    ].join(", "),
+    [ResponseHeaders.Pragma]: CacheHeaders.NoCache,
+  };
+};
 
 /**
  * Handles and standardizes Contentful API errors
@@ -63,9 +90,7 @@ export const throwJsonError = (error: Error | ContentfulErrorResponse | unknown)
 export const handleContentfulResponse = <T>(collection: Collection<T>): NextResponse =>
   NextResponse.json(collection, {
     status: 200,
-    headers: {
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=7200",
-    },
+    headers: setCacheControlHeaders(),
   });
 
 /**
