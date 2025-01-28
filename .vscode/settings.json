@@ -5,5 +5,8 @@
   "javascript.preferences.quoteStyle": "double",
   "typescript.preferences.quoteStyle": "double",
   "editor.tabSize": 2,
-  "cSpell.words": ["noopener", "noreferrer", "styleguide", "vianch"]
+  "cSpell.words": ["CONTENTFUL", "noopener", "noreferrer", "styleguide", "vianch"],
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }
