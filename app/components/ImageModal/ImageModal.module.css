@@ -12,35 +12,74 @@
   padding: 2rem;
 }
 
+@keyframes breathe {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes fill {
+  0% {
+    background: transparent;
+  }
+  100% {
+    background: var(--color-white);
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--color-white);
+  animation: fill 1s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
 .modal {
   position: relative;
   max-width: 90vw;
-  background-color: var(--color-white);
+  min-width: 40px;
+  min-height: 40px;
+  background-color: var(--color-black);
   overflow: hidden;
   padding: 1.25rem;
+  transition:
+    width 0.5s ease-in-out,
+    height 0.5s ease-in-out;
+}
+
+.opening {
+  background-color: var(--color-black);
+}
+
+.opened {
+  background-color: var(--color-white);
 }
 
 .closeButton {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: var(--color-white);
-  border: none;
+  color: var(--color-white);
+
+  right: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
-  z-index: 1;
-  opacity: 0.8;
-  transition: opacity 0.2s ease-in-out;
-}
-
-.closeButton:hover {
-  opacity: 1;
+  background-color: #0000003f;
+  z-index: var(--z-index-modal);
+  width: 4rem;
+  height: 4rem;
 }
 
 .image {

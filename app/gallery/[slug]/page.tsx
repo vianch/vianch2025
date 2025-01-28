@@ -16,10 +16,8 @@ type GalleryPageProps = {
 
 const GallerySlugPage = async ({ params }: GalleryPageProps): Promise<ReactElement> => {
   const { slug } = await params;
-
   const response = await getCollection({ slug });
   const collection = response.items[0];
-  console.log("collection", collection);
 
   if (!collection) {
     notFound();
@@ -35,6 +33,7 @@ const GallerySlugPage = async ({ params }: GalleryPageProps): Promise<ReactEleme
           description={collection.description}
           variant="default"
         />
+
         <Gallery images={collection.gallery.imagesCollection.items} />
       </main>
     </>

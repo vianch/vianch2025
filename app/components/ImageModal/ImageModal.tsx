@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, ReactElement, useEffect } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 import Image from "next/image";
 
 /* Styles */
@@ -23,6 +23,7 @@ type ImageModalProps = {
 };
 
 const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactElement | null => {
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
   const imageUrl = getContentfulImage(image.url, {
     fit: "thumb",
     h: 1080,
@@ -45,16 +46,25 @@ const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactEleme
 
   return (
     <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>
-          ×
-        </button>
+      <div
+        className={`${styles.modal} ${isImageLoading ? styles.opening : styles.opened}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {!isImageLoading && (
+          <div className={styles.closeButton} onClick={onClose}>
+            ×
+          </div>
+        )}
+
+        {isImageLoading && <div className={styles.loader} />}
+
         <Image
           src={imageUrl}
           alt={image.title}
           width={1920}
           height={1080}
           className={styles.image}
+          onLoad={() => setIsImageLoading(false)}
         />
         <div className={styles.caption}>
           <h3 className={styles.title}>{image.title}</h3>
