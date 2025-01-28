@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
 import { notFound } from "next/navigation";
 
-/* Constants */
-import { galleryCollections } from "@/lib/constants/gallery.constants";
+/* API */
+import { getCollection } from "@/lib/api/gallery";
 
 /* Components */
 import Gallery from "../../components/Gallery/Gallery";
@@ -16,7 +16,10 @@ type GalleryPageProps = {
 
 const GallerySlugPage = async ({ params }: GalleryPageProps): Promise<ReactElement> => {
   const { slug } = await params;
-  const collection = galleryCollections.find((collection) => collection.slug === slug);
+
+  const response = await getCollection({ slug });
+  const collection = response.items[0];
+  console.log("collection", collection);
 
   if (!collection) {
     notFound();
@@ -25,22 +28,16 @@ const GallerySlugPage = async ({ params }: GalleryPageProps): Promise<ReactEleme
   return (
     <main>
       <HeroBanner
-        heroImage={collection.coverImage}
+        heroImage={collection.coverImage.url}
         title={collection.title}
-        year={collection.year}
+        year={collection.year.toString()}
         description={collection.description}
         variant="secondary"
       />
 
-      <Gallery images={collection.images} fullWidth />
+      <Gallery images={collection.gallery.imagesCollection.items} fullWidth />
     </main>
   );
 };
-
-export async function generateStaticParams() {
-  return galleryCollections.map((collection) => ({
-    slug: collection.slug,
-  }));
-}
 
 export default GallerySlugPage;

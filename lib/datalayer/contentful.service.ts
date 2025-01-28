@@ -6,7 +6,7 @@ import {
   CacheHeaders,
   ResponseHeaders,
   DefaultCacheConfig,
-} from "./constants/contentful.constants";
+} from "../constants/contentful.constants";
 
 /**
  * Sets cache control headers for the response

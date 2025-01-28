@@ -7,7 +7,7 @@ import {
   handleContentfulError,
   handleContentfulResponse,
   throwJsonError,
-} from "@/lib/contentful.service";
+} from "@/lib/datalayer/contentful.service";
 
 /* Constants */
 import { ErrorTypes, ErrorMessages } from "@/lib/constants/contentful.constants";
@@ -68,6 +68,8 @@ export const GET = async (request: Request) => {
                 skip
                 limit
                 items {
+                  title
+                  description
                   url
                 }
               }

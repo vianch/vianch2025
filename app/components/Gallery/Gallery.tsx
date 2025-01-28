@@ -11,9 +11,10 @@ import ImagePlaceholder from "../ImagePlaceholder/ImagePlaceholder";
 import GalleryStyles from "./Gallery.module.css";
 import MasonryGalleryStyles from "./MasonryGallery.module.css";
 import { isClient } from "@/utils/ui.utils";
+import { getContentfulImage } from "@/utils/images.utils";
 
 type GalleryProps = {
-  images: GalleryImage[];
+  images: GalleryItem[];
   masonry?: boolean;
   fullWidth?: boolean;
 };
@@ -26,9 +27,9 @@ const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false 
     if (isClient()) {
       images.forEach((image) => {
         const img = new window.Image();
-        img.src = image.src;
+        img.src = image.url;
         img.onload = () => {
-          setLoadedImages((prev) => new Set([...prev, image.src]));
+          setLoadedImages((prev) => new Set([...prev, image.url]));
         };
       });
     }
@@ -37,12 +38,18 @@ const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false 
   return (
     <section className={fullWidth ? styles.full : styles.gallery}>
       {images.map((image, index) => {
-        const isLoaded = loadedImages.has(image.src);
+        const isLoaded = loadedImages.has(image.url);
+        const imageUrl = getContentfulImage(image.url, {
+          fit: "thumb",
+          h: 920,
+          f: "center",
+          q: 94,
+        });
 
         if (!isLoaded) {
           return (
             <ImagePlaceholder
-              key={`placeholder-${image.src}-${index}`}
+              key={`placeholder-${image.url}-${index}`}
               count={1}
               fullWidth={fullWidth}
             />
@@ -50,12 +57,12 @@ const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false 
         }
 
         return (
-          <figure key={`${image.src}-${index}`} className={styles.figure}>
-            <Link href={`/gallery/${image.url}`}>
+          <figure key={`${image.url}-${index}`} className={styles.figure}>
+            <Link href={`/gallery/${image.link}`}>
               <Image
                 className={styles.image}
-                src={image.src}
-                alt={image.alt}
+                src={imageUrl}
+                alt={image.title}
                 width={800}
                 height={600}
                 priority={index < 4}

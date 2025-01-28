@@ -53,6 +53,7 @@ interface GalleryItem {
   description: string;
   url: string;
   image: ContentfulImage;
+  link?: string;
 }
 
 interface Collection<T> {
@@ -73,7 +74,9 @@ interface GalleryCollectionItem {
     total: number;
     skip: number;
     limit: number;
-    items: GalleryItem[];
+    imagesCollection: {
+      items: GalleryItem[];
+    };
   };
 }
 

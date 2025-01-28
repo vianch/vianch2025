@@ -1,7 +1,7 @@
 import { normalizeUrl } from "./url.utils";
 
-export const getContentfulImage = (imageUrl: string, config?: ImageConfig): string | null => {
-  if (!imageUrl) return null;
+export const getContentfulImage = (imageUrl: string, config?: ImageConfig): string => {
+  if (!imageUrl) return "";
 
   // Normalize URL with https protocol if needed
   const baseUrl = normalizeUrl(imageUrl);
