@@ -1,15 +1,21 @@
 "use client";
 
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+/* Constants */
+import { KeyNames } from "@/lib/constants/ui.constants";
+
 /* Components */
 import ImagePlaceholder from "../ImagePlaceholder/ImagePlaceholder";
+import ImageModal from "../ImageModal/ImageModal";
 
 /* Styles */
 import GalleryStyles from "./Gallery.module.css";
 import MasonryGalleryStyles from "./MasonryGallery.module.css";
+
+/* Utils */
 import { isClient } from "@/utils/ui.utils";
 import { getContentfulImage } from "@/utils/images.utils";
 
@@ -21,6 +27,7 @@ type GalleryProps = {
 
 const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false }) => {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
 
   useEffect(() => {
@@ -35,49 +42,88 @@ const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false 
     }
   }, [images]);
 
+  const handleImageClick = (image: GalleryItem): void => {
+    if (!image.link) {
+      setSelectedImage(image);
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>, image: GalleryItem): void => {
+    if (e.key === KeyNames.Enter) {
+      handleImageClick(image);
+    }
+  };
+
   return (
-    <section className={fullWidth ? styles.full : styles.gallery}>
-      {images.map((image, index) => {
-        const isLoaded = loadedImages.has(image.url);
-        const imageUrl = getContentfulImage(image.url, {
-          fit: "thumb",
-          h: 920,
-          f: "center",
-          q: 94,
-        });
+    <>
+      <section className={fullWidth ? styles.full : styles.gallery}>
+        {images.map((image, index) => {
+          const isLoaded = loadedImages.has(image.url);
+          const hasLink = !!image.link;
+          const imageUrl = getContentfulImage(image.url, {
+            fit: "thumb",
+            h: 380,
+            f: "center",
+            q: 80,
+          });
 
-        if (!isLoaded) {
-          return (
-            <ImagePlaceholder
-              key={`placeholder-${image.url}-${index}`}
-              count={1}
-              fullWidth={fullWidth}
-            />
-          );
-        }
+          if (!isLoaded) {
+            return (
+              <ImagePlaceholder
+                key={`placeholder-${image.url}-${index}`}
+                count={1}
+                fullWidth={fullWidth}
+              />
+            );
+          }
 
-        return (
-          <figure key={`${image.url}-${index}`} className={styles.figure}>
-            <Link href={`/gallery/${image.link}`}>
+          const imageContent = (
+            <>
               <Image
                 className={styles.image}
                 src={imageUrl}
                 alt={image.title}
                 width={800}
                 height={600}
+                onClick={!hasLink ? () => handleImageClick(image) : undefined}
+                onKeyDown={
+                  hasLink
+                    ? (e: KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, image)
+                    : undefined
+                }
                 priority={index < 4}
               />
+
               <figcaption className={styles.caption}>
                 <h3 className={styles.title}>{image.title}</h3>
+
                 {masonry && image?.description && (
                   <p className={styles.description}>{image.description}</p>
                 )}
               </figcaption>
-            </Link>
-          </figure>
-        );
-      })}
-    </section>
+            </>
+          );
+
+          return (
+            <figure key={`${image.url}-${index}`} className={styles.figure}>
+              {hasLink ? (
+                <Link href={`/gallery/${image.link}`}>{imageContent}</Link>
+              ) : (
+                <>{imageContent}</>
+              )}
+            </figure>
+          );
+        })}
+      </section>
+
+      {selectedImage && (
+        <ImageModal
+          isOpen={!!selectedImage}
+          onClose={() => setSelectedImage(null)}
+          image={selectedImage}
+        />
+      )}
+    </>
   );
 };
 

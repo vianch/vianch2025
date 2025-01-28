@@ -26,17 +26,18 @@ const GallerySlugPage = async ({ params }: GalleryPageProps): Promise<ReactEleme
   }
 
   return (
-    <main>
-      <HeroBanner
-        heroImage={collection.coverImage.url}
-        title={collection.title}
-        year={collection.year.toString()}
-        description={collection.description}
-        variant="secondary"
-      />
-
-      <Gallery images={collection.gallery.imagesCollection.items} fullWidth />
-    </main>
+    <>
+      <main className="container  container-padding-lg">
+        <HeroBanner
+          heroImage={collection.coverImage.url}
+          title={collection.title}
+          year={collection.year.toString()}
+          description={collection.description}
+          variant="default"
+        />
+        <Gallery images={collection.gallery.imagesCollection.items} />
+      </main>
+    </>
   );
 };
 

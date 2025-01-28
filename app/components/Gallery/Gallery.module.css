@@ -41,6 +41,7 @@
   object-fit: cover;
   transition: scale 0.5s ease-in-out;
   grid-area: 1 / 1 / -1 / -1;
+  cursor: pointer;
 }
 
 .figure:hover .image {

@@ -4,6 +4,7 @@
   --grid-gap: 2rem;
   --z-index-navbar: 2;
   --z-index-scroll-top: 3;
+  --z-index-modal: 4;
 }
 
 /* Container */
