@@ -34,7 +34,6 @@ export const GET = async (request: Request) => {
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get("slug");
     const page = parseInt(searchParams.get("page") ?? "1", 10);
-    console.log("page: ", page);
     const skip = (page - 1) * limit;
     const variables = { slug, skip, limit };
 
