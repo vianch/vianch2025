@@ -38,8 +38,16 @@ const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactEleme
       }
     };
 
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    }
+
     window.addEventListener("keydown", handleEscapeKey);
-    return () => window.removeEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleEscapeKey);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -55,16 +63,14 @@ const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactEleme
             ×
           </div>
         )}
-
         {isImageLoading && <div className={styles.loader} />}
-
         <Image
           src={imageUrl}
           alt={image.title}
           width={1920}
           height={1080}
           className={styles.image}
-          onLoad={() => setIsImageLoading(false)}
+          onLoadingComplete={() => setIsImageLoading(false)}
         />
         <div className={styles.caption}>
           <h3 className={styles.title}>{image.title}</h3>

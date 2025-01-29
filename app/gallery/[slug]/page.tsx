@@ -5,39 +5,23 @@ import { notFound } from "next/navigation";
 import { getCollection } from "@/lib/api/gallery";
 
 /* Components */
-import Gallery from "../../components/Gallery/Gallery";
-import HeroBanner from "../../components/HeroBanner/HeroBanner";
+import GalleryClient from "./GalleryClient";
 
-type GalleryPageProps = {
-  params: Promise<{
+interface GallerySlugPageProps {
+  params: {
     slug: string;
-  }>;
-};
+  };
+}
 
-const GallerySlugPage = async ({ params }: GalleryPageProps): Promise<ReactElement> => {
-  const { slug } = await params;
-  const response = await getCollection({ slug });
-  const collection = response.items[0];
+const GallerySlugPage = async ({ params }: GallerySlugPageProps): Promise<ReactElement> => {
+  const initialData = await getCollection({ slug: params.slug, page: 1 });
+  const initialCollection = initialData.items[0];
 
-  if (!collection) {
+  if (!initialCollection) {
     notFound();
   }
 
-  return (
-    <>
-      <main className="container  container-padding-lg">
-        <HeroBanner
-          heroImage={collection.coverImage.url}
-          title={collection.title}
-          year={collection.year.toString()}
-          description={collection.description}
-          variant="default"
-        />
-
-        <Gallery images={collection.gallery.imagesCollection.items} />
-      </main>
-    </>
-  );
+  return <GalleryClient initialCollection={initialCollection} />;
 };
 
 export default GallerySlugPage;

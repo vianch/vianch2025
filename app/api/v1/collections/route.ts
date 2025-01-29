@@ -30,11 +30,13 @@ import { ErrorTypes, ErrorMessages } from "@/lib/constants/contentful.constants"
  */
 export const GET = async (request: Request) => {
   try {
+    const limit = 50;
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get("slug");
     const page = parseInt(searchParams.get("page") ?? "1", 10);
-    const skip = (page - 1) * 100; // 100 items per page
-    const variables = { slug, skip };
+    console.log("page: ", page);
+    const skip = (page - 1) * limit;
+    const variables = { slug, skip, limit };
 
     if (!slug) {
       return NextResponse.json(
@@ -49,7 +51,7 @@ export const GET = async (request: Request) => {
     }
 
     const query = gql`
-      query ($slug: String!, $skip: Int) {
+      query ($slug: String!, $skip: Int, $limit: Int) {
         galleryCollectionCollection(where: { slug_contains: $slug }) {
           total
           items {
@@ -63,7 +65,7 @@ export const GET = async (request: Request) => {
             }
             gallery {
               title
-              imagesCollection(skip: $skip) {
+              imagesCollection(skip: $skip, limit: $limit) {
                 total
                 skip
                 limit

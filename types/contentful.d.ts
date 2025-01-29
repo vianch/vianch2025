@@ -74,9 +74,7 @@ interface GalleryCollectionItem {
     total: number;
     skip: number;
     limit: number;
-    imagesCollection: {
-      items: GalleryItem[];
-    };
+    imagesCollection: Collection<GalleryItem>;
   };
 }
 
