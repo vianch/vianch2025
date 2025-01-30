@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <main className="container  container-padding-lg">
         <HeroBanner
-          heroImage={galleryImages[0].src}
+          heroImage={galleryImages[0].image.url}
           title="Visual Japan"
           year="2024"
           description="Each shot tells a story, weaving moments of culture, emotion, and beauty, inviting viewers to connect with Japan’s soul through my lens."
