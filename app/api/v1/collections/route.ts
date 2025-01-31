@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { gql } from "graphql-request";
 
 /* Services */
@@ -6,6 +5,7 @@ import {
   fetchEntriesByQuery,
   handleContentfulError,
   handleContentfulResponse,
+  handleErrorResponse,
   throwJsonError,
 } from "@/lib/datalayer/contentful.service";
 
@@ -38,15 +38,11 @@ export const GET = async (request: Request) => {
     const variables = { slug, skip, limit };
 
     if (!slug) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Slug parameter is required",
-        },
-        {
-          status: 400,
-        }
-      );
+      return handleErrorResponse({
+        error: "Slug parameter is required",
+        details: {},
+        code: 400,
+      });
     }
 
     const query = gql`

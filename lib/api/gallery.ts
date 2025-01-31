@@ -10,3 +10,6 @@ export const getCollection = ({
   page,
 }: GetCollectionParams): Promise<Collection<GalleryCollectionItem>> =>
   fetchApi<Collection<GalleryCollectionItem>>("collections", { slug, ...(page && { page }) });
+
+export const getPage = ({ slug }: GetCollectionParams): Promise<Collection<PageItem>> =>
+  fetchApi<Collection<PageItem>>("pages", { slug });

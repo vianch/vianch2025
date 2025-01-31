@@ -31,6 +31,27 @@ export const setCacheControlHeaders = (
 };
 
 /**
+ * Handles an error response with the given error, details, and code
+ * @param {Object} error - The error object
+ * @param {Object} details - The details object
+ * @param {number} code - The HTTP status code
+ * @returns {NextResponse} JSON response with the error details
+ */
+export const handleErrorResponse = ({
+  error,
+  details,
+  code,
+}: HandleErrorResponseParams): NextResponse =>
+  NextResponse.json(
+    {
+      success: false,
+      error,
+      details,
+    },
+    { status: code }
+  );
+
+/**
  * Handles and standardizes Contentful API errors
  * @param error - The error object thrown by the Contentful API or other sources
  * @returns {ContentfulErrorResponse} A standardized error response object containing:
@@ -38,47 +59,43 @@ export const setCacheControlHeaders = (
  *  - message: Human-readable error message
  *  - details: Additional error information
  */
-export const handleContentfulError = (error: unknown): ContentfulErrorResponse => {
+export const handleContentfulError = (error: unknown): NextResponse => {
   if (error instanceof Error && "response" in error) {
     const graphQLError = error as GraphQLClientError;
     const statusCode = graphQLError.response?.status || 500;
     const message = graphQLError.response?.errors?.[0]?.message || "GraphQL Error";
 
-    return {
-      status: statusCode,
-      message,
-      details: { errors: graphQLError.response?.errors },
-    };
+    return handleErrorResponse({
+      error: message,
+      details: { errors: graphQLError },
+      code: statusCode,
+    });
   }
 
   if (error instanceof Error) {
-    return {
-      status: 500,
-      message: error.message,
-      details: { error: error.message },
-    };
+    return handleErrorResponse({
+      error: error.message,
+      details: { error: String(error) },
+      code: 500,
+    });
   }
 
-  return {
-    status: 500,
-    message: "An unknown error occurred",
+  return handleErrorResponse({
+    error: "An unknown error occurred",
     details: { error: String(error) },
-  };
+    code: 500,
+  });
 };
 
-export const throwJsonError = (error: Error | ContentfulErrorResponse | unknown) => {
+/**
+ * Throws a JSON error response with the given error
+ * @param error - The error object to be thrown
+ * @returns {NextResponse} JSON response with the error details
+ */
+export const throwJsonError = (error: Error | ContentfulErrorResponse | unknown): NextResponse => {
   const handledError = handleContentfulError(error);
 
-  return NextResponse.json(
-    {
-      success: false,
-      error: handledError.message,
-      details: handledError.details,
-    },
-    {
-      status: handledError.status,
-    }
-  );
+  return handledError;
 };
 
 /**

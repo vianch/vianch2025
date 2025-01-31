@@ -23,7 +23,7 @@
       "@components/*": ["./app/components/*"],
       "@themes/*": ["./theme/*"],
       "@constants/*": ["./lib/constants/*"],
-      "@utils/*": ["./utils/*"],
+      "@utils/*": ["lib/utils/*"],
       "@types/*": ["./types/*"]
     },
     "baseUrl": "."

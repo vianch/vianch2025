@@ -16,16 +16,23 @@ import GalleryStyles from "./Gallery.module.css";
 import MasonryGalleryStyles from "./MasonryGallery.module.css";
 
 /* Utils */
-import { isClient } from "@/utils/ui.utils";
-import { getContentfulImage } from "@/utils/images.utils";
+import { isClient } from "@/lib/utils/ui.utils";
+import { getContentfulImage } from "@/lib/utils/images.utils";
+import { getGalleryPath } from "@/lib/utils/url.utils";
 
 type GalleryProps = {
   images: GalleryItem[];
+  overrideImageLinks?: string[];
   masonry?: boolean;
   fullWidth?: boolean;
 };
 
-const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false }) => {
+const Gallery: FC<GalleryProps> = ({
+  images,
+  overrideImageLinks,
+  masonry = false,
+  fullWidth = false,
+}) => {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
@@ -58,8 +65,10 @@ const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false 
     <>
       <section className={fullWidth ? styles.full : styles.gallery}>
         {images.map((image, index) => {
+          const overrideLink = overrideImageLinks?.[index];
+          const link = overrideLink ?? image.link;
+          const hasLink = !!link;
           const isLoaded = loadedImages.has(image.url);
-          const hasLink = !!image.link;
           const imageUrl = getContentfulImage(image.url, {
             fit: "thumb",
             h: 380,
@@ -82,7 +91,7 @@ const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false 
               <Image
                 className={styles.image}
                 src={imageUrl}
-                alt={image.title}
+                alt={image.title ?? "Gallery Image"}
                 width={800}
                 height={600}
                 onClick={!hasLink ? () => handleImageClick(image) : undefined}
@@ -107,7 +116,7 @@ const Gallery: FC<GalleryProps> = ({ images, masonry = false, fullWidth = false 
           return (
             <figure key={`${image.url}-${index}`} className={styles.figure}>
               {hasLink ? (
-                <Link href={`/gallery/${image.link}`}>{imageContent}</Link>
+                <Link href={getGalleryPath(link ?? "/")}>{imageContent}</Link>
               ) : (
                 <>{imageContent}</>
               )}

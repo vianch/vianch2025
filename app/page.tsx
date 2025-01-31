@@ -1,45 +1,55 @@
 /* Constants */
-import { galleryImages } from "@/lib/constants/gallery.constants";
+import { notFound } from "next/navigation";
 
 /* Components */
 import HeroBanner from "./components/HeroBanner/HeroBanner";
 import Gallery from "./components/Gallery/Gallery";
 import SectionTitle from "./components/SectionTitle/SectionTitle";
+import { getPage } from "@/lib/api/gallery";
+import { Fragment } from "react";
+import { getGalleryPath } from "@/lib/utils/url.utils";
 
-export default function Home() {
+export const Home = async () => {
+  const pageResponse = await getPage({ slug: "home" });
+  const initialPageData = pageResponse.items[0];
+
+  if (!initialPageData || initialPageData?.collectionsCollection?.total === 0) {
+    notFound();
+  }
+
+  const collections = initialPageData.collectionsCollection.items;
+  const head = collections[0];
+
   return (
     <>
       <main className="container  container-padding-lg">
         <HeroBanner
-          heroImage={galleryImages[0].image.url}
-          title="Visual Japan"
-          year="2024"
-          description="Each shot tells a story, weaving moments of culture, emotion, and beauty, inviting viewers to connect with Japan’s soul through my lens."
+          heroImage={head.coverImage.url}
+          title={head.title}
+          year={head.year.toString()}
+          description={head.description}
+          link={getGalleryPath(head.slug)}
         />
 
-        <SectionTitle
-          title="Latest photo collections"
-          description="Browse through different collections"
-          link="/gallery"
-        />
-        <Gallery images={galleryImages.slice(0, 8)} />
+        {collections?.length > 0 &&
+          collections.map((item: GalleryCollectionItem, index: number) => (
+            <Fragment key={`${item.slug}-${index + 1}`}>
+              <SectionTitle
+                key={item.slug}
+                title={item.title}
+                description={item.subtitle}
+                link={getGalleryPath(item.slug)}
+              />
 
-        <SectionTitle title="Portraits" link="/gallery" />
-        <Gallery images={galleryImages.slice(0, 4)} />
-
-        <SectionTitle title="Street photography" link="/gallery" />
-        <Gallery images={galleryImages.slice(0, 4)} />
-
-        <SectionTitle title="Cityscape" link="/gallery" />
-        <Gallery images={galleryImages.slice(0, 4)} />
-
-        <SectionTitle
-          title="Latest playground projects"
-          description="Fun short-term projects to learn"
-          link="/playground"
-        />
-        <Gallery images={galleryImages.slice(0, 4)} />
+              <Gallery
+                images={item.gallery.imagesCollection.items}
+                overrideImageLinks={item.overrideImageLinks}
+              />
+            </Fragment>
+          ))}
       </main>
     </>
   );
-}
+};
+
+export default Home;

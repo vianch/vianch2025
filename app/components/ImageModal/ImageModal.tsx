@@ -10,7 +10,7 @@ import styles from "./ImageModal.module.css";
 import { KeyNames } from "@/lib/constants/ui.constants";
 
 /* Utils */
-import { getContentfulImage } from "@/utils/images.utils";
+import { getContentfulImage } from "@/lib/utils/images.utils";
 
 type ImageModalProps = {
   isOpen: boolean;
@@ -63,14 +63,16 @@ const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactEleme
             ×
           </div>
         )}
+
         {isImageLoading && <div className={styles.loader} />}
+
         <Image
           src={imageUrl}
-          alt={image.title}
+          alt={image.title ?? "Image Modal"}
           width={1920}
           height={1080}
           className={styles.image}
-          onLoadingComplete={() => setIsImageLoading(false)}
+          onLoad={() => setIsImageLoading(false)}
         />
         <div className={styles.caption}>
           <h3 className={styles.title}>{image.title}</h3>

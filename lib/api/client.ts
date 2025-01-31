@@ -1,5 +1,5 @@
 /* Utils */
-import { getBaseUrl } from "@/utils/url.utils";
+import { getBaseUrl } from "@/lib/utils/url.utils";
 
 /**
  * Makes a GET request to the specified API endpoint

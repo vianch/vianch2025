@@ -22,3 +22,7 @@ export const getBaseUrl = (): string => {
     "http://localhost:3000"
   );
 };
+
+export const getGalleryPath = (slug: string): string => {
+  return `/gallery/${slug}`;
+};

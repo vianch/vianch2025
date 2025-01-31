@@ -76,10 +76,22 @@ interface GalleryCollectionItem {
     limit: number;
     imagesCollection: Collection<GalleryItem>;
   };
+  overrideImageLinks?: string[];
 }
 
 interface GalleryCollectionResponse {
   galleryCollectionCollection: Collection<GalleryCollectionItem>;
+}
+
+interface PageItem {
+  title: string;
+  slug: string;
+  description: string;
+  collectionsCollection: Collection<GalleryCollectionItem>;
+}
+
+interface PageCollectionResponse {
+  pageCollection: Collection<PageItem>;
 }
 
 type ContentfulVariables = {

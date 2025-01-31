@@ -1,4 +1,4 @@
-import { todayDate, todayTime } from "@/utils/date.utils";
+import { todayDate, todayTime } from "@/lib/utils/date.utils";
 
 export const helpCommands = [
   "Available commands:",
