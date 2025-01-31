@@ -14,7 +14,9 @@ interface GallerySlugPageProps {
 }
 
 const GallerySlugPage = async ({ params }: GallerySlugPageProps): Promise<ReactElement> => {
-  const initialData = await getCollection({ slug: params.slug, page: 1 });
+  const { slug } = await params;
+
+  const initialData = await getCollection({ slug, page: 1 });
   const initialCollection = initialData.items[0];
 
   if (!initialCollection) {

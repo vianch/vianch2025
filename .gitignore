@@ -1,41 +1,93 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
+## Dependencies
+node_modules/
+.pnp/
 .pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+jspm_packages/
+bower_components/
 
-# testing
-/coverage
+## Testing & Coverage
+coverage/
+reports/
 
-# next.js
-/.next/
-/out/
+## Next.js
+.next/
+out/
 
-# production
-/build
+## Production Builds
+build/
+dist/
+storybook-static/
+www/
+www/js/
+www/css/
+www/index.html/
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+## Logs & Debugging
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+.history
+node_repl_history
+.eslintcache
+.npm/
 
-# env files (can opt-in for committing if needed)
-.env*
+## Environment & Secrets (Highly Sensitive)
+#.env*
+.env
+.env.local
+.env.development
+.env.production
+*.pem
+*.key
+*.crt
+*.cert
+*.pfx
 
-# vercel
-.vercel
+## Runtime Data
+pids/
+*.pid
+*.pid.lock
+*.seed
 
-# typescript
+## IDE/Editor Settings
+.DS_Store
+Thumbs.db
+.idea/
+.idea/**/*
+.idea/workspace.xml
+.idea/*.iml
+.cache
+.gradle
+local.properties
+*.sublime-project
+*.sublime-workspace
+*.sublime-grunt.cache
+.vscode/
+.vscode/*
+.vscode/launch.json
+.vscode/settings.json
+
+## TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+## Compiled Files & Binary Addons
+build/Release
+.lock-wscript
+
+## Miscellaneous
+lib-cov/
+.grunt/
+platforms/
+plugins/
+*.swp

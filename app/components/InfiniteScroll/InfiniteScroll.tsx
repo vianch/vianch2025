@@ -20,9 +20,19 @@ const InfiniteScroll: FC<InfiniteScrollProps> = ({
 }): ReactElement => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const firstLoadRef = useRef(true);
 
   const handleObserver = async (entries: IntersectionObserverEntry[]) => {
-    if (entries[0].isIntersecting && hasMore && next) {
+    const firstIntersecting = entries[0]?.isIntersecting;
+
+    if (firstLoadRef.current) {
+      firstLoadRef.current = false;
+      if (firstIntersecting) {
+        return;
+      }
+    }
+
+    if (firstIntersecting && hasMore && next) {
       await next();
     }
   };

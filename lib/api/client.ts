@@ -1,3 +1,6 @@
+/* Utils */
+import { getBaseUrl } from "@/utils/url.utils";
+
 /**
  * Makes a GET request to the specified API endpoint
  * @param endpoint - The API endpoint to call
@@ -8,17 +11,17 @@ export const fetchApi = async <T>(
   endpoint: string,
   params?: Record<string, string | number>
 ): Promise<T> => {
-  const url = new URL(`/api/v1/${endpoint}`, "http://localhost:3000");
+  const url = new URL(`/api/v1/${endpoint}`, getBaseUrl());
 
   if (params) {
-    Object.entries(params).forEach(([key, value]) => {
+    Object.entries(params)?.forEach(([key, value]) => {
       if (value !== undefined) {
         url.searchParams.append(key, String(value));
       }
     });
   }
 
-  const response = await fetch(url.toString());
+  const response = await fetch(url?.href?.toString() || url.toString());
   const data = await response.json();
 
   if (!response.ok) {
