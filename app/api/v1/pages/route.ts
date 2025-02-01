@@ -12,7 +12,7 @@ import { ErrorMessages, ErrorTypes } from "@/lib/constants/contentful.constants"
 
 export const GET = async (request: Request) => {
   try {
-    const limit = 8;
+    const limit = 12;
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get("slug");
 
@@ -31,7 +31,7 @@ export const GET = async (request: Request) => {
             title
             slug
             description
-            collectionsCollection(limit: $limit) {
+            collectionsCollection(limit: 4) {
               total
               limit
               items {
@@ -47,6 +47,8 @@ export const GET = async (request: Request) => {
                 gallery {
                   imagesCollection(limit: $limit) {
                     items {
+                      title
+                      description
                       url
                     }
                   }

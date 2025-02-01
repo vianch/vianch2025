@@ -25,6 +25,7 @@ type GalleryProps = {
   overrideImageLinks?: string[];
   masonry?: boolean;
   fullWidth?: boolean;
+  hideTitle?: boolean;
 };
 
 const Gallery: FC<GalleryProps> = ({
@@ -32,6 +33,7 @@ const Gallery: FC<GalleryProps> = ({
   overrideImageLinks,
   masonry = false,
   fullWidth = false,
+  hideTitle = false,
 }) => {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
@@ -104,7 +106,7 @@ const Gallery: FC<GalleryProps> = ({
               />
 
               <figcaption className={styles.caption}>
-                <h3 className={styles.title}>{image.title}</h3>
+                {!hideTitle && <h3 className={styles.title}>{image.title}</h3>}
 
                 {masonry && image?.description && (
                   <p className={styles.description}>{image.description}</p>

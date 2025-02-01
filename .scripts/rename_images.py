@@ -26,5 +26,5 @@ def rename_images(folder_path, new_name):
 
 # Example usage
 folder_path = "./finals"
-new_name = "japan"
+new_name = "budapest"
 rename_images(folder_path, new_name)

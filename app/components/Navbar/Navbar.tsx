@@ -15,8 +15,9 @@ const Navbar: FC = () => {
       <div className={styles.navLinks}>
         <Link href="/">Home</Link>
         <Link href="/about">About</Link>
-        <Link href="/gallery">Gallery</Link>
-        <Link href="/playground">Playground</Link>
+        <Link href="https://snippets.vianch.com/" target="_blank" rel="noopener noreferrer">
+          Snippets
+        </Link>
       </div>
     </section>
   );

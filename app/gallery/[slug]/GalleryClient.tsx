@@ -45,7 +45,7 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
       />
 
       <InfiniteScroll hasMore={hasMore} next={fetchNextPage} loader={<></>}>
-        <Gallery images={images} />
+        <Gallery images={images} hideTitle />
       </InfiniteScroll>
     </main>
   );

@@ -7,7 +7,7 @@ import styles from "./SectionTitle.module.css";
 type SectionTitleProps = {
   title: string;
   description?: string;
-  link?: string;
+  link?: string | null;
 };
 
 const SectionTitle: FC<SectionTitleProps> = ({ title, description = null, link = null }) => {

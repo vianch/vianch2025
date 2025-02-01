@@ -18,7 +18,7 @@ export const Home = async () => {
   }
 
   const collections = initialPageData.collectionsCollection.items;
-  const head = collections[0];
+  const [head, ...tail] = collections;
 
   return (
     <>
@@ -31,19 +31,20 @@ export const Home = async () => {
           link={getGalleryPath(head.slug)}
         />
 
-        {collections?.length > 0 &&
-          collections.map((item: GalleryCollectionItem, index: number) => (
+        {tail?.length > 0 &&
+          tail.map((item: GalleryCollectionItem, index: number) => (
             <Fragment key={`${item.slug}-${index + 1}`}>
               <SectionTitle
                 key={item.slug}
                 title={item.title}
                 description={item.subtitle}
-                link={getGalleryPath(item.slug)}
+                link={!item?.overrideImageLinks ? getGalleryPath(item.slug) : null}
               />
 
               <Gallery
                 images={item.gallery.imagesCollection.items}
-                overrideImageLinks={item.overrideImageLinks}
+                overrideImageLinks={item?.overrideImageLinks}
+                hideTitle
               />
             </Fragment>
           ))}
