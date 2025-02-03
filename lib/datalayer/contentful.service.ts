@@ -6,6 +6,7 @@ import {
   CacheHeaders,
   ResponseHeaders,
   DefaultCacheConfig,
+  CacheDurations,
 } from "../constants/contentful.constants";
 
 /**
@@ -99,6 +100,21 @@ export const throwJsonError = (error: Error | ContentfulErrorResponse | unknown)
 };
 
 /**
+ * Determines cache duration based on collection properties
+ * @param collection - The collection data
+ * @returns {CacheControl} Cache configuration
+ */
+const determineCacheDuration = <T extends object>(collection: Collection<T>): CacheControl => {
+  // If collection has many items, cache longer
+  if (collection.total > 100) {
+    return CacheDurations.Long;
+  }
+
+  // Default to medium cache duration
+  return CacheDurations.Short;
+};
+
+/**
  * Formats a Contentful collection response with proper caching headers
  * @param {Collection<T>} collection - The collection of data to be returned
  * @returns {NextResponse} JSON response with cache control headers
@@ -107,9 +123,11 @@ export const throwJsonError = (error: Error | ContentfulErrorResponse | unknown)
 export const handleContentfulResponse = <T extends object>(
   collection: Collection<T>
 ): NextResponse => {
+  const cacheConfig = determineCacheDuration(collection);
+
   return NextResponse.json(collection, {
     status: 200,
-    headers: setCacheControlHeaders(),
+    headers: setCacheControlHeaders(cacheConfig),
   });
 };
 
@@ -122,7 +140,7 @@ export const handleContentfulResponse = <T extends object>(
 export const setContentfulHeaders = () => ({
   Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
   "Content-Type": "application/json",
-  "Cache-Control": `public, ${CacheHeaders.MaxAgeBrowser}=0, ${CacheHeaders.MaxAgeCdn}=0, ${CacheHeaders.StaleWhileRevalidate}=0, ${CacheHeaders.MustRevalidate}`,
+  "Cache-Control": `public, s-maxage=${process.env.CONTENTFUL_CACHE_CONTROL || 3600}`,
 });
 
 /**

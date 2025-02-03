@@ -5,7 +5,6 @@ import {
   fetchEntriesByQuery,
   handleContentfulError,
   handleContentfulResponse,
-  handleErrorResponse,
   throwJsonError,
 } from "@/lib/datalayer/contentful.service";
 
@@ -15,35 +14,29 @@ import { ErrorTypes, ErrorMessages } from "@/lib/constants/contentful.constants"
 /**
  * API route handler for fetching gallery collections from Contentful
  * @param request - Incoming HTTP request
+ * @param params - Route parameters containing the slug
  * @returns {Promise<NextResponse>} JSON response containing:
  *  - On success: Gallery collection data with 200 status
  *  - On error: Error details with appropriate status code (400, 404, or 500)
  *
- * Query Parameters:
+ * Path Parameters:
  *  - slug: Collection identifier (required)
+ * Query Parameters:
  *  - page: Page number for pagination (default: 1)
  *
  * Features:
- *  - Paginates results with 100 items per page
+ *  - Paginates results with 50 items per page
  *  - Includes cache control headers for optimization
  *  - Handles and standardizes error responses
  */
-export const GET = async (request: Request) => {
+export const GET = async (request: Request, { params }: { params: { slug: string } }) => {
   try {
     const limit = 50;
     const { searchParams } = new URL(request.url);
-    const slug = searchParams.get("slug");
+    const { slug } = await params;
     const page = parseInt(searchParams.get("page") ?? "1", 10);
     const skip = (page - 1) * limit;
     const variables = { slug, skip, limit };
-
-    if (!slug) {
-      return handleErrorResponse({
-        error: "Slug parameter is required",
-        details: {},
-        code: 400,
-      });
-    }
 
     const query = gql`
       query ($slug: String!, $skip: Int, $limit: Int) {
