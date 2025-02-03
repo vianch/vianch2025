@@ -13,6 +13,7 @@ import { getContentfulImage } from "@/lib/utils/images.utils";
 
 type ImageModalProps = {
   isOpen: boolean;
+  hideTitle?: boolean;
   onClose: () => void;
   image: {
     url: string;
@@ -21,7 +22,12 @@ type ImageModalProps = {
   };
 };
 
-const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactElement | null => {
+const ImageModal: FC<ImageModalProps> = ({
+  isOpen,
+  onClose,
+  image,
+  hideTitle = false,
+}): ReactElement | null => {
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
   const imageUrl = getContentfulImage(image.url, {
     fit: "thumb",
@@ -74,7 +80,7 @@ const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactEleme
           onLoad={() => setIsImageLoading(false)}
         />
         <div className={styles.caption}>
-          <h3 className={styles.title}>{image.title}</h3>
+          {!hideTitle && <h3 className={styles.title}>{image.title}</h3>}
           {image.description && <p className={styles.description}>{image.description}</p>}
         </div>
       </div>

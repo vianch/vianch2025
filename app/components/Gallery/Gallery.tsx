@@ -130,6 +130,7 @@ const Gallery: FC<GalleryProps> = ({
           isOpen={!!selectedImage}
           onClose={() => setSelectedImage(null)}
           image={selectedImage}
+          hideTitle
         />
       )}
     </>
