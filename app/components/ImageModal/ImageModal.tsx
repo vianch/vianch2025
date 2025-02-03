@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, ReactElement, useEffect, useState } from "react";
-import Image from "next/image";
 
 /* Styles */
 import styles from "./ImageModal.module.css";
@@ -66,12 +65,11 @@ const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactEleme
 
         {isImageLoading && <div className={styles.loader} />}
 
-        <Image
+        <img
           src={imageUrl}
           alt={image.title ?? "Image Modal"}
           width={1920}
           height={1080}
-          quality={90}
           className={styles.image}
           onLoad={() => setIsImageLoading(false)}
         />
