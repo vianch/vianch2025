@@ -1,56 +1,64 @@
-/* Constants */
+import { ReactElement } from "react";
 import { notFound } from "next/navigation";
+
+/* API */
+import { getPage } from "@/lib/api/gallery";
 
 /* Components */
 import HeroBanner from "./components/HeroBanner/HeroBanner";
 import Gallery from "./components/Gallery/Gallery";
 import SectionTitle from "./components/SectionTitle/SectionTitle";
-import { getPage } from "@/lib/api/gallery";
-import { Fragment } from "react";
 import { getGalleryPath } from "@/lib/utils/url.utils";
 
-export const Home = async () => {
-  const pageResponse = await getPage({ slug: "home" });
-  const initialPageData = pageResponse.items[0];
+export default async function Page(): Promise<ReactElement> {
+  let pageData;
 
-  if (!initialPageData || initialPageData?.collectionsCollection?.total === 0) {
+  try {
+    const pageResponse = await getPage({ slug: "home" });
+    pageData = pageResponse.items[0];
+  } catch (error) {
+    pageData = {
+      error,
+      collectionsCollection: {
+        total: 0,
+        items: [],
+      },
+    };
+  }
+
+  if (!pageData?.collectionsCollection?.total) {
     notFound();
   }
 
-  const collections = initialPageData.collectionsCollection.items;
+  const collections = pageData.collectionsCollection.items;
   const [head, ...tail] = collections;
 
   return (
-    <>
-      <main className="container  container-padding-lg">
-        <HeroBanner
-          heroImage={head.coverImage.url}
-          title={head.title}
-          year={head.year.toString()}
-          description={head.description}
-          link={getGalleryPath(head.slug)}
-        />
+    <main className="container container-padding-lg">
+      <HeroBanner
+        heroImage={head.coverImage.url}
+        title={head.title}
+        year={head.year.toString()}
+        description={head.description}
+        link={getGalleryPath(head.slug)}
+      />
 
-        {tail?.length > 0 &&
-          tail.map((item: GalleryCollectionItem, index: number) => (
-            <Fragment key={`${item.slug}-${index + 1}`}>
-              <SectionTitle
-                key={item.slug}
-                title={item.title}
-                description={item.subtitle}
-                link={!item?.overrideImageLinks ? getGalleryPath(item.slug) : null}
-              />
+      {tail?.length > 0 &&
+        tail.map((item: GalleryCollectionItem, index: number) => (
+          <div key={`${item.slug}-${index + 1}`}>
+            <SectionTitle
+              title={item.title}
+              description={item.subtitle}
+              link={!item?.overrideImageLinks ? getGalleryPath(item.slug) : null}
+            />
 
-              <Gallery
-                images={item.gallery.imagesCollection.items}
-                overrideImageLinks={item?.overrideImageLinks}
-                hideTitle
-              />
-            </Fragment>
-          ))}
-      </main>
-    </>
+            <Gallery
+              images={item.gallery.imagesCollection.items}
+              overrideImageLinks={item?.overrideImageLinks}
+              hideTitle
+            />
+          </div>
+        ))}
+    </main>
   );
-};
-
-export default Home;
+}

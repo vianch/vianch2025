@@ -21,12 +21,16 @@ export const fetchApi = async <T>(
     });
   }
 
-  const response = await fetch(url?.href?.toString() || url.toString());
-  const data = await response.json();
+  try {
+    const response = await fetch(url?.href?.toString() || url.toString());
+    const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.error || "Failed to fetch data");
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to fetch data");
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
   }
-
-  return data;
 };
