@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useState, useEffect, KeyboardEvent } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 /* Constants */
@@ -90,20 +89,18 @@ const Gallery: FC<GalleryProps> = ({
 
           const imageContent = (
             <>
-              <Image
+              <img
                 className={styles.image}
                 src={imageUrl}
                 alt={image.title ?? "Gallery Image"}
                 width={800}
                 height={600}
-                quality={90}
                 onClick={!hasLink ? () => handleImageClick(image) : undefined}
                 onKeyDown={
                   hasLink
                     ? (e: KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, image)
                     : undefined
                 }
-                priority={index < 4}
               />
 
               <figcaption className={styles.caption}>

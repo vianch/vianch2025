@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useState, useEffect } from "react";
-import Image from "next/image";
 
 /* Components */
 import HeroBannerPlaceholder from "../HeroBannerPlaceholder/HeroBannerPlaceholder";
@@ -62,14 +61,7 @@ const HeroBanner: FC<HeroBannerProps> = ({
       </div>
 
       <figure className={styles.figure}>
-        <Image
-          src={imageUrl}
-          alt={title ?? "Hero Banner"}
-          fill
-          sizes="(max-width: 768px) 100vw, 80vw"
-          className={styles.image}
-          priority
-        />
+        <img src={imageUrl} alt={title ?? "Hero Banner"} className={styles.image} />
       </figure>
     </>
   );

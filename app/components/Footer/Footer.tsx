@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Image from "next/image";
 import Link from "next/link";
 
 import styles from "./Footer.module.css";
@@ -10,7 +9,7 @@ const Footer: FC = () => {
       <div className="container">
         <p className="text-xs">
           <Link href="/">
-            <Image
+            <img
               src="/images/logo-xs-contrast.png"
               alt="VIANCH logo"
               width={24}

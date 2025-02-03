@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 export default function StyleGuidePage() {
   const [activeTab, setActiveTab] = useState("grid");
@@ -431,7 +430,7 @@ export default function StyleGuidePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Image
+                  <img
                     src="/vercel.svg"
                     alt="Vercel logomark"
                     width={20}
