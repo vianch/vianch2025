@@ -69,14 +69,14 @@ export default function Page(): ReactElement {
                 title={item.title}
                 description={item.subtitle}
                 link={
-                  item.gallery.imagesCollection.items?.length > 16
+                  item.gallery.imagesCollection.items?.length > 12
                     ? getGalleryPath(item.slug)
                     : null
                 }
               />
 
               <Gallery
-                images={item.gallery.imagesCollection.items.slice(0, 16)}
+                images={item.gallery.imagesCollection.items.slice(0, 12)}
                 overrideImageLinks={item?.overrideImageLinks}
                 hideTitle
               />
