@@ -71,6 +71,7 @@ const ImageModal: FC<ImageModalProps> = ({ isOpen, onClose, image }): ReactEleme
           alt={image.title ?? "Image Modal"}
           width={1920}
           height={1080}
+          quality={90}
           className={styles.image}
           onLoad={() => setIsImageLoading(false)}
         />

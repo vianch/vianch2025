@@ -7,14 +7,14 @@ import { getCollection } from "@/lib/api/gallery";
 /* Components */
 import GalleryClient from "./GalleryClient";
 
-interface GallerySlugPageProps {
-  params: {
+type PageProps = {
+  params: Promise<{
     slug: string;
-  };
-}
+  }>;
+};
 
-const GallerySlugPage = async ({ params }: GallerySlugPageProps): Promise<ReactElement> => {
-  const { slug } = await params;
+const GallerySlugPage = async (props: PageProps): Promise<ReactElement> => {
+  const { slug } = await props.params;
 
   const initialData = await getCollection({ slug, page: 1 });
   const initialCollection = initialData.items[0];

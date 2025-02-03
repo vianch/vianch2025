@@ -1,41 +1,71 @@
-/* Constants */
+"use client";
+
+import { ReactElement, useEffect, useState } from "react";
 import { notFound } from "next/navigation";
+
+/* API */
+import { getPage } from "@/lib/api/gallery";
 
 /* Components */
 import HeroBanner from "./components/HeroBanner/HeroBanner";
 import Gallery from "./components/Gallery/Gallery";
 import SectionTitle from "./components/SectionTitle/SectionTitle";
-import { getPage } from "@/lib/api/gallery";
-import { Fragment } from "react";
+
+/* Utils */
 import { getGalleryPath } from "@/lib/utils/url.utils";
 
-export const Home = async () => {
-  const pageResponse = await getPage({ slug: "home" });
-  const initialPageData = pageResponse.items[0];
+export default function Page(): ReactElement {
+  const [isLoading, setIsLoading] = useState(true);
+  const [collections, setCollections] = useState<GalleryCollectionItem[]>([]);
 
-  if (!initialPageData || initialPageData?.collectionsCollection?.total === 0) {
-    notFound();
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const pageResponse = await getPage({ slug: "home" });
+        const pageData = pageResponse.items[0];
 
-  const collections = initialPageData.collectionsCollection.items;
+        if (!pageData?.collectionsCollection?.total) {
+          notFound();
+        }
+
+        setCollections(pageData.collectionsCollection.items);
+      } catch (error) {
+        console.error("Failed to fetch page data:", error);
+        notFound();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const [head, ...tail] = collections;
+  const heroBannerData = {
+    heroImage: isLoading ? "" : head.coverImage.url,
+    title: isLoading ? "" : head.title,
+    year: isLoading ? "" : head.year.toString(),
+    description: isLoading ? "" : head.description,
+    link: isLoading ? "" : getGalleryPath(head.slug),
+  };
 
   return (
-    <>
-      <main className="container  container-padding-lg">
+    <main className="container container-padding-lg">
+      <>
         <HeroBanner
-          heroImage={head.coverImage.url}
-          title={head.title}
-          year={head.year.toString()}
-          description={head.description}
-          link={getGalleryPath(head.slug)}
+          heroImage={heroBannerData.heroImage}
+          title={heroBannerData.title}
+          year={heroBannerData.year}
+          description={heroBannerData.description}
+          link={heroBannerData.link}
         />
 
-        {tail?.length > 0 &&
-          tail.map((item: GalleryCollectionItem, index: number) => (
-            <Fragment key={`${item.slug}-${index + 1}`}>
+        {/* TODO: add placeholder isLoading when is no data */}
+        {!isLoading &&
+          tail?.length > 0 &&
+          tail.map((item, index) => (
+            <div key={`${item.slug}-${index + 1}`}>
               <SectionTitle
-                key={item.slug}
                 title={item.title}
                 description={item.subtitle}
                 link={!item?.overrideImageLinks ? getGalleryPath(item.slug) : null}
@@ -46,11 +76,9 @@ export const Home = async () => {
                 overrideImageLinks={item?.overrideImageLinks}
                 hideTitle
               />
-            </Fragment>
+            </div>
           ))}
-      </main>
-    </>
+      </>
+    </main>
   );
-};
-
-export default Home;
+}
