@@ -14,7 +14,7 @@ import { ErrorTypes, ErrorMessages } from "@/lib/constants/contentful.constants"
 /**
  * API route handler for fetching gallery collections from Contentful
  * @param request - Incoming HTTP request
- * @param params - Route parameters containing the slug
+ * @param context - Route context containing params
  * @returns {Promise<NextResponse>} JSON response containing:
  *  - On success: Gallery collection data with 200 status
  *  - On error: Error details with appropriate status code (400, 404, or 500)
@@ -29,11 +29,11 @@ import { ErrorTypes, ErrorMessages } from "@/lib/constants/contentful.constants"
  *  - Includes cache control headers for optimization
  *  - Handles and standardizes error responses
  */
-export const GET = async (request: Request, { params }: { params: { slug: string } }) => {
+export const GET = async (request: Request, context: { params: Promise<{ slug: string }> }) => {
   try {
     const limit = 50;
     const { searchParams } = new URL(request.url);
-    const { slug } = await params;
+    const { slug } = await context.params;
     const page = parseInt(searchParams.get("page") ?? "1", 10);
     const skip = (page - 1) * limit;
     const variables = { slug, skip, limit };
