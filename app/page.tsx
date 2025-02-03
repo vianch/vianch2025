@@ -60,7 +60,7 @@ export default function Page(): ReactElement {
           link={heroBannerData.link}
         />
 
-        {/* TODO: add placeholder isLoading when is no data */}
+        {/* TODO: add placeholder isLoading when is no data or  change to SSR*/}
         {!isLoading &&
           tail?.length > 0 &&
           tail.map((item, index) => (
@@ -68,11 +68,7 @@ export default function Page(): ReactElement {
               <SectionTitle
                 title={item.title}
                 description={item.subtitle}
-                link={
-                  item.gallery.imagesCollection.items?.length > 12
-                    ? getGalleryPath(item.slug)
-                    : null
-                }
+                link={!item?.overrideImageLinks ? getGalleryPath(item.slug) : null}
               />
 
               <Gallery
