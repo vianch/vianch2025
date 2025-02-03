@@ -73,9 +73,9 @@ const Gallery: FC<GalleryProps> = ({
           const isLoaded = loadedImages.has(image.url);
           const imageUrl = getContentfulImage(image.url, {
             fit: "thumb",
-            h: 380,
+            h: 451,
             f: "center",
-            q: 80,
+            q: 90,
           });
 
           if (!isLoaded) {
@@ -96,6 +96,7 @@ const Gallery: FC<GalleryProps> = ({
                 alt={image.title ?? "Gallery Image"}
                 width={800}
                 height={600}
+                quality={90}
                 onClick={!hasLink ? () => handleImageClick(image) : undefined}
                 onKeyDown={
                   hasLink
