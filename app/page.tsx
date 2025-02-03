@@ -75,6 +75,7 @@ export default function Page(): ReactElement {
                 images={item.gallery.imagesCollection.items.slice(0, 12)}
                 overrideImageLinks={item?.overrideImageLinks}
                 hideTitle
+                masonry={!item?.overrideImageLinks}
               />
             </div>
           ))}
