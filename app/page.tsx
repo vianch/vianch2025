@@ -72,7 +72,10 @@ export default function Page(): ReactElement {
               />
 
               <Gallery
-                images={item.gallery.imagesCollection.items.slice(0, 12)}
+                images={item.gallery.imagesCollection.items.slice(
+                  0,
+                  !item?.overrideImageLinks ? 12 : 8
+                )}
                 overrideImageLinks={item?.overrideImageLinks}
                 hideTitle
                 masonry={!item?.overrideImageLinks}
