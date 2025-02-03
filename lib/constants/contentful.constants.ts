@@ -33,21 +33,6 @@ export const ResponseHeaders = {
 } as const;
 
 export const DefaultCacheConfig = {
-  maxCacheAge: 3600, // 1 hour
-  maxStaleWhileRevalidateAge: 7200, // 2 hours
-} as const;
-
-export const CacheDurations = {
-  Short: {
-    maxCacheAge: 300, // 5 minutes
-    maxStaleWhileRevalidateAge: 600, // 10 minutes
-  },
-  Medium: {
-    maxCacheAge: 3600, // 1 hour
-    maxStaleWhileRevalidateAge: 7200, // 2 hours
-  },
-  Long: {
-    maxCacheAge: 86400, // 24 hours
-    maxStaleWhileRevalidateAge: 172800, // 48 hours
-  },
+  maxCacheAge: 0, // 1 hour
+  maxStaleWhileRevalidateAge: 0, // 2 hours
 } as const;
