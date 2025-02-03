@@ -68,7 +68,13 @@ const HeroBanner: FC<HeroBannerProps> = ({
 
   return (
     <section className={styles.banner}>
-      {hasLink ? <Link href={link}>{mainContent}</Link> : mainContent}
+      {hasLink ? (
+        <Link className={styles.figure} href={link}>
+          {mainContent}
+        </Link>
+      ) : (
+        mainContent
+      )}
     </section>
   );
 };
