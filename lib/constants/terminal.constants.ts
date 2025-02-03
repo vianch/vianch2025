@@ -22,7 +22,7 @@ const contactCommands = [
   "- Email: <a href='mailto:hello@vianch.com'>hello@vianch.com</a>",
   "- LinkedIn:<a target='_blank' rel='noopener noreferrer' href='https://www.linkedin.com/in/vianch'>https://www.linkedin.com/in/vianch</a>",
   "- GitHub:<a target='_blank' rel='noopener noreferrer' href='https://github.com/vianch'>https://github.com/vianch</a>",
-  "- Instagram:<a target='_blank' rel='noopener noreferrer' href='https://www.instagram.com/_vianch'>https://www.instagram.com/_vianch</a>",
+  /* "- Instagram:<a target='_blank' rel='noopener noreferrer' href='https://www.instagram.com/_vianch'>https://www.instagram.com/_vianch</a>", */
 ];
 
 const skillsCommands = (style: string): string[] => [

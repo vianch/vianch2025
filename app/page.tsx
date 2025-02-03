@@ -37,7 +37,7 @@ export default function Page(): ReactElement {
       }
     };
 
-    fetchData();
+    fetchData().then(() => null);
   }, []);
 
   const [head, ...tail] = collections;
@@ -68,11 +68,15 @@ export default function Page(): ReactElement {
               <SectionTitle
                 title={item.title}
                 description={item.subtitle}
-                link={!item?.overrideImageLinks ? getGalleryPath(item.slug) : null}
+                link={
+                  item.gallery.imagesCollection.items?.length > 16
+                    ? getGalleryPath(item.slug)
+                    : null
+                }
               />
 
               <Gallery
-                images={item.gallery.imagesCollection.items}
+                images={item.gallery.imagesCollection.items.slice(0, 16)}
                 overrideImageLinks={item?.overrideImageLinks}
                 hideTitle
               />
