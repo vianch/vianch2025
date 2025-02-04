@@ -21,21 +21,22 @@ import { ErrorTypes, ErrorMessages } from "@/lib/constants/contentful.constants"
  *
  * Path Parameters:
  *  - slug: Collection identifier (required)
- * Query Parameters:
- *  - page: Page number for pagination (default: 1)
+ *  - page: Page number for pagination (required)
  *
  * Features:
  *  - Paginates results with 50 items per page
  *  - Includes cache control headers for optimization
  *  - Handles and standardizes error responses
  */
-export const GET = async (request: Request, context: { params: Promise<{ slug: string }> }) => {
+export const GET = async (
+  request: Request,
+  context: { params: { slug: string; page?: string } }
+) => {
   try {
     const limit = 50;
-    const { searchParams } = new URL(request.url);
-    const { slug } = await context.params;
-    const page = parseInt(searchParams.get("page") ?? "1", 10);
-    const skip = (page - 1) * limit;
+    const { slug, page } = await context.params;
+    const pageNumber = parseInt(page ?? "1", 10);
+    const skip = (pageNumber - 1) * limit;
     const variables = { slug, skip, limit };
 
     const query = gql`
