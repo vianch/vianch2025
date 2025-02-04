@@ -22,7 +22,11 @@ export const fetchApi = async <T>(
   }
 
   try {
-    const response = await fetch(url?.href?.toString() || url.toString());
+    const isPage = url?.href?.toString()?.includes("pages");
+    const response = await fetch(
+      url?.href?.toString() || url.toString(),
+      isPage ? { cache: "no-store" } : {}
+    );
     const data = await response.json();
 
     if (!response.ok) {

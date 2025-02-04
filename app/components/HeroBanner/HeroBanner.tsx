@@ -20,7 +20,7 @@ type HeroBannerProps = {
   year: string;
   description: string;
   variant?: "default" | "secondary";
-  link?: string;
+  link?: string | null;
 };
 
 const HeroBanner: FC<HeroBannerProps> = ({
@@ -29,7 +29,7 @@ const HeroBanner: FC<HeroBannerProps> = ({
   year,
   description,
   variant = "default",
-  link,
+  link = null,
 }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const styles = variant === "default" ? defaultStyles : secondaryStyles;
