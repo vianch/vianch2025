@@ -30,7 +30,7 @@ import { ErrorTypes, ErrorMessages } from "@/lib/constants/contentful.constants"
  */
 export const GET = async (
   request: Request,
-  context: { params: { slug: string; page?: string } }
+  context: { params: Promise<{ slug: string; page?: string }> }
 ) => {
   try {
     const limit = 50;
