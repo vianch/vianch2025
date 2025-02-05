@@ -52,6 +52,7 @@ const HeroBanner: FC<HeroBannerProps> = ({
   if (!isImageLoaded) {
     return <HeroBannerPlaceholder variant={variant} />;
   }
+
   const mainContent = (
     <>
       <div className={styles.texts}>

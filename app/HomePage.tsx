@@ -27,7 +27,7 @@ const HomePage = ({ collections }: HomePageProps): ReactElement => {
 
       {tail?.length > 0 &&
         tail.map((item, index) => (
-          <div key={`${item.slug}-${index + 1}`}>
+          <Fragment key={`${item.slug}-${index + 1}`}>
             <SectionTitle
               title={item.title}
               description={item.subtitle}
@@ -43,7 +43,7 @@ const HomePage = ({ collections }: HomePageProps): ReactElement => {
               hideTitle
               masonry={!item?.overrideImageLinks}
             />
-          </div>
+          </Fragment>
         ))}
     </Fragment>
   );

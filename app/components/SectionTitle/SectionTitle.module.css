@@ -3,6 +3,7 @@
   justify-content: space-between;
   flex-flow: row nowrap;
   align-items: center;
+  margin-top: 4rem;
 }
 
 .content {
