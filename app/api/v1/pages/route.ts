@@ -8,6 +8,7 @@ import {
   handleErrorResponse,
   throwJsonError,
 } from "@/lib/datalayer/contentful.service";
+import { redisService } from "@/lib/services/redis.service";
 import { ErrorMessages, ErrorTypes } from "@/lib/constants/contentful.constants";
 
 export const GET = async (request: Request) => {
@@ -24,6 +25,17 @@ export const GET = async (request: Request) => {
       });
     }
 
+    // Try to get data from cache first
+    const cacheKey = `pages:${slug}`;
+    const cachedData = await redisService.get<PageCollectionResponse>(cacheKey);
+
+    if (cachedData) {
+      return handleContentfulResponse<PageItem>(cachedData.pageCollection);
+    }
+
+    const { isAvailable } = redisService.getStatus();
+
+    // If not in cache, fetch from Contentful
     const query = gql`
       query ($slug: String, $limit: Int) {
         pageCollection(where: { slug_contains: $slug }) {
@@ -70,6 +82,11 @@ export const GET = async (request: Request) => {
       });
 
       return throwJsonError(notFoundError);
+    }
+
+    // Store in cache if Redis is available
+    if (isAvailable) {
+      await redisService.set(cacheKey, response);
     }
 
     return handleContentfulResponse<PageItem>(page);
