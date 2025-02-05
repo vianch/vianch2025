@@ -38,6 +38,9 @@ const Gallery: FC<GalleryProps> = ({
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
 
+  // Calculate columns for desktop
+  const desktopColumns = images.length < 10 ? images.length : 6;
+
   useEffect(() => {
     if (isClient()) {
       images.forEach((image) => {
@@ -66,11 +69,7 @@ const Gallery: FC<GalleryProps> = ({
     <>
       <section
         className={fullWidth ? styles.full : styles.gallery}
-        style={
-          fullWidth
-            ? { gridTemplateColumns: `repeat(${images.length < 10 ? images.length : 6}, 1fr)` }
-            : {}
-        }
+        style={fullWidth ? ({ "--desktop-columns": desktopColumns } as React.CSSProperties) : {}}
       >
         {images.map((image, index) => {
           const overrideLink = overrideImageLinks?.[index];
