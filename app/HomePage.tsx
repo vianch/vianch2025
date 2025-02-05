@@ -31,7 +31,7 @@ const HomePage = ({ collections }: HomePageProps): ReactElement => {
             <SectionTitle
               title={item.title}
               description={item.subtitle}
-              link={!item?.overrideImageLinks ? getGalleryPath(item.slug) : null}
+              link={item.slug ? getGalleryPath(item.slug) : null}
             />
 
             <Gallery
