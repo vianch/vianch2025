@@ -8,7 +8,7 @@ import {
   handleErrorResponse,
   throwJsonError,
 } from "@/lib/datalayer/contentful.service";
-import { redisService } from "@/lib/services/redis.service";
+import { redisService } from "@/lib/datalayer/redis.service";
 import { ErrorMessages, ErrorTypes } from "@/lib/constants/contentful.constants";
 
 export const GET = async (request: Request) => {
