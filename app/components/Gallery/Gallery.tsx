@@ -64,7 +64,14 @@ const Gallery: FC<GalleryProps> = ({
 
   return (
     <>
-      <section className={fullWidth ? styles.full : styles.gallery}>
+      <section
+        className={fullWidth ? styles.full : styles.gallery}
+        style={
+          fullWidth
+            ? { gridTemplateColumns: `repeat(${images.length < 10 ? images.length : 6}, 1fr)` }
+            : {}
+        }
+      >
         {images.map((image, index) => {
           const overrideLink = overrideImageLinks?.[index];
           const link = overrideLink ?? image.link;

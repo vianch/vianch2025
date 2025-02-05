@@ -8,13 +8,20 @@
 .full {
   margin: 1rem 0 2rem;
   display: grid;
-  grid-template-columns: 1fr;
   gap: 0.75rem;
   padding: 0 1rem;
 }
 
-@media (min-width: 576px) {
-  .gallery,
+@media (max-width: 576px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .full {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 992px) {
   .full {
     grid-template-columns: repeat(2, 1fr);
   }

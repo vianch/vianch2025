@@ -28,6 +28,10 @@ export const getContentfulImage = (imageUrl: string, config?: ImageConfig): stri
     queryParams.append("h", config.h.toString());
   }
 
+  if (config.w !== undefined) {
+    queryParams.append("w", config.w.toString());
+  }
+
   const queryString = queryParams.toString();
   return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 };

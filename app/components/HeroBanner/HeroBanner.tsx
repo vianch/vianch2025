@@ -36,7 +36,7 @@ const HeroBanner: FC<HeroBannerProps> = ({
   const hasLink = !!link;
   const imageUrl = getContentfulImage(heroImage, {
     fit: "thumb",
-    h: 640,
+    w: 1920,
     f: "center",
     q: 90,
   });

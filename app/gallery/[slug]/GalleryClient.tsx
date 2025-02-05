@@ -20,6 +20,7 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
   );
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
+  const isFullWidth = !initialCollection?.overrideImageLinks;
 
   const fetchNextPage = async () => {
     const nextPage = await getCollection({ slug: initialCollection.slug, page: page + 1 });
@@ -35,7 +36,7 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
   };
 
   return (
-    <main className="container container-padding-lg">
+    <main className={`${!isFullWidth ? "container container-padding-lg" : ""}`}>
       <HeroBanner
         heroImage={initialCollection.coverImage.url}
         title={initialCollection.title}
@@ -49,6 +50,7 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
           images={images}
           hideTitle
           overrideImageLinks={initialCollection.overrideImageLinks}
+          fullWidth={isFullWidth}
         />
       </InfiniteScroll>
     </main>

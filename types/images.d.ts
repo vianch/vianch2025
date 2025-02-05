@@ -17,4 +17,5 @@ interface ImageConfig {
   f?: FocusArea;
   fit?: FitType;
   h?: number;
+  w?: number;
 }
