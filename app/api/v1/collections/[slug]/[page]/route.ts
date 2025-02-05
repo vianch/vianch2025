@@ -45,6 +45,7 @@ export const GET = async (
             subtitle
             description
             year
+            overrideImageLinks
             coverImage {
               url
             }
