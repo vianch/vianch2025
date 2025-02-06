@@ -43,10 +43,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <GoogleAnalytics />
-      </head>
-
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Navbar />
         {children}
@@ -54,6 +50,7 @@ export default function RootLayout({
         <Footer />
         <SpeedInsights />
         <Analytics />
+        <GoogleAnalytics />
       </body>
     </html>
   );
