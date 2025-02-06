@@ -6,13 +6,9 @@ const GoogleAnalytics: FC = () => {
 
   return (
     <>
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-      />
+      <Script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} />
       <Script
         id="google-analytics"
-        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
