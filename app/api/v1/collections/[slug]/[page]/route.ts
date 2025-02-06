@@ -17,11 +17,8 @@ export const GET = async (
   context: { params: Promise<{ slug: string; page?: string }> }
 ) => {
   try {
-    const limit = 50;
     const { slug, page = "1" } = await context.params;
     const pageNumber = parseInt(page, 10);
-    const skip = (pageNumber - 1) * limit;
-    const variables = { slug, skip, limit };
 
     // Try to get data from cache first
     const cacheKey = `collections:${slug}:${pageNumber}`;
@@ -33,21 +30,30 @@ export const GET = async (
       );
     }
 
-    const { isAvailable } = redisService.getStatus();
+    const limit = 50;
+    const skip = (pageNumber - 1) * limit;
+    const variables = {
+      slug,
+      skip,
+      limit,
+      includeMetadata: pageNumber === 1,
+    };
 
     const query = gql`
-      query ($slug: String!, $skip: Int, $limit: Int) {
+      query ($slug: String!, $skip: Int, $limit: Int, $includeMetadata: Boolean = false) {
         galleryCollectionCollection(where: { slug_contains: $slug }) {
           total
           items {
-            title
-            slug
-            subtitle
-            description
-            year
-            overrideImageLinks
-            coverImage {
-              url
+            ... @include(if: $includeMetadata) {
+              title
+              slug
+              subtitle
+              description
+              year
+              overrideImageLinks
+              coverImage {
+                url
+              }
             }
             gallery {
               title
@@ -80,7 +86,7 @@ export const GET = async (
     }
 
     // Store in cache if Redis is available
-    if (isAvailable) {
+    if (redisService.getStatus()) {
       await redisService.set(cacheKey, response);
     }
 
