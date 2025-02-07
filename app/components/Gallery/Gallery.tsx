@@ -110,7 +110,7 @@ const Gallery: FC<GalleryProps> = ({
               />
 
               <figcaption className={styles.caption}>
-                {!hideTitle && <h3 className={styles.title}>{image.title}</h3>}
+                {!hideTitle && <h3 className={styles.title}>{hasLink ? link : image.title}</h3>}
 
                 {masonry && image?.description && (
                   <p className={styles.description}>{image.description}</p>
