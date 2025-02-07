@@ -40,7 +40,7 @@ const HomePage = ({ collections }: HomePageProps): ReactElement => {
                 !item?.overrideImageLinks ? 12 : 8
               )}
               overrideImageLinks={item?.overrideImageLinks}
-              hideTitle
+              hideTitle={!item?.overrideImageLinks}
               masonry={!item?.overrideImageLinks}
             />
           </Fragment>

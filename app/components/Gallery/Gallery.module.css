@@ -55,6 +55,7 @@
   font-size: var(--text-sm);
   font-weight: 800;
   margin-bottom: 0;
+  text-transform: capitalize;
 }
 
 /* Responsive layouts */
