@@ -40,12 +40,20 @@ const Gallery: FC<GalleryProps> = ({
 
   // Calculate columns for desktop
   const desktopColumns = images.length < 10 ? images.length : 6;
+  const thumbImageConfig: ImageConfig = {
+    fit: "thumb",
+    h: 451,
+    f: "center",
+    q: 90,
+  };
 
   useEffect(() => {
     if (isClient()) {
       images.forEach((image) => {
         const img = new window.Image();
-        img.src = image.url;
+        const imageUrl = getContentfulImage(image.url, thumbImageConfig);
+
+        img.src = imageUrl;
         img.onload = () => {
           setLoadedImages((prev) => new Set([...prev, image.url]));
         };
@@ -76,12 +84,7 @@ const Gallery: FC<GalleryProps> = ({
           const link = overrideLink ?? image.link;
           const hasLink = !!link;
           const isLoaded = loadedImages.has(image.url);
-          const imageUrl = getContentfulImage(image.url, {
-            fit: "thumb",
-            h: 451,
-            f: "center",
-            q: 90,
-          });
+          const imageUrl = getContentfulImage(image.url, thumbImageConfig);
 
           if (!isLoaded) {
             return (
