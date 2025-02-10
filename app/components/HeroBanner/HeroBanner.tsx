@@ -44,7 +44,7 @@ const HeroBanner: FC<HeroBannerProps> = ({
   useEffect(() => {
     if (isClient()) {
       const img = new window.Image();
-      img.src = heroImage;
+      img.src = imageUrl;
       img.onload = () => setIsImageLoaded(true);
     }
   }, [heroImage]);
