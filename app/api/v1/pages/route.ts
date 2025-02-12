@@ -13,7 +13,7 @@ import { ErrorMessages, ErrorTypes } from "@/lib/constants/contentful.constants"
 
 export const GET = async (request: Request) => {
   try {
-    const limit = 12;
+    const limit = 20;
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get("slug");
 
