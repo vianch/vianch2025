@@ -37,7 +37,7 @@ const HomePage = ({ collections }: HomePageProps): ReactElement => {
             <Gallery
               images={item.gallery.imagesCollection.items.slice(
                 0,
-                !item?.overrideImageLinks ? 12 : 8
+                !item?.overrideImageLinks ? 20 : 8
               )}
               overrideImageLinks={item?.overrideImageLinks}
               hideTitle={!item?.overrideImageLinks}
