@@ -10,10 +10,10 @@ import GalleryClient from "./GalleryClient";
 import SEO from "@/app/components/SEO/SEO";
 
 /* Utils */
-import { generateImageMetadata } from "@/lib/utils/seo.utils";
+import { generateImageMetadata, generateCommonMetadata } from "@/lib/utils/seo.utils";
 
 /* Constants */
-import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
+import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 type PageProps = {
   params: Promise<{
@@ -49,31 +49,13 @@ export async function generateMetadata(
     ? generateImageMetadata(initialCollection.coverImage.url, initialCollection.title)
     : undefined;
 
-  const metadata: Metadata = {
-    metadataBase: new URL(DefaultSeo.siteUrl),
+  console.log(initialCollection);
+  return generateCommonMetadata({
     title: initialCollection.title,
     description: initialCollection.description,
-    keywords: DefaultSeo.keywords,
-    authors: [{ name: DefaultSeo.author }],
-    openGraph: {
-      title: initialCollection.title,
-      description: initialCollection.description,
-      type: OgType.Article,
-      ...(imageMetadata && {
-        images: [imageMetadata],
-      }),
-    },
-    twitter: {
-      card: TwitterCard.SummaryLargeImage,
-      title: initialCollection.title,
-      description: initialCollection.description,
-      ...(imageMetadata && {
-        images: [imageMetadata],
-      }),
-    },
-  };
-
-  return metadata;
+    ogType: OgType.Article,
+    imageMetadata,
+  });
 }
 
 const GallerySlugPage = async (props: PageProps): Promise<ReactElement> => {

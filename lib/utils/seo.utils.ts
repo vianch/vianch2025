@@ -1,4 +1,8 @@
 import { DefaultSeo } from "@/lib/constants/seo.constants";
+import type { Metadata } from "next";
+
+/* Utils */
+import { getBaseUrl } from "./url.utils";
 
 /**
  * Generates a page title by combining the provided page title with the default site title
@@ -54,4 +58,43 @@ export const generateImageMetadata = (imageUrl: string, alt: string) => ({
   width: 1200,
   height: 630,
   type: "image/jpeg",
+});
+
+/**
+ * Generates common metadata configuration for pages
+ * @param params Configuration parameters for metadata generation
+ * @returns Metadata object with common configuration
+ */
+export const generateCommonMetadata = ({
+  title = DefaultSeo.title,
+  description = DefaultSeo.description,
+  ogType = "website",
+  imageMetadata,
+}: {
+  title?: string;
+  description?: string;
+  ogType?: "website" | "article";
+  imageMetadata?: ReturnType<typeof generateImageMetadata>;
+}): Metadata => ({
+  metadataBase: new URL(getBaseUrl()),
+  title,
+  description,
+  keywords: DefaultSeo.keywords,
+  authors: [{ name: DefaultSeo.author }],
+  openGraph: {
+    title,
+    description,
+    type: ogType,
+    ...(imageMetadata && {
+      images: [imageMetadata],
+    }),
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    ...(imageMetadata && {
+      images: [imageMetadata],
+    }),
+  },
 });

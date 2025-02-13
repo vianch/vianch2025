@@ -10,10 +10,10 @@ import HomePage from "./HomePage";
 import SEO from "./components/SEO/SEO";
 
 /* Utils */
-import { generateImageMetadata } from "@/lib/utils/seo.utils";
+import { generateImageMetadata, generateCommonMetadata } from "@/lib/utils/seo.utils";
 
 /* Constants */
-import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
+import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 // Fetch data once and reuse it
 async function getPageData() {
@@ -38,31 +38,11 @@ export async function generateMetadata(_: unknown, parent: ResolvingMetadata): P
   const ogImage = pageData.collectionsCollection?.items[0]?.coverImage;
   const imageMetadata = ogImage ? generateImageMetadata(ogImage.url, pageData.title) : undefined;
 
-  const metadata: Metadata = {
-    metadataBase: new URL(DefaultSeo.siteUrl),
-    title: DefaultSeo.title,
+  return generateCommonMetadata({
     description: pageData.description,
-    keywords: DefaultSeo.keywords,
-    authors: [{ name: DefaultSeo.author }],
-    openGraph: {
-      title: pageData.title,
-      description: pageData.description,
-      type: OgType.Website,
-      ...(imageMetadata && {
-        images: [imageMetadata],
-      }),
-    },
-    twitter: {
-      card: TwitterCard.SummaryLargeImage,
-      title: pageData.title,
-      description: pageData.description,
-      ...(imageMetadata && {
-        images: [imageMetadata],
-      }),
-    },
-  };
-
-  return metadata;
+    ogType: OgType.Website,
+    imageMetadata,
+  });
 }
 
 const Page = async (): Promise<ReactElement> => {

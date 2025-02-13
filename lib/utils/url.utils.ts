@@ -1,3 +1,5 @@
+import { DefaultSeo } from "../constants/seo.constants";
+
 export const normalizeUrl = (url: string): string => {
   if (!url) return "";
 
@@ -19,7 +21,7 @@ export const getBaseUrl = (): string => {
   return (
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.NEXT_PUBLIC_VERCEL_URL && `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/`) ||
-    "http://localhost:3000"
+    DefaultSeo.siteUrl
   );
 };
 
