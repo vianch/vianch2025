@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 
 /* API */
 import { getCollection } from "@/lib/api/gallery";
@@ -13,7 +13,7 @@ import SEO from "@/app/components/SEO/SEO";
 import { generateImageMetadata } from "@/lib/utils/seo.utils";
 
 /* Constants */
-import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
+import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 type PageProps = {
   params: Promise<{
@@ -35,22 +35,26 @@ async function getCollectionData(slug: string) {
 
 export async function generateMetadata(
   { params }: PageProps,
-  parent: Promise<Metadata>
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  const [parentMetadata, initialCollection] = await Promise.all([parent, getCollectionData(slug)]);
+  const resolvedParent = await parent;
+  const initialCollection = await getCollectionData(slug);
 
   if (!initialCollection) {
-    return parentMetadata;
+    return resolvedParent as Metadata;
   }
 
   const imageMetadata = initialCollection.coverImage
     ? generateImageMetadata(initialCollection.coverImage.url, initialCollection.title)
     : undefined;
 
-  return {
+  const metadata: Metadata = {
+    metadataBase: new URL(DefaultSeo.siteUrl),
     title: initialCollection.title,
     description: initialCollection.description,
+    keywords: DefaultSeo.keywords,
+    authors: [{ name: DefaultSeo.author }],
     openGraph: {
       title: initialCollection.title,
       description: initialCollection.description,
@@ -68,6 +72,8 @@ export async function generateMetadata(
       }),
     },
   };
+
+  return metadata;
 }
 
 const GallerySlugPage = async (props: PageProps): Promise<ReactElement> => {

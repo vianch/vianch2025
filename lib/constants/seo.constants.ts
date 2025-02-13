@@ -1,5 +1,5 @@
 export const DefaultSeo = {
-  title: "VIANCH | Photography Portfolio",
+  title: "VIANCH",
   description:
     "Explore VIANCH's photography portfolio featuring stunning collections of landscapes, portraits, and artistic photography.",
   keywords: "photography, portfolio, art, landscapes, portraits, VIANCH",

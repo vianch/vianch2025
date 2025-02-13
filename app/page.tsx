@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 
 /* API */
 import { getPage } from "@/lib/api/gallery";
@@ -13,7 +13,7 @@ import SEO from "./components/SEO/SEO";
 import { generateImageMetadata } from "@/lib/utils/seo.utils";
 
 /* Constants */
-import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
+import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 // Fetch data once and reuse it
 async function getPageData() {
@@ -27,19 +27,23 @@ async function getPageData() {
   return pageData;
 }
 
-export async function generateMetadata(parent: Promise<Metadata>): Promise<Metadata> {
-  const [parentMetadata, pageData] = await Promise.all([parent, getPageData()]);
+export async function generateMetadata(_: unknown, parent: ResolvingMetadata): Promise<Metadata> {
+  const resolvedParent = await parent;
+  const pageData = await getPageData();
 
   if (!pageData) {
-    return parentMetadata;
+    return resolvedParent as Metadata;
   }
 
   const ogImage = pageData.collectionsCollection?.items[0]?.coverImage;
   const imageMetadata = ogImage ? generateImageMetadata(ogImage.url, pageData.title) : undefined;
 
-  return {
-    title: "VIANCH",
+  const metadata: Metadata = {
+    metadataBase: new URL(DefaultSeo.siteUrl),
+    title: DefaultSeo.title,
     description: pageData.description,
+    keywords: DefaultSeo.keywords,
+    authors: [{ name: DefaultSeo.author }],
     openGraph: {
       title: pageData.title,
       description: pageData.description,
@@ -57,6 +61,8 @@ export async function generateMetadata(parent: Promise<Metadata>): Promise<Metad
       }),
     },
   };
+
+  return metadata;
 }
 
 const Page = async (): Promise<ReactElement> => {
