@@ -49,7 +49,6 @@ export async function generateMetadata(
     ? generateImageMetadata(initialCollection.coverImage.url, initialCollection.title)
     : undefined;
 
-  console.log(initialCollection);
   return generateCommonMetadata({
     title: initialCollection.title,
     description: initialCollection.description,

@@ -5,8 +5,10 @@ import styles from "./Loading.module.css";
 
 const Loading: FC = () => {
   return (
-    <div className={styles.loading}>
-      <span className={styles.dots}>...</span>
+    <div className={styles.loadingContainer}>
+      <div className={styles.loading}>
+        <span className={styles.dots}>...</span>
+      </div>
     </div>
   );
 };
