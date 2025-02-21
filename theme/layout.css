@@ -5,6 +5,7 @@
   --z-index-navbar: 2;
   --z-index-scroll-top: 3;
   --z-index-modal: 4;
+  --z-index-loading: 3;
 }
 
 /* Container */

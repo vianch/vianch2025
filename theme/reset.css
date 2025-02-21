@@ -28,7 +28,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: var(--color-navy);
+  color: var(--color-orange);
 }
 
 img,

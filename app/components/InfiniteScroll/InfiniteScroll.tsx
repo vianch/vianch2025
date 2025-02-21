@@ -4,6 +4,7 @@ import { FC, PropsWithChildren, ReactElement, useRef, useEffect } from "react";
 
 type InfiniteScrollProps = PropsWithChildren<{
   hasMore?: boolean;
+  isLoading?: boolean;
   rootMargin?: string;
   scrollThreshold?: number;
   loader?: ReactElement;
@@ -13,6 +14,7 @@ type InfiniteScrollProps = PropsWithChildren<{
 const InfiniteScroll: FC<InfiniteScrollProps> = ({
   children,
   hasMore = false,
+  isLoading = false,
   rootMargin = "80px",
   next = null,
   scrollThreshold = 0.8,
@@ -62,7 +64,7 @@ const InfiniteScroll: FC<InfiniteScrollProps> = ({
   return (
     <>
       {children}
-      {hasMore && loader}
+      {(hasMore || isLoading) && loader}
       <div ref={sentinelRef} />
     </>
   );

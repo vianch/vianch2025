@@ -15,8 +15,18 @@
   z-index: var(--z-index-navbar);
 }
 
+.navLinks {
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+}
+
 .navbar a {
   margin-right: 1rem;
+  font-weight: 900;
+}
+
+.navbar a:last-child {
+  margin-right: 0;
 }
 
 @media (max-width: 769px) {
