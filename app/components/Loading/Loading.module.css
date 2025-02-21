@@ -194,3 +194,12 @@
     transform: scale(1) translateY(-20px);
   }
 }
+
+@media (max-width: 600px) {
+  .loadingContainer {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+  }
+}
