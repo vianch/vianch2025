@@ -34,7 +34,7 @@ const InfiniteScroll: FC<InfiniteScrollProps> = ({
       }
     }
 
-    if (firstIntersecting && hasMore && next) {
+    if (firstIntersecting && hasMore && next && !isLoading) {
       await next();
     }
   };
