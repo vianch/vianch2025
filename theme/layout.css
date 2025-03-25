@@ -9,7 +9,8 @@
 }
 
 /* Container */
-.container {
+.container,
+.container-xs {
   width: 100%;
   margin-right: auto;
   margin-left: auto;
@@ -20,6 +21,10 @@
 /* Breakpoints for container */
 @media (min-width: 640px) {
   .container {
+    max-width: 640px;
+  }
+
+  .container-xs {
     max-width: 640px;
   }
 }

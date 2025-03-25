@@ -86,6 +86,7 @@ const GallerySlugPage = async (props: PageProps): Promise<ReactElement> => {
         }
         canonicalUrl={`/gallery/${slug}`}
       />
+
       <GalleryClient initialCollection={initialCollection} />
     </>
   );

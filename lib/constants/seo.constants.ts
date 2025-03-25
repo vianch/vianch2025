@@ -13,6 +13,7 @@ export const OgType = {
   Website: "website",
   Article: "article",
   Profile: "profile",
+  Blog: "blog",
 } as const;
 
 export const TwitterCard = {
