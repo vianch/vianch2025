@@ -1,4 +1,4 @@
-import { OgType } from "../lib/constants/seo.constants";
+import { OgTypeValues, TwitterCardValues } from "@/lib/constants/seo.constants";
 
 declare global {
   interface SeoImage {
@@ -15,9 +15,9 @@ declare global {
     keywords?: string;
     author?: string;
     canonicalUrl?: string;
-    ogType?: OgType;
+    ogType?: OgTypeValues;
     ogImage?: SeoImage;
-    twitterCard?: TwitterCard;
+    twitterCard?: TwitterCardValues;
     twitterCreator?: string;
     twitterImage?: SeoImage;
     noindex?: boolean;
