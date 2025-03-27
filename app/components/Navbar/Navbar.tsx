@@ -13,10 +13,8 @@ const Navbar: FC = () => {
 
       <div className={styles.navLinks}>
         <Link href="/">Home</Link>
+        <Link href="/blog">Blog</Link>
         <Link href="/about">About</Link>
-        <Link href="https://snippets.vianch.com/" target="_blank" rel="noopener noreferrer">
-          Snippets
-        </Link>
       </div>
     </section>
   );

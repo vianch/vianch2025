@@ -4,14 +4,17 @@ import { notFound } from "next/navigation";
 /* API */
 import { getBlogPost } from "@/lib/api/blog";
 
+/* Components */
+import Breadcrumbs from "@/app/components/Breadcrumbs/Breadcrumbs";
+
 type BlogPostSlugPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-const BlogPostSlugPage = async (props: BlogPostSlugPageProps): Promise<ReactElement> => {
-  const { slug } = await props.params;
+const BlogPostSlugPage = async ({ params }: BlogPostSlugPageProps): Promise<ReactElement> => {
+  const { slug } = await params;
   const initialCollection = await getBlogPost({ slug });
 
   if (!initialCollection?.items) {
@@ -22,6 +25,7 @@ const BlogPostSlugPage = async (props: BlogPostSlugPageProps): Promise<ReactElem
 
   return (
     <section className="container-xs container-padding-lg">
+      <Breadcrumbs path="blog" slug={slug} />
       <h1>{title}</h1>
       <div>{tags.join(", ")}</div>
       <div>{body}</div>
