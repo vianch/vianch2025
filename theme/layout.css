@@ -23,13 +23,13 @@
   .container {
     max-width: 640px;
   }
-
-  .container-xs {
-    max-width: 640px;
-  }
 }
 @media (min-width: 768px) {
   .container {
+    max-width: 768px;
+  }
+
+  .container-xs {
     max-width: 768px;
   }
 }

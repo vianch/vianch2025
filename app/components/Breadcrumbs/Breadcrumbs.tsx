@@ -1,6 +1,9 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 
+/* Styles */
+import styles from "./Breadcrumbs.module.css";
+
 type BreadcrumbsProps = {
   path: string;
   slug: string;
@@ -8,7 +11,7 @@ type BreadcrumbsProps = {
 
 const Breadcrumbs = ({ path, slug }: BreadcrumbsProps): ReactElement => {
   return (
-    <div>
+    <div className={styles.breadcrumbs}>
       <Link href="/">Home/</Link>
 
       <Link href={`/${path}`}>{path}/</Link>

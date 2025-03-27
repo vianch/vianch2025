@@ -47,7 +47,9 @@
 }
 
 .date {
-  color: var(--color-grey-700);
+  color: var(--color-grey-600);
   font-family: var(--font-secondary);
-  margin-right: 0.5rem;
+  margin-right: 1.2rem;
+  font-weight: var(--font-light);
+  font-size: var(--text-xs);
 }

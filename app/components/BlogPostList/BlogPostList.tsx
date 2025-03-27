@@ -7,6 +7,9 @@ import styles from "./BlogPostList.module.css";
 /* API */
 import { getBlogPosts } from "@/lib/api/blog";
 
+/* Components */
+import DateHandler from "@/app/components/DateHandler/DateHandler";
+
 type BlogPostListProps = {
   description?: string;
 };
@@ -61,20 +64,12 @@ const BlogPostList = async ({ description }: BlogPostListProps): Promise<ReactEl
 
         <div className={styles.list}>
           {posts?.items?.length > 0 &&
-            posts.items
-              ?.sort(
-                (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-              )
-              .map((post, index) => (
-                <a
-                  key={`${post.slug}-${index}`}
-                  href={`/blog/${post.slug}`}
-                  className={styles.item}
-                >
-                  <span className={styles.date}>&lt;{post.publishedAt}&gt;</span>
-                  {post.title}
-                </a>
-              ))}
+            posts.items?.map((post, index) => (
+              <a key={`${post.slug}-${index}`} href={`/blog/${post.slug}`} className={styles.item}>
+                <DateHandler date={post.publishedAt} className={styles.date} />
+                {post.title}
+              </a>
+            ))}
         </div>
       </section>
     );

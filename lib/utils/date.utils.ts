@@ -10,3 +10,14 @@ export const todayTime = () =>
     hour: "numeric",
     minute: "numeric",
   });
+
+export const formatDateToReadable = (dateString: string): string => {
+  console.log("dateString", dateString);
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
