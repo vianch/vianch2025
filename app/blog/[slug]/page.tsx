@@ -1,6 +1,4 @@
 import { ReactElement } from "react";
-import { notFound } from "next/navigation";
-
 /* API */
 import { getBlogPost } from "@/lib/api/blog";
 
@@ -18,14 +16,10 @@ const BlogPostSlugPage = async ({ params }: BlogPostSlugPageProps): Promise<Reac
   const { slug } = await params;
   const postData = await getBlogPost({ slug });
 
-  if (!postData?.items) {
-    notFound();
-  }
-
   return (
     <section className="container-xs container-padding-lg">
       <Breadcrumbs path="blog" slug={slug} />
-      <BlogPost post={postData.items[0]} />
+      <BlogPost post={postData?.items?.[0] ?? []} />
     </section>
   );
 };

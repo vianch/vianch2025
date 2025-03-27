@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { notFound } from "next/navigation";
 
 /* Styles */
 import styles from "./BlogPostList.module.css";
@@ -22,10 +21,6 @@ type ProjectItem = {
 const BlogPostList = async ({ description }: BlogPostListProps): Promise<ReactElement> => {
   try {
     const posts: Collection<BlogPost> = await getBlogPosts();
-
-    if (!posts) {
-      notFound();
-    }
 
     const projects: ProjectItem[] = [
       { title: "Snippets demo", url: "https://snippets.vianch.com/" },
@@ -75,7 +70,6 @@ const BlogPostList = async ({ description }: BlogPostListProps): Promise<ReactEl
     );
   } catch (error) {
     console.error("Error fetching blog posts:", error);
-    notFound();
   }
 };
 
