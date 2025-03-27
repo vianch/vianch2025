@@ -14,6 +14,9 @@ import BlogPostList from "@/app/components/BlogPostList/BlogPostList";
 /* Utils */
 import { generateCommonMetadata } from "@/lib/utils/seo.utils";
 
+/* API */
+import { getBlogPosts } from "@/lib/api/blog";
+
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -24,17 +27,24 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-const BlogPage = (): ReactElement => (
-  <>
-    <SEO
-      title="Blog"
-      description="Exploring web development and photography. I'm sharing insights on full-stack development, creative photography techniques, and my journey as a developer at TodayTix in London."
-      ogType={OgType.Blog}
-      canonicalUrl="/blog"
-    />
+const BlogPage = async (): Promise<ReactElement> => {
+  const posts = await getBlogPosts();
 
-    <BlogPostList description="Exploring web development and photography. I'm sharing insights on full-stack development, creative photography techniques, and my journey as a developer at TodayTix in London." />
-  </>
-);
+  return (
+    <>
+      <SEO
+        title="Blog"
+        description="Exploring web development and photography. I'm sharing insights on full-stack development, creative photography techniques, and my journey as a developer at TodayTix in London."
+        ogType={OgType.Blog}
+        canonicalUrl="/blog"
+      />
+
+      <BlogPostList
+        posts={posts?.items}
+        description="Exploring web development and photography. I'm sharing insights on full-stack development, creative photography techniques, and my journey as a developer at TodayTix in London."
+      />
+    </>
+  );
+};
 
 export default BlogPage;
