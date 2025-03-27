@@ -21,6 +21,7 @@ type ProjectItem = {
 const BlogPostList = async ({ description }: BlogPostListProps): Promise<ReactElement> => {
   try {
     const posts: Collection<BlogPost> = await getBlogPosts();
+    console.log("DEBUG: posts", posts);
 
     const projects: ProjectItem[] = [
       { title: "Snippets demo", url: "https://snippets.vianch.com/" },
