@@ -13,41 +13,41 @@
 
 .markdown {
   margin-bottom: 2rem;
+}
 
-  p {
-    margin-bottom: 2rem;
-    font-size: var(--text-sm);
-  }
+.markdown p {
+  margin-bottom: 2rem;
+  font-size: var(--text-sm);
+}
 
-  h2 {
-    font-size: var(--h2);
-    font-weight: var(--font-semibold);
-    margin-bottom: 2rem;
-  }
+.markdown h2 {
+  font-size: var(--h2);
+  font-weight: var(--font-semibold);
+  margin-bottom: 2rem;
+}
 
-  h3 {
-    font-size: var(--h3);
-    font-weight: var(--font-semibold);
-    margin-bottom: 2rem;
-  }
+.markdown h3 {
+  font-size: var(--h3);
+  font-weight: var(--font-semibold);
+  margin-bottom: 2rem;
+}
 
-  h4 {
-    font-size: var(--h4);
-    font-weight: var(--font-semibold);
-    margin-bottom: 2rem;
-  }
+.markdown h4 {
+  font-size: var(--h4);
+  font-weight: var(--font-semibold);
+  margin-bottom: 2rem;
+}
 
-  li {
-    margin-bottom: 1rem;
-    font-size: var(--text-sm);
-    font-family: var(--font-primary);
-  }
+.markdown li {
+  margin-bottom: 1rem;
+  font-size: var(--text-sm);
+  font-family: var(--font-primary);
+}
 
-  ul {
-    margin-bottom: 2rem;
-  }
+.markdown ul {
+  margin-bottom: 2rem;
+}
 
-  ol {
-    margin-bottom: 2rem;
-  }
+.markdown ol {
+  margin-bottom: 2rem;
 }
