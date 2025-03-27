@@ -23,7 +23,6 @@ export const GET = async (request: Request) => {
     const cacheKey = `blog:${page}:${limit}`;
     const cachedData = await redisService.get<BlogCollectionResponse>(cacheKey);
 
-    console.log("DEBUG: cachedData", cachedData);
     if (cachedData) {
       return handleContentfulResponse<BlogPost>(cachedData.blogCollection);
     }
