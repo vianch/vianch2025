@@ -12,7 +12,6 @@ export const todayTime = () =>
   });
 
 export const formatDateToReadable = (dateString: string): string => {
-  console.log("dateString", dateString);
   const date = new Date(dateString);
 
   return date.toLocaleDateString("en-US", {
