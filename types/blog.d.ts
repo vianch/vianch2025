@@ -2,7 +2,7 @@ interface BlogPost {
   title: string;
   slug: string;
   publishedAt: string;
-  featureImage: {
+  featureImage?: {
     url: string;
   };
   body: string;
