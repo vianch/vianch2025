@@ -70,6 +70,7 @@ const BlogPostList = async ({ description }: BlogPostListProps): Promise<ReactEl
     );
   } catch (error) {
     console.error("Error fetching blog posts:", error);
+    return <div>Error fetching blog posts</div>;
   }
 };
 
