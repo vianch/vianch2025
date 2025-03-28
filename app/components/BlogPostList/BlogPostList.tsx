@@ -18,6 +18,7 @@ type ProjectItem = {
 
 const BlogPostList = (): ReactElement => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const projects: ProjectItem[] = [
     { title: "Snippets demo", url: "https://snippets.vianch.com/" },
@@ -32,8 +33,10 @@ const BlogPostList = (): ReactElement => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setIsLoading(true);
       const posts = await getBlogPosts();
       setPosts(posts?.items);
+      setIsLoading(false);
     };
 
     fetchPosts();
@@ -67,7 +70,7 @@ const BlogPostList = (): ReactElement => {
 
       <h2 className={`text-xl font-semibold ${styles.subtitle}`}>Posts</h2>
 
-      <div className={styles.list}>
+      <div className={`${styles.list} ${isLoading ? "" : styles.loaded}`}>
         {posts &&
           posts?.length > 0 &&
           posts?.map((post, index) => (
