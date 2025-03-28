@@ -27,6 +27,11 @@ export const fetchApi = async <T>(
       url?.href?.toString() || url.toString(),
       isPage ? { cache: "no-store" } : {}
     );
+
+    if (!response) {
+      throw new Error("Failed to fetch data");
+    }
+
     const data = await response.json();
 
     if (!response.ok) {

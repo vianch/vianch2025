@@ -8,7 +8,6 @@ import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import ScrollTop from "./components/ScrollTop/ScrollTop";
 import GoogleAnalytics from "./components/GoogleAnalytics/GoogleAnalytics";
-import SEO from "./components/SEO/SEO";
 
 /* Constants */
 import { DefaultSeo } from "@/lib/constants/seo.constants";
@@ -63,9 +62,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <SEO />
-      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Navbar />
         {children}

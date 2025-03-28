@@ -1,9 +1,5 @@
 import { ReactElement } from "react";
-
 import type { Metadata } from "next";
-
-/* Components */
-import SEO from "@/app/components/SEO/SEO";
 
 /* Constants */
 import { OgType } from "@/lib/constants/seo.constants";
@@ -12,39 +8,21 @@ import { OgType } from "@/lib/constants/seo.constants";
 import BlogPostList from "@/app/components/BlogPostList/BlogPostList";
 
 /* Utils */
-import { generateCommonMetadata } from "@/lib/utils/seo.utils";
+import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
 
-/* API */
-import { getBlogPosts } from "@/lib/api/blog";
-
-export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return generateCommonMetadata({
+  return generateSeoMetadata({
     title: "Blog",
-    description:
-      "Exploring web development and photography. I'm sharing insights on full-stack development, creative photography techniques, and my journey as a developer at TodayTix in London.",
+    description: "VIANCH BLOG",
+    ogType: OgType.Blog,
+    canonicalUrl: "/blog",
   });
 }
 
 const BlogPage = async (): Promise<ReactElement> => {
-  const posts = await getBlogPosts();
-
-  return (
-    <>
-      <SEO
-        title="Blog"
-        description="Exploring web development and photography. I'm sharing insights on full-stack development, creative photography techniques, and my journey as a developer at TodayTix in London."
-        ogType={OgType.Blog}
-        canonicalUrl="/blog"
-      />
-
-      <BlogPostList
-        posts={posts?.items}
-        description="Exploring web development and photography. I'm sharing insights on full-stack development, creative photography techniques, and my journey as a developer at TodayTix in London."
-      />
-    </>
-  );
+  return <BlogPostList />;
 };
 
 export default BlogPage;
