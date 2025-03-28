@@ -1,0 +1,14 @@
+.breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2rem;
+  font-size: var(--text-sm);
+  color: var(--color-navy);
+  font-weight: var(--font-bold);
+  font-family: var(--font-primary);
+}
+
+.breadcrumbs a {
+  color: var(--color-orange);
+  text-decoration: none;
+}

@@ -9,6 +9,8 @@ import {
   throwJsonError,
 } from "@/lib/datalayer/contentful.service";
 import { redisService } from "@/lib/datalayer/redis.service";
+
+/* Constants */
 import { ErrorMessages, ErrorTypes } from "@/lib/constants/contentful.constants";
 
 export const GET = async (request: Request) => {

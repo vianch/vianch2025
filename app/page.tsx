@@ -7,13 +7,12 @@ import { getPage } from "@/lib/api/gallery";
 
 /* Components */
 import HomePage from "./HomePage";
-import SEO from "./components/SEO/SEO";
-
-/* Utils */
-import { generateImageMetadata, generateCommonMetadata } from "@/lib/utils/seo.utils";
 
 /* Constants */
 import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
+
+/* Utils */
+import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
 
 // Fetch data once and reuse it
 async function getPageData() {
@@ -28,20 +27,29 @@ async function getPageData() {
 }
 
 export async function generateMetadata(_: unknown, parent: ResolvingMetadata): Promise<Metadata> {
-  const resolvedParent = await parent;
   const pageData = await getPageData();
 
   if (!pageData) {
+    const resolvedParent = await parent;
     return resolvedParent as Metadata;
   }
 
-  const ogImage = pageData.collectionsCollection?.items[0]?.coverImage;
-  const imageMetadata = ogImage ? generateImageMetadata(ogImage.url, pageData.title) : undefined;
+  const coverImage = pageData.collectionsCollection?.items[0]?.coverImage;
 
-  return generateCommonMetadata({
+  return generateSeoMetadata({
+    title: pageData.title,
     description: pageData.description,
     ogType: OgType.Website,
-    imageMetadata,
+    twitterCard: TwitterCard.SummaryLargeImage,
+    ogImage: coverImage && {
+      url: coverImage.url,
+      alt: pageData.title,
+    },
+    twitterImage: coverImage && {
+      url: coverImage.url,
+      alt: pageData.title,
+    },
+    canonicalUrl: "/",
   });
 }
 
@@ -54,25 +62,6 @@ const Page = async (): Promise<ReactElement> => {
 
   return (
     <main className="container container-padding-lg">
-      <SEO
-        title={pageData.title}
-        description={pageData.description}
-        ogType={OgType.Website}
-        twitterCard={TwitterCard.SummaryLargeImage}
-        ogImage={
-          pageData.collectionsCollection?.items[0]?.coverImage && {
-            url: pageData.collectionsCollection.items[0].coverImage.url,
-            alt: pageData.title,
-          }
-        }
-        twitterImage={
-          pageData.collectionsCollection?.items[0]?.coverImage && {
-            url: pageData.collectionsCollection.items[0].coverImage.url,
-            alt: pageData.title,
-          }
-        }
-        canonicalUrl="/"
-      />
       <HomePage collections={pageData.collectionsCollection.items ?? []} />
     </main>
   );

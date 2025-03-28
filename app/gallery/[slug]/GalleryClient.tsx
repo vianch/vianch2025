@@ -30,6 +30,7 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
   ): boolean => {
     const items = collection?.gallery.imagesCollection.items || [];
     const total = collection?.gallery.imagesCollection.total || 0;
+
     return currentImages.length + items.length < total;
   };
 

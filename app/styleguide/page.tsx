@@ -6,7 +6,7 @@ export default function StyleGuidePage() {
   const [activeTab, setActiveTab] = useState("grid");
 
   return (
-    <div className="container" style={{ margin: "8rem auto" }}>
+    <section className="container" style={{ margin: "8rem auto" }}>
       <h1 className="h1">VIANCH 2025 Style Guide</h1>
 
       <a href="/theme/vianch-2025.zip" download>
@@ -449,6 +449,6 @@ export default function StyleGuidePage() {
           </div>
         </div>
       </section>
-    </div>
+    </section>
   );
 }

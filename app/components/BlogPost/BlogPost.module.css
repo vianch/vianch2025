@@ -1,0 +1,53 @@
+.title {
+  font-size: var(--h1);
+  font-weight: var(--font-semibold);
+  margin-bottom: 2rem;
+}
+
+.date {
+  margin-bottom: 2rem;
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--font-light);
+}
+
+.markdown {
+  margin-bottom: 2rem;
+}
+
+.markdown p {
+  margin-bottom: 2rem;
+  font-size: var(--text-sm);
+}
+
+.markdown h2 {
+  font-size: var(--h2);
+  font-weight: var(--font-semibold);
+  margin-bottom: 2rem;
+}
+
+.markdown h3 {
+  font-size: var(--h3);
+  font-weight: var(--font-semibold);
+  margin-bottom: 2rem;
+}
+
+.markdown h4 {
+  font-size: var(--h4);
+  font-weight: var(--font-semibold);
+  margin-bottom: 2rem;
+}
+
+.markdown li {
+  margin-bottom: 1rem;
+  font-size: var(--text-sm);
+  font-family: var(--font-primary);
+}
+
+.markdown ul {
+  margin-bottom: 2rem;
+}
+
+.markdown ol {
+  margin-bottom: 2rem;
+}

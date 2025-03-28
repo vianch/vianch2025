@@ -7,10 +7,9 @@ import { getCollection } from "@/lib/api/gallery";
 
 /* Components */
 import GalleryClient from "./GalleryClient";
-import SEO from "@/app/components/SEO/SEO";
 
 /* Utils */
-import { generateImageMetadata, generateCommonMetadata } from "@/lib/utils/seo.utils";
+import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
 
 /* Constants */
 import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
@@ -38,22 +37,27 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  const resolvedParent = await parent;
   const initialCollection = await getCollectionData(slug);
 
   if (!initialCollection) {
+    const resolvedParent = await parent;
     return resolvedParent as Metadata;
   }
 
-  const imageMetadata = initialCollection.coverImage
-    ? generateImageMetadata(initialCollection.coverImage.url, initialCollection.title)
-    : undefined;
-
-  return generateCommonMetadata({
+  return generateSeoMetadata({
     title: initialCollection.title,
     description: initialCollection.description,
     ogType: OgType.Article,
-    imageMetadata,
+    twitterCard: TwitterCard.SummaryLargeImage,
+    ogImage: initialCollection.coverImage && {
+      url: initialCollection.coverImage.url,
+      alt: initialCollection.title,
+    },
+    twitterImage: initialCollection.coverImage && {
+      url: initialCollection.coverImage.url,
+      alt: initialCollection.title,
+    },
+    canonicalUrl: `/gallery/${slug}`,
   });
 }
 
@@ -65,30 +69,7 @@ const GallerySlugPage = async (props: PageProps): Promise<ReactElement> => {
     notFound();
   }
 
-  return (
-    <>
-      <SEO
-        title={initialCollection.title}
-        description={initialCollection.description}
-        ogType={OgType.Article}
-        twitterCard={TwitterCard.SummaryLargeImage}
-        ogImage={
-          initialCollection.coverImage && {
-            url: initialCollection.coverImage.url,
-            alt: initialCollection.title,
-          }
-        }
-        twitterImage={
-          initialCollection.coverImage && {
-            url: initialCollection.coverImage.url,
-            alt: initialCollection.title,
-          }
-        }
-        canonicalUrl={`/gallery/${slug}`}
-      />
-      <GalleryClient initialCollection={initialCollection} />
-    </>
-  );
+  return <GalleryClient initialCollection={initialCollection} />;
 };
 
 export default GallerySlugPage;

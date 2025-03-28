@@ -13,12 +13,17 @@ export const OgType = {
   Website: "website",
   Article: "article",
   Profile: "profile",
+  Blog: "blog",
 } as const;
+
+export type OgTypeValues = (typeof OgType)[keyof typeof OgType];
 
 export const TwitterCard = {
   Summary: "summary",
   SummaryLargeImage: "summary_large_image",
 } as const;
+
+export type TwitterCardValues = (typeof TwitterCard)[keyof typeof TwitterCard];
 
 export const RobotsContent = {
   FollowIndex: "follow, index",
