@@ -9,7 +9,7 @@
   font-size: var(--text-sm);
   font-family: var(--font-secondary);
   margin-bottom: 1rem;
-  color: var(--color-navy);
+  color: var(--color-primary);
 }
 
 .title {
@@ -18,7 +18,7 @@
 }
 
 .subtitle {
-  color: var(--color-navy);
+  color: var(--color-primary);
   margin: 2rem 0 0;
 }
 
@@ -46,7 +46,7 @@
 .item {
   color: inherit;
   text-decoration: none;
-  color: var(--color-navy);
+  color: var(--color-primary);
   font-weight: 600;
   font-size: var(--text-sm);
   font-family: var(--font-secondary);
