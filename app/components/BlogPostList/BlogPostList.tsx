@@ -74,9 +74,13 @@ const BlogPostList = (): ReactElement => {
         {posts &&
           posts?.length > 0 &&
           posts?.map((post, index) => (
-            <a key={`${post.slug}-${index}`} href={`/blog/${post.slug}`} className={styles.item}>
+            <a
+              key={`${post.slug}-${index}`}
+              href={`/blog/${post.slug}`}
+              className={`${styles.item} ${styles.post}`}
+            >
               <DateHandler date={post.publishedAt} className={styles.date} />
-              {post.title}
+              <p className={styles.name}>{post.title}</p>
             </a>
           ))}
       </div>

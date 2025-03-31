@@ -4,6 +4,13 @@
   margin-bottom: 2rem;
 }
 
+.image {
+  width: 100%;
+  height: 45rem;
+  object-fit: cover;
+  margin-bottom: 2rem;
+}
+
 .date {
   margin-bottom: 2rem;
   display: block;
@@ -12,7 +19,7 @@
 }
 
 .markdown {
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
 }
 
 .markdown p {
@@ -50,4 +57,38 @@
 
 .markdown ol {
   margin-bottom: 2rem;
+}
+
+.markdown img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+  display: block;
+  text-align: center;
+  justify-self: center;
+}
+
+.markdown pre {
+  background-color: var(--color-grey-200);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow: auto;
+  margin-bottom: 2rem;
+}
+
+.markdown code {
+  font-family: var(--font-primary);
+  font-size: var(--text-xs);
+  background-color: rgba(175, 184, 193, 0.2);
+  border-radius: 3px;
+  padding: 0.2em 0.4em;
+}
+
+.markdown pre code {
+  background-color: transparent;
+  padding: 0;
+  display: block;
+  line-height: 1.5;
+  color: #24292e;
 }

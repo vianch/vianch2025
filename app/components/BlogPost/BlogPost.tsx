@@ -12,11 +12,15 @@ type BlogPostProps = {
 };
 
 const BlogPost = ({ post }: BlogPostProps): ReactElement => {
-  const { title, body, publishedAt } = post;
+  const { title, body, publishedAt, featureImage } = post;
 
   return (
     <>
+      {featureImage && featureImage?.url && (
+        <img className={styles.image} src={featureImage.url} alt={title} />
+      )}
       <h1 className={styles.title}>{title}</h1>
+
       <DateHandler date={publishedAt} className={styles.date} />
       <MarkdownRenderer content={body} className={styles.markdown} />
     </>
