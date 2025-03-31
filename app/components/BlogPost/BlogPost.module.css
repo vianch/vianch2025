@@ -55,6 +55,14 @@
   margin-bottom: 2rem;
 }
 
+.markdown ul li ul {
+  padding-left: 2rem;
+}
+
+.markdown ul li ul li {
+  padding-left: 2rem;
+}
+
 .markdown ol {
   margin-bottom: 2rem;
 }
