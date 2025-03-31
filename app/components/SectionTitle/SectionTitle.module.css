@@ -17,7 +17,6 @@
 .link {
   text-decoration: none;
   transition: color 0.3s ease;
-  align-self: flex-end;
 }
 
 .link:hover {
