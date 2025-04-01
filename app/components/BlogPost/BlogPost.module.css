@@ -13,9 +13,9 @@
 
 .date {
   margin-bottom: 2rem;
+  font-style: italic;
   display: block;
-  font-size: var(--text-sm);
-  font-weight: var(--font-light);
+  font-size: var(--text-lg);
 }
 
 .markdown {
