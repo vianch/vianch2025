@@ -47,6 +47,7 @@
 
 .markdown li {
   margin-bottom: 1rem;
+  margin-left: 2rem;
   font-size: var(--text-sm);
   font-family: var(--font-primary);
 }
@@ -55,12 +56,16 @@
   margin-bottom: 2rem;
 }
 
+.markdown ul li {
+  list-style: none;
+}
+
 .markdown ul li ul {
   padding-left: 2rem;
 }
 
 .markdown ul li ul li {
-  padding-left: 2rem;
+  list-style: none;
 }
 
 .markdown ol {
