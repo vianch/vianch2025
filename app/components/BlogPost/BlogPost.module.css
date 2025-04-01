@@ -72,6 +72,12 @@
   margin-bottom: 2rem;
 }
 
+.markdown li:has(img),
+.markdown p:has(img),
+.markdown:has(img) {
+  display: grid;
+}
+
 .markdown img {
   max-width: 100%;
   height: auto;
