@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: BlogPostSlugPageProps): Promi
 
   return generateSeoMetadata({
     title: postData.title,
-    description: postData.body,
+    description: postData.shortDescription,
     twitterCard: TwitterCard.SummaryLargeImage,
     ogType: OgType.Blog,
     ogImage: postData?.featureImage && {

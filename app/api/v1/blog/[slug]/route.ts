@@ -44,6 +44,7 @@ export const GET = async (request: Request, context: { params: Promise<{ slug: s
             featureImage {
               url
             }
+            shortDescription
             body
             tags
           }
