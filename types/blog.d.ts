@@ -5,6 +5,7 @@ interface BlogPost {
   featureImage?: {
     url: string;
   };
+  shortDescription: string;
   body: string;
   tags: string[];
 }

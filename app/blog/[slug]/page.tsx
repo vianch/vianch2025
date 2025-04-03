@@ -10,7 +10,7 @@ import BlogPost from "@/app/components/BlogPost/BlogPost";
 import { Metadata } from "next";
 
 /* Constants */
-import { OgType } from "@/lib/constants/seo.constants";
+import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
@@ -37,8 +37,17 @@ export async function generateMetadata({ params }: BlogPostSlugPageProps): Promi
 
   return generateSeoMetadata({
     title: postData.title,
-    description: postData.body,
+    description: postData.shortDescription,
+    twitterCard: TwitterCard.SummaryLargeImage,
     ogType: OgType.Blog,
+    ogImage: postData?.featureImage && {
+      url: postData?.featureImage?.url || "",
+      alt: postData?.title || "",
+    },
+    twitterImage: postData?.featureImage && {
+      url: postData?.featureImage?.url || "",
+      alt: postData?.title || "",
+    },
     canonicalUrl: `/blog/${postData.slug}`,
   });
 }
