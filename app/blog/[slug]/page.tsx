@@ -40,13 +40,13 @@ export async function generateMetadata({ params }: BlogPostSlugPageProps): Promi
     description: postData.body,
     twitterCard: TwitterCard.SummaryLargeImage,
     ogType: OgType.Blog,
-    ogImage: postData.featureImage && {
-      url: postData.featureImage.url,
-      alt: postData.title,
+    ogImage: postData?.featureImage && {
+      url: postData?.featureImage?.url || "",
+      alt: postData?.title || "",
     },
-    twitterImage: postData.featureImage && {
-      url: postData.featureImage.url,
-      alt: postData.title,
+    twitterImage: postData?.featureImage && {
+      url: postData?.featureImage?.url || "",
+      alt: postData?.title || "",
     },
     canonicalUrl: `/blog/${postData.slug}`,
   });
