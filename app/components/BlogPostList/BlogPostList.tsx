@@ -1,6 +1,4 @@
-"use client";
-
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
 
 /* Styles */
 import styles from "./BlogPostList.module.css";
@@ -8,18 +6,16 @@ import styles from "./BlogPostList.module.css";
 /* Components */
 import DateHandler from "@/app/components/DateHandler/DateHandler";
 
-/* API */
-import { getBlogPosts } from "@/lib/api/blog";
-
 type ProjectItem = {
   title: string;
   url: string;
 };
 
-const BlogPostList = (): ReactElement => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+type BlogPostListProps = {
+  posts: BlogPost[];
+};
 
+const BlogPostList = ({ posts }: BlogPostListProps): ReactElement => {
   const projects: ProjectItem[] = [
     { title: "Snippets demo", url: "https://snippets.vianch.com/" },
     { title: "Snippets repo", url: "https://github.com/vianch/snippets" },
@@ -30,17 +26,6 @@ const BlogPostList = (): ReactElement => {
     { title: "Charsay", url: "https://github.com/vianch/charsay" },
     { title: "Charsay npm", url: "https://www.npmjs.com/package/charsay" },
   ];
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setIsLoading(true);
-      const posts = await getBlogPosts();
-      setPosts(posts?.items);
-      setIsLoading(false);
-    };
-
-    fetchPosts();
-  }, []);
 
   return (
     <section className="container-xs container-padding-lg">
@@ -70,7 +55,7 @@ const BlogPostList = (): ReactElement => {
 
       <h2 className={`text-xl font-semibold ${styles.subtitle}`}>Posts</h2>
 
-      <div className={`${styles.list} ${isLoading ? "" : styles.loaded}`}>
+      <div className={`${styles.list} ${!posts ? "" : styles.loaded}`}>
         {posts &&
           posts?.length > 0 &&
           posts?.map((post, index) => (
