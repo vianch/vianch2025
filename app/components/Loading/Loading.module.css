@@ -1,7 +1,7 @@
 .loadingContainer {
   position: fixed;
-  bottom: 10rem;
-  right: 2.25rem;
+  bottom: 7.5rem;
+  right: 3rem;
   height: 88px;
   z-index: var(--z-index-loading);
   opacity: 0.86;
@@ -17,8 +17,8 @@
       var(--color-orange) 100%
     );
   position: relative;
-  width: 52px;
-  height: 88px;
+  width: 38px;
+  height: 68px;
   border-radius: 100px;
   background-size: 100% 200%;
   animation:
@@ -39,8 +39,8 @@
 }
 
 .loading:before {
-  width: 46px;
-  height: 82px;
+  width: 30px;
+  height: 60px;
   background-color: var(--color-light);
 }
 
