@@ -36,6 +36,7 @@ const Gallery: FC<GalleryProps> = ({
 }) => {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
 
   // Calculate columns for desktop
@@ -61,16 +62,73 @@ const Gallery: FC<GalleryProps> = ({
     }
   }, [images]);
 
-  const handleImageClick = (image: GalleryItem): void => {
+  const handleImageClick = (image: GalleryItem, index: number): void => {
     if (!image.link) {
       setSelectedImage(image);
+      setSelectedImageIndex(index);
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>, image: GalleryItem): void => {
-    if (e.key === KeyNames.Enter) {
-      handleImageClick(image);
+  const handleKeyDown = (
+    event: KeyboardEvent<HTMLDivElement>,
+    image: GalleryItem,
+    index: number
+  ): void => {
+    if (event.key === KeyNames.Enter) {
+      handleImageClick(image, index);
     }
+  };
+
+  const handlePrevImage = (): void => {
+    if (selectedImageIndex === null) {
+      return;
+    }
+
+    const prevIndex = selectedImageIndex === 0 ? images.length - 1 : selectedImageIndex - 1;
+    let newIndex = prevIndex;
+
+    while (images[newIndex].link) {
+      newIndex = newIndex === 0 ? images.length - 1 : newIndex - 1;
+      if (newIndex === prevIndex) break;
+    }
+
+    if (!images[newIndex].link) {
+      setSelectedImage(images[newIndex]);
+      setSelectedImageIndex(newIndex);
+    }
+  };
+
+  const handleNextImage = (): void => {
+    if (selectedImageIndex === null) {
+      return;
+    }
+
+    const nextIndex = selectedImageIndex === images.length - 1 ? 0 : selectedImageIndex + 1;
+    let newIndex = nextIndex;
+
+    while (images[newIndex].link) {
+      newIndex = newIndex === images.length - 1 ? 0 : newIndex + 1;
+      if (newIndex === nextIndex) break;
+    }
+
+    if (!images[newIndex].link) {
+      setSelectedImage(images[newIndex]);
+      setSelectedImageIndex(newIndex);
+    }
+  };
+
+  const getFirstNonLinkedImageIndex = (): number => {
+    return images.findIndex((image) => !image.link);
+  };
+
+  const getLastNonLinkedImageIndex = (): number => {
+    for (let i = images.length - 1; i >= 0; --i) {
+      if (!images[i].link) {
+        return i;
+      }
+    }
+
+    return -1;
   };
 
   return (
@@ -104,10 +162,10 @@ const Gallery: FC<GalleryProps> = ({
                 alt={image.title ?? "Gallery Image"}
                 width={800}
                 height={600}
-                onClick={!hasLink ? () => handleImageClick(image) : undefined}
+                onClick={!hasLink ? () => handleImageClick(image, index) : undefined}
                 onKeyDown={
                   hasLink
-                    ? (e: KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, image)
+                    ? (e: KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, image, index)
                     : undefined
                 }
               />
@@ -137,9 +195,17 @@ const Gallery: FC<GalleryProps> = ({
       {selectedImage && (
         <ImageModal
           isOpen={!!selectedImage}
-          onClose={() => setSelectedImage(null)}
+          onClose={() => {
+            setSelectedImage(null);
+            setSelectedImageIndex(null);
+          }}
           image={selectedImage}
-          hideTitle
+          hideTitle={hideTitle}
+          onPrev={handlePrevImage}
+          onNext={handleNextImage}
+          hasNavigation={images.filter((img) => !img.link).length > 1}
+          isFirst={selectedImageIndex === getFirstNonLinkedImageIndex()}
+          isLast={selectedImageIndex === getLastNonLinkedImageIndex()}
         />
       )}
     </>
