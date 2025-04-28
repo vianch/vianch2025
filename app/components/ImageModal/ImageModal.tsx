@@ -14,19 +14,29 @@ import { getContentfulImage } from "@/lib/utils/images.utils";
 type ImageModalProps = {
   isOpen: boolean;
   hideTitle?: boolean;
+  hasNavigation?: boolean;
+  isFirst?: boolean;
+  isLast?: boolean;
   onClose: () => void;
   image: {
     url: string;
     title: string;
     description?: string;
   };
+  onPrev?: () => void;
+  onNext?: () => void;
 };
 
 const ImageModal: FC<ImageModalProps> = ({
   isOpen,
-  onClose,
   image,
   hideTitle = false,
+  hasNavigation = false,
+  isFirst = false,
+  isLast = false,
+  onClose,
+  onPrev,
+  onNext,
 }): ReactElement | null => {
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
   const imageUrl = getContentfulImage(image.url, {
@@ -37,9 +47,21 @@ const ImageModal: FC<ImageModalProps> = ({
   });
 
   useEffect(() => {
-    const handleEscapeKey = (e: globalThis.KeyboardEvent): void => {
-      if (e.key === KeyNames.Escape && isOpen) {
+    const handleEscapeKey = (event: KeyboardEvent): void => {
+      if (event.key === KeyNames.Escape && isOpen) {
         onClose();
+      }
+    };
+
+    const handleArrowKeys = (event: KeyboardEvent): void => {
+      if (!hasNavigation) {
+        return;
+      }
+
+      if (event.key === KeyNames.ArrowLeft && onPrev && !isFirst) {
+        onPrev();
+      } else if (event.key === KeyNames.ArrowRight && onNext && !isLast) {
+        onNext();
       }
     };
 
@@ -48,12 +70,18 @@ const ImageModal: FC<ImageModalProps> = ({
     }
 
     window.addEventListener("keydown", handleEscapeKey);
+    window.addEventListener("keydown", handleArrowKeys);
 
     return () => {
       document.body.style.overflow = "unset";
       window.removeEventListener("keydown", handleEscapeKey);
+      window.removeEventListener("keydown", handleArrowKeys);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, hasNavigation, onPrev, onNext, isFirst, isLast]);
+
+  useEffect(() => {
+    setIsImageLoading(true);
+  }, [image.url]);
 
   if (!isOpen) return null;
 
@@ -67,6 +95,32 @@ const ImageModal: FC<ImageModalProps> = ({
           <div className={styles.closeButton} onClick={onClose}>
             ×
           </div>
+        )}
+
+        {hasNavigation && onPrev && !isFirst && !isImageLoading && (
+          <button
+            className={`${styles.navButton} ${styles.prevButton}`}
+            onClick={(event) => {
+              event?.stopPropagation();
+              onPrev();
+            }}
+            aria-label="Previous image"
+          >
+            ‹
+          </button>
+        )}
+
+        {hasNavigation && onNext && !isLast && !isImageLoading && (
+          <button
+            className={`${styles.navButton} ${styles.nextButton}`}
+            onClick={(event) => {
+              event?.stopPropagation();
+              onNext();
+            }}
+            aria-label="Next image"
+          >
+            ›
+          </button>
         )}
 
         {isImageLoading && <div className={styles.loader} />}

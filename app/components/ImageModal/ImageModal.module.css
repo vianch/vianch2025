@@ -50,7 +50,7 @@
   max-width: 90vw;
   min-width: 40px;
   min-height: 40px;
-  background-color: var(--color-black);
+  background-color: var(--background);
   overflow: hidden;
   padding: 1.25rem;
   transition:
@@ -69,7 +69,6 @@
 .closeButton {
   position: absolute;
   color: var(--color-white);
-
   right: 1.25rem;
   display: flex;
   align-items: center;
@@ -105,4 +104,37 @@
 .description {
   font-size: var(--text-sm);
   opacity: 0.9;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border: none;
+  font-size: 3rem;
+  width: 4rem;
+  height: 5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  cursor: pointer;
+  z-index: var(--z-index-modal);
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.navButton:hover {
+  opacity: 0.3;
+}
+
+.prevButton {
+  left: 1.25rem;
+  border-radius: 0;
+}
+
+.nextButton {
+  right: 1.3rem;
+  border-radius: 0;
 }
