@@ -6,6 +6,7 @@
   --color-light: #e5e5e5;
   --color-white: #ffffff;
   --background: var(--color-white);
+  --background-alpha: #0000004a; /* 30% opacity */
   --foreground: var(--color-black);
 
   /* Status Colors */

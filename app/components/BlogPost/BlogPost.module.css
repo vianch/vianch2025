@@ -1,6 +1,32 @@
+.bannerContainer {
+  display: flex;
+  width: 100%;
+  position: relative;
+  flex-flow: column nowrap;
+  justify-content: flex-end;
+}
+
+.titleBannerContainer {
+  display: flex;
+  width: 100%;
+  position: absolute;
+  padding: var(--container-padding);
+  bottom: var(--container-padding);
+  background: var(--background-alpha);
+  backdrop-filter: blur(0.1875rem); /* 3px */
+}
+
+.titleBanner {
+  font-size: var(--h2);
+  font-weight: var(--font-bold);
+  padding: 0;
+  margin: 0;
+  color: var(--color-white);
+}
+
 .title {
   font-size: var(--h1);
-  font-weight: var(--font-semibold);
+  font-weight: var(--font-bold);
   margin-bottom: 2rem;
 }
 
@@ -27,19 +53,22 @@
   font-size: var(--text-sm);
 }
 
-.markdown h2 {
+.markdown h2,
+.markdown h2 code {
   font-size: var(--h2);
   font-weight: var(--font-semibold);
   margin-bottom: 2rem;
 }
 
-.markdown h3 {
+.markdown h3,
+.markdown h3 code {
   font-size: var(--h3);
   font-weight: var(--font-semibold);
   margin-bottom: 2rem;
 }
 
-.markdown h4 {
+.markdown h4,
+.markdown h4 code {
   font-size: var(--h4);
   font-weight: var(--font-semibold);
   margin-bottom: 2rem;

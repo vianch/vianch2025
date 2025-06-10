@@ -17,9 +17,17 @@ const BlogPost = ({ post }: BlogPostProps): ReactElement => {
   return (
     <>
       {featureImage && featureImage?.url && (
-        <img className={styles.image} src={featureImage.url} alt={title} />
+        <div className={styles.bannerContainer}>
+          <img className={styles.image} src={featureImage.url} alt={title} />
+
+          {title && (
+            <div className={styles.titleBannerContainer}>
+              <h1 className={styles.titleBanner}>{title}</h1>
+            </div>
+          )}
+        </div>
       )}
-      <h1 className={styles.title}>{title}</h1>
+      {!featureImage && <h1 className={styles.title}>{title}</h1>}
 
       <DateHandler date={publishedAt} className={styles.date} />
       <MarkdownRenderer content={body} className={styles.markdown} />
