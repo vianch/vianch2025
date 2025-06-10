@@ -12,7 +12,7 @@
   z-index: 1;
   width: 33.33334%;
   padding: 4rem;
-  background: #0000004a;
+  background: var(--background-alpha);
   backdrop-filter: blur(0.1875rem); /* 3px */
   height: 100%;
   display: flex;
