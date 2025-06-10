@@ -14,6 +14,11 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@codemirror/lang-css": "^6.3.1",
+    "@codemirror/lang-html": "^6.4.9",
+    "@codemirror/lang-javascript": "^6.2.4",
+    "@codemirror/lang-markdown": "^6.3.2",
+    "@uiw/react-codemirror": "^4.23.12",
     "@upstash/redis": "^1.34.4",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",
