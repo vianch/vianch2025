@@ -11,7 +11,7 @@
   width: 100%;
   position: absolute;
   padding: var(--container-padding);
-  bottom: 2rem;
+  bottom: var(--container-padding);
   background: var(--background-alpha);
   backdrop-filter: blur(0.1875rem); /* 3px */
 }
