@@ -28,7 +28,8 @@ export const GET = async (request: Request) => {
     }
 
     // Try to get data from cache first
-    const cacheKey = `pages:${slug}`;
+    // Cache key version updated to v2 to invalidate old cached responses
+    const cacheKey = `pages:v2:${slug}`;
     const cachedData = await redisService.get<PageCollectionResponse>(cacheKey);
 
     if (cachedData) {
@@ -56,14 +57,14 @@ export const GET = async (request: Request) => {
                 description
                 overrideImageLinks
                 coverImage {
-                  url
+                  url(transform: { width: 1 })
                 }
                 gallery {
                   imagesCollection(limit: $limit) {
                     items {
                       title
                       description
-                      url
+                      url(transform: { width: 1 })
                     }
                   }
                 }

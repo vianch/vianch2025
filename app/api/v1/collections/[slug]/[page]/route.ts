@@ -21,7 +21,8 @@ export const GET = async (
     const pageNumber = parseInt(page, 10);
 
     // Try to get data from cache first
-    const cacheKey = `collections:${slug}:${pageNumber}`;
+    // Cache key version updated to v2 to invalidate old cached responses
+    const cacheKey = `collections:v2:${slug}:${pageNumber}`;
     const cachedData = await redisService.get<GalleryCollectionResponse>(cacheKey);
 
     if (cachedData) {
@@ -52,7 +53,7 @@ export const GET = async (
               year
               overrideImageLinks
               coverImage {
-                url
+                url(transform: { width: 1 })
               }
             }
             gallery {
@@ -64,7 +65,7 @@ export const GET = async (
                 items {
                   title
                   description
-                  url
+                  url(transform: { width: 1 })
                 }
               }
             }

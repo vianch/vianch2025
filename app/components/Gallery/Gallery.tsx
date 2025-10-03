@@ -35,6 +35,7 @@ const Gallery: FC<GalleryProps> = ({
   hideTitle = false,
 }) => {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [preloadedModalImages, setPreloadedModalImages] = useState<Set<string>>(new Set());
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
@@ -47,6 +48,57 @@ const Gallery: FC<GalleryProps> = ({
     f: "center",
     q: 90,
   };
+
+  const modalImageConfig: ImageConfig = {
+    fit: "thumb",
+    h: 1080,
+    f: "center",
+    q: 90,
+  };
+
+  // Preload adjacent modal images when an image is selected
+  useEffect(() => {
+    if (selectedImageIndex === null || !isClient()) {
+      return;
+    }
+
+    const preloadImage = (index: number): void => {
+      if (index < 0 || index >= images.length || images[index].link) {
+        return;
+      }
+
+      const imageUrl = getContentfulImage(images[index].url, modalImageConfig);
+
+      if (!preloadedModalImages.has(imageUrl)) {
+        const img = new window.Image();
+        img.src = imageUrl;
+        img.onload = () => {
+          setPreloadedModalImages((prev) => new Set([...prev, imageUrl]));
+        };
+      }
+    };
+
+    // Preload current image
+    preloadImage(selectedImageIndex);
+
+    // Find and preload next non-linked image
+    let nextIndex = selectedImageIndex + 1;
+    while (nextIndex < images.length && images[nextIndex].link) {
+      nextIndex++;
+    }
+    if (nextIndex < images.length) {
+      preloadImage(nextIndex);
+    }
+
+    // Find and preload previous non-linked image
+    let prevIndex = selectedImageIndex - 1;
+    while (prevIndex >= 0 && images[prevIndex].link) {
+      prevIndex--;
+    }
+    if (prevIndex >= 0) {
+      preloadImage(prevIndex);
+    }
+  }, [selectedImageIndex, images, preloadedModalImages, modalImageConfig]);
 
   useEffect(() => {
     if (isClient()) {
@@ -206,6 +258,8 @@ const Gallery: FC<GalleryProps> = ({
           hasNavigation={images.filter((img) => !img.link).length > 1}
           isFirst={selectedImageIndex === getFirstNonLinkedImageIndex()}
           isLast={selectedImageIndex === getLastNonLinkedImageIndex()}
+          imageConfig={modalImageConfig}
+          preloadedImages={preloadedModalImages}
         />
       )}
     </>

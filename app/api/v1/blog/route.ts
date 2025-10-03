@@ -20,7 +20,8 @@ export const GET = async (request: Request) => {
     const skip = (page - 1) * limit;
 
     // Try to get data from cache first
-    const cacheKey = `blog:${page}:${limit}`;
+    // Cache key version updated to v2 to invalidate old cached responses
+    const cacheKey = `blog:v2:${page}:${limit}`;
     const cachedData = await redisService.get<BlogCollectionResponse>(cacheKey);
 
     if (cachedData) {
@@ -38,7 +39,7 @@ export const GET = async (request: Request) => {
             slug
             publishedAt
             featureImage {
-              url
+              url(transform: { width: 1 })
             }
             body
             tags

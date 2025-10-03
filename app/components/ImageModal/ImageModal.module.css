@@ -87,6 +87,14 @@
   object-fit: contain;
 }
 
+.lowQuality {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 1.25rem;
+}
+
 .caption {
   position: absolute;
   bottom: 0;
