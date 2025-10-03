@@ -57,14 +57,14 @@ export const GET = async (request: Request) => {
                 description
                 overrideImageLinks
                 coverImage {
-                  url(transform: { width: 1 })
+                  url
                 }
                 gallery {
                   imagesCollection(limit: $limit) {
                     items {
                       title
                       description
-                      url(transform: { width: 1 })
+                      url
                     }
                   }
                 }

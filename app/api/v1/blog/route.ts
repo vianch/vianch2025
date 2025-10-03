@@ -39,7 +39,7 @@ export const GET = async (request: Request) => {
             slug
             publishedAt
             featureImage {
-              url(transform: { width: 1 })
+              url
             }
             body
             tags

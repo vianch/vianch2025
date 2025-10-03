@@ -53,7 +53,7 @@ export const GET = async (
               year
               overrideImageLinks
               coverImage {
-                url(transform: { width: 1 })
+                url
               }
             }
             gallery {
@@ -65,7 +65,7 @@ export const GET = async (
                 items {
                   title
                   description
-                  url(transform: { width: 1 })
+                  url
                 }
               }
             }

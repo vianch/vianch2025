@@ -43,7 +43,7 @@ export const GET = async (request: Request, context: { params: Promise<{ slug: s
             slug
             publishedAt
             featureImage {
-              url(transform: { width: 1 })
+              url
             }
             shortDescription
             body
