@@ -26,7 +26,8 @@ export const GET = async (request: Request, context: { params: Promise<{ slug: s
     }
 
     // Try to get data from cache first
-    const cacheKey = `blog:${slug}`;
+    // Cache key version updated to v2 to invalidate old cached responses
+    const cacheKey = `blog:v2:${slug}`;
     const cachedData = await redisService.get<BlogCollectionResponse>(cacheKey);
 
     if (cachedData) {
@@ -42,7 +43,7 @@ export const GET = async (request: Request, context: { params: Promise<{ slug: s
             slug
             publishedAt
             featureImage {
-              url
+              url(transform: { width: 1 })
             }
             shortDescription
             body

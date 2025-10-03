@@ -10,6 +10,7 @@ import { KeyNames } from "@/lib/constants/ui.constants";
 
 /* Utils */
 import { getContentfulImage } from "@/lib/utils/images.utils";
+import { isClient } from "@/lib/utils/ui.utils";
 
 type ImageModalProps = {
   isOpen: boolean;
@@ -25,6 +26,8 @@ type ImageModalProps = {
   };
   onPrev?: () => void;
   onNext?: () => void;
+  imageConfig?: ImageConfig;
+  preloadedImages?: Set<string>;
 };
 
 const ImageModal: FC<ImageModalProps> = ({
@@ -37,14 +40,29 @@ const ImageModal: FC<ImageModalProps> = ({
   onClose,
   onPrev,
   onNext,
+  imageConfig,
+  preloadedImages,
 }): ReactElement | null => {
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
-  const imageUrl = getContentfulImage(image.url, {
+  const [showLowQuality, setShowLowQuality] = useState<boolean>(false);
+
+  const defaultImageConfig: ImageConfig = {
     fit: "thumb",
     h: 1080,
     f: "center",
     q: 90,
-  });
+  };
+
+  const lowQualityConfig: ImageConfig = {
+    fit: "thumb",
+    h: 400,
+    f: "center",
+    q: 30,
+  };
+
+  const imageUrl = getContentfulImage(image.url, imageConfig ?? defaultImageConfig);
+  const lowQualityImageUrl = getContentfulImage(image.url, lowQualityConfig);
+  const isPreloaded = preloadedImages?.has(imageUrl) ?? false;
 
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent): void => {
@@ -80,8 +98,21 @@ const ImageModal: FC<ImageModalProps> = ({
   }, [isOpen, onClose, hasNavigation, onPrev, onNext, isFirst, isLast]);
 
   useEffect(() => {
-    setIsImageLoading(true);
-  }, [image.url]);
+    // If image is already preloaded, skip loading state
+    if (isPreloaded) {
+      setIsImageLoading(false);
+      setShowLowQuality(false);
+    } else {
+      setIsImageLoading(true);
+      setShowLowQuality(true);
+
+      // Preload low quality image first for faster initial display
+      if (isClient()) {
+        const lowQualityImg = new window.Image();
+        lowQualityImg.src = lowQualityImageUrl;
+      }
+    }
+  }, [image.url, isPreloaded, lowQualityImageUrl]);
 
   if (!isOpen) return null;
 
@@ -125,13 +156,27 @@ const ImageModal: FC<ImageModalProps> = ({
 
         {isImageLoading && <div className={styles.loader} />}
 
+        {/* Low quality placeholder image for progressive loading */}
+        {showLowQuality && isImageLoading && (
+          <img
+            src={lowQualityImageUrl}
+            alt=""
+            className={`${styles.image} ${styles.lowQuality}`}
+            style={{ filter: "blur(10px)", opacity: 0.7 }}
+          />
+        )}
+
         <img
           src={imageUrl}
           alt={image.title ?? "Image Modal"}
           width={1920}
           height={1080}
           className={styles.image}
-          onLoad={() => setIsImageLoading(false)}
+          style={{ opacity: isImageLoading ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}
+          onLoad={() => {
+            setIsImageLoading(false);
+            setShowLowQuality(false);
+          }}
         />
         <div className={styles.caption}>
           {!hideTitle && <h3 className={styles.title}>{image.title}</h3>}
