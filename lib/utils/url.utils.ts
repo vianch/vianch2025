@@ -20,7 +20,7 @@ export const getBaseUrl = (): string => {
   // Server-side: Use environment variables with fallbacks
   return (
     process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.NEXT_PUBLIC_VERCEL_URL && `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/`) ||
+    (process.env.NEXT_PUBLIC_VERCEL_URL && `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`) ||
     DefaultSeo.siteUrl
   );
 };

@@ -1,9 +1,7 @@
 import { ReactElement } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
-
-/* API */
-import { getPage } from "@/lib/api/gallery";
+import { gql } from "graphql-request";
 
 /* Components */
 import HomePage from "./HomePage";
@@ -11,19 +9,83 @@ import HomePage from "./HomePage";
 /* Constants */
 import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
+/* Services */
+import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
+import { redisService } from "@/lib/datalayer/redis.service";
+
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
 
 // Fetch data once and reuse it
 async function getPageData() {
-  const pageResponse = await getPage({ slug: "home" });
-  const pageData = pageResponse.items[0];
+  try {
+    const limit = 20;
+    const slug = "home";
 
-  if (!pageData) {
+    // Try to get data from cache first
+    const cacheKey = `pages:v2:${slug}`;
+    const cachedData = await redisService.get<PageCollectionResponse>(cacheKey);
+
+    if (cachedData?.pageCollection?.items?.[0]) {
+      return cachedData.pageCollection.items[0];
+    }
+
+    const { isAvailable } = redisService.getStatus();
+
+    // If not in cache, fetch from Contentful
+    const query = gql`
+      query ($slug: String, $limit: Int) {
+        pageCollection(where: { slug_contains: $slug }) {
+          items {
+            title
+            slug
+            description
+            collectionsCollection(limit: 4) {
+              total
+              limit
+              items {
+                title
+                slug
+                subtitle
+                year
+                description
+                overrideImageLinks
+                coverImage {
+                  url
+                }
+                gallery {
+                  imagesCollection(limit: $limit) {
+                    items {
+                      title
+                      description
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetchEntriesByQuery<PageCollectionResponse>(query, { slug, limit });
+    const pageData = response?.pageCollection?.items?.[0];
+
+    if (!pageData) {
+      return null;
+    }
+
+    // Store in cache if Redis is available
+    if (isAvailable) {
+      await redisService.set(cacheKey, response);
+    }
+
+    return pageData;
+  } catch (error) {
+    console.error("Error fetching page data:", error);
     return null;
   }
-
-  return pageData;
 }
 
 export async function generateMetadata(_: unknown, parent: ResolvingMetadata): Promise<Metadata> {
