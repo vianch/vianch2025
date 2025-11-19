@@ -1,12 +1,14 @@
 import { ReactElement } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
-
-/* API */
-import { getCollection } from "@/lib/api/gallery";
+import { gql } from "graphql-request";
 
 /* Components */
 import GalleryClient from "./GalleryClient";
+
+/* Services */
+import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
+import { redisService } from "@/lib/datalayer/redis.service";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
@@ -22,14 +24,78 @@ type PageProps = {
 
 // Fetch data once and reuse it
 async function getCollectionData(slug: string) {
-  const initialData = await getCollection({ slug, page: 1 });
-  const initialCollection = initialData.items[0];
+  try {
+    const pageNumber = 1;
 
-  if (!initialCollection) {
+    // Try to get data from cache first
+    const cacheKey = `collections:v2:${slug}:${pageNumber}`;
+    const cachedData = await redisService.get<GalleryCollectionResponse>(cacheKey);
+
+    if (cachedData?.galleryCollectionCollection?.items?.[0]) {
+      return cachedData.galleryCollectionCollection.items[0];
+    }
+
+    const { isAvailable } = redisService.getStatus();
+    const limit = 50;
+    const skip = (pageNumber - 1) * limit;
+    const variables = {
+      slug,
+      skip,
+      limit,
+      includeMetadata: true,
+    };
+
+    const query = gql`
+      query ($slug: String!, $skip: Int, $limit: Int, $includeMetadata: Boolean = false) {
+        galleryCollectionCollection(where: { slug_contains: $slug }) {
+          total
+          items {
+            ... @include(if: $includeMetadata) {
+              title
+              slug
+              subtitle
+              description
+              year
+              overrideImageLinks
+              coverImage {
+                url
+              }
+            }
+            gallery {
+              title
+              imagesCollection(skip: $skip, limit: $limit) {
+                total
+                skip
+                limit
+                items {
+                  title
+                  description
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetchEntriesByQuery<GalleryCollectionResponse>(query, variables);
+    const initialCollection = response?.galleryCollectionCollection?.items?.[0];
+
+    if (!initialCollection) {
+      return null;
+    }
+
+    // Store in cache if Redis is available
+    if (isAvailable) {
+      await redisService.set(cacheKey, response);
+    }
+
+    return initialCollection;
+  } catch (error) {
+    console.error("Error fetching collection data:", error);
     return null;
   }
-
-  return initialCollection;
 }
 
 export async function generateMetadata(
