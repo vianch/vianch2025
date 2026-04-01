@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { cache, ReactElement } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { gql } from "graphql-request";
@@ -16,8 +16,8 @@ import { redisService } from "@/lib/datalayer/redis.service";
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
 
-// Fetch data once and reuse it
-async function getPageData() {
+// Deduplicate across generateMetadata and Page component via React.cache
+const getPageData = cache(async () => {
   try {
     const limit = 20;
     const slug = "home";
@@ -86,7 +86,7 @@ async function getPageData() {
     console.error("Error fetching page data:", error);
     return null;
   }
-}
+});
 
 export async function generateMetadata(_: unknown, parent: ResolvingMetadata): Promise<Metadata> {
   const pageData = await getPageData();

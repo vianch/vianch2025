@@ -5,6 +5,7 @@ import Link from "next/link";
 
 /* Constants */
 import { KeyNames } from "@/lib/constants/ui.constants";
+import { ModalImageConfig, ThumbImageConfig } from "@/lib/constants/images.constants";
 
 /* Components */
 import ImagePlaceholder from "../ImagePlaceholder/ImagePlaceholder";
@@ -42,19 +43,6 @@ const Gallery: FC<GalleryProps> = ({
 
   // Calculate columns for desktop
   const desktopColumns = images.length < 10 ? images.length : 6;
-  const thumbImageConfig: ImageConfig = {
-    fit: "thumb",
-    h: 451,
-    f: "center",
-    q: 90,
-  };
-
-  const modalImageConfig: ImageConfig = {
-    fit: "thumb",
-    h: 1080,
-    f: "center",
-    q: 90,
-  };
 
   // Preload adjacent modal images when an image is selected
   useEffect(() => {
@@ -67,7 +55,7 @@ const Gallery: FC<GalleryProps> = ({
         return;
       }
 
-      const imageUrl = getContentfulImage(images[index].url, modalImageConfig);
+      const imageUrl = getContentfulImage(images[index].url, ModalImageConfig);
 
       if (!preloadedModalImages.has(imageUrl)) {
         const img = new window.Image();
@@ -98,13 +86,13 @@ const Gallery: FC<GalleryProps> = ({
     if (prevIndex >= 0) {
       preloadImage(prevIndex);
     }
-  }, [selectedImageIndex, images, preloadedModalImages, modalImageConfig]);
+  }, [selectedImageIndex, images, preloadedModalImages]);
 
   useEffect(() => {
     if (isClient()) {
       images.forEach((image) => {
         const img = new window.Image();
-        const imageUrl = getContentfulImage(image.url, thumbImageConfig);
+        const imageUrl = getContentfulImage(image.url, ThumbImageConfig);
 
         img.src = imageUrl;
         img.onload = () => {
@@ -194,7 +182,7 @@ const Gallery: FC<GalleryProps> = ({
           const link = overrideLink ?? image.link;
           const hasLink = !!link;
           const isLoaded = loadedImages.has(image.url);
-          const imageUrl = getContentfulImage(image.url, thumbImageConfig);
+          const imageUrl = getContentfulImage(image.url, ThumbImageConfig);
 
           if (!isLoaded) {
             return (
@@ -258,7 +246,7 @@ const Gallery: FC<GalleryProps> = ({
           hasNavigation={images.filter((img) => !img.link).length > 1}
           isFirst={selectedImageIndex === getFirstNonLinkedImageIndex()}
           isLast={selectedImageIndex === getLastNonLinkedImageIndex()}
-          imageConfig={modalImageConfig}
+          imageConfig={ModalImageConfig}
           preloadedImages={preloadedModalImages}
         />
       )}

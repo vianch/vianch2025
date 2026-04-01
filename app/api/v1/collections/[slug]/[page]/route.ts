@@ -87,7 +87,7 @@ export const GET = async (
     }
 
     // Store in cache if Redis is available
-    if (redisService.getStatus()) {
+    if (redisService.getStatus().isAvailable) {
       await redisService.set(cacheKey, response);
     }
 

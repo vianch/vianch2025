@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 /* Constants */
 import { EventNames } from "@/lib/constants/ui.constants";
@@ -9,11 +9,16 @@ import styles from "./ScrollTop.module.css";
 
 const ScrollTop: FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const rafRef = useRef<number | null>(null);
 
   const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-    const viewportHeight = window.innerHeight;
-    setIsVisible(currentScrollY > viewportHeight);
+    if (rafRef.current !== null) return;
+    rafRef.current = requestAnimationFrame(() => {
+      const currentScrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      setIsVisible(currentScrollY > viewportHeight);
+      rafRef.current = null;
+    });
   };
 
   const scrollToTop = () => {
@@ -22,7 +27,10 @@ const ScrollTop: FC = () => {
 
   useEffect(() => {
     window.addEventListener(EventNames.Scroll, handleScroll);
-    return () => window.removeEventListener(EventNames.Scroll, handleScroll);
+    return () => {
+      window.removeEventListener(EventNames.Scroll, handleScroll);
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   if (!isVisible) return null;

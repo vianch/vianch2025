@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { cache, ReactElement } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { gql } from "graphql-request";
@@ -22,8 +22,8 @@ type PageProps = {
   }>;
 };
 
-// Fetch data once and reuse it
-async function getCollectionData(slug: string) {
+// Deduplicate across generateMetadata and Page component via React.cache
+const getCollectionData = cache(async (slug: string) => {
   try {
     const pageNumber = 1;
 
@@ -96,7 +96,7 @@ async function getCollectionData(slug: string) {
     console.error("Error fetching collection data:", error);
     return null;
   }
-}
+});
 
 export async function generateMetadata(
   { params }: PageProps,

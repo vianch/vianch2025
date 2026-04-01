@@ -1,4 +1,5 @@
 import { todayDate, todayTime } from "@/lib/utils/date.utils";
+import { escapeHtml } from "@/lib/utils/string.utils";
 
 export const helpCommands = [
   "Available commands:",
@@ -45,7 +46,7 @@ export const commandsText = {
   notAllowed: (command: string) => `Command not allowed ${command}`,
   parameterMissing: "Parameter missing",
   lastMessage: (command: string, style: string, prompt: string): string =>
-    `<span class=${style}>$ ${prompt}</span> ${command}`,
+    `<span class=${style}>$ ${prompt}</span> ${escapeHtml(command)}`,
   prompt: "guest@vianch: ~",
   skills: (style: string) => skillsCommands(style),
 };

@@ -21,25 +21,21 @@ export const fetchApi = async <T>(
     });
   }
 
-  try {
-    const isPage = url?.href?.toString()?.includes("pages");
-    const response = await fetch(
-      url?.href?.toString() || url.toString(),
-      isPage ? { cache: "no-store" } : {}
-    );
+  const isPage = url?.href?.toString()?.includes("pages");
+  const response = await fetch(
+    url?.href?.toString() || url.toString(),
+    isPage ? { cache: "no-store" } : {}
+  );
 
-    if (!response) {
-      throw new Error("Failed to fetch data");
-    }
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Failed to fetch data");
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+  if (!response) {
+    throw new Error("Failed to fetch data");
   }
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Failed to fetch data");
+  }
+
+  return data;
 };

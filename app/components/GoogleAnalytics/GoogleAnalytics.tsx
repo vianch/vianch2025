@@ -2,7 +2,9 @@ import Script from "next/script";
 import { FC } from "react";
 
 const GoogleAnalytics: FC = () => {
-  const gaMeasurementId = "G-MJV4RD2XK8";
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
+  if (!gaMeasurementId) return null;
 
   return (
     <>
