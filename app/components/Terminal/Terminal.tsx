@@ -113,13 +113,34 @@ const Terminal: FC<TerminalProps> = ({
     autoScroll();
   }, [history]);
 
+  // Render-time state adjustment: respond to state prop transitions
+  const [prevState, setPrevState] = useState(state);
+  if (state !== prevState) {
+    setPrevState(state);
+    if (state === terminalStates.active) {
+      const commandLine = commands.contact;
+      const command = commandLine.split(" ")[0];
+      const newHistory = [
+        ...history,
+        commandsText.lastMessage(commandLine, styles.validCommand, commandsText.prompt),
+      ];
+      const commandResponse = {
+        [commands.help]: commandsText.help,
+        [commands.welcome]: commandsText.initialMessage,
+        [commands.contact]: commandsText.contact,
+      }[command.toLowerCase()];
+      newHistory.push(...(commandResponse ?? commandsText.notFound(command)));
+      setHistory(newHistory);
+      setInput("");
+    }
+  }
+
   useEffect(() => {
     if (state === terminalStates.active) {
-      handleCommand(commands.contact);
       inputRef.current?.focus();
       terminalRef.current?.focus();
     }
-  }, [state, inputRef]);
+  }, [state]);
 
   useEffect(() => {
     inputRef.current?.focus();

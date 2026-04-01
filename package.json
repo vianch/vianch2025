@@ -7,10 +7,9 @@
     "build": "next build",
     "start": "next start",
     "init": "rm -rf yarn.lock && rm -rf package-lock.json && yarn install",
-    "lint:code-style": "eslint . --ext .ts,.tsx --fix",
+    "lint:code-style": "eslint . --fix",
     "lint:formatting": "prettier --write .",
-    "lint:next": "next lint",
-    "lint": "yarn lint:code-style && yarn lint:formatting && yarn lint:next",
+    "lint": "yarn lint:code-style && yarn lint:formatting",
     "prepare": "husky"
   },
   "dependencies": {
@@ -24,9 +23,9 @@
     "@vercel/speed-insights": "^1.1.0",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
-    "next": "15.5.14",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "16.2.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-markdown": "10.1.0",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1"
@@ -40,12 +39,11 @@
     "flatted": "^3.3.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.3.5",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "9.39.4",
-    "eslint-config-next": "15.5.14",
+    "eslint-config-next": "16.2.2",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.1.7",
     "prettier": "^3.4.2",

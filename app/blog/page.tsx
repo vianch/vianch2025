@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { gql } from "graphql-request";
 
+export const dynamic = "force-dynamic";
+
 /* Constants */
 import { OgType } from "@/lib/constants/seo.constants";
 
@@ -15,8 +17,6 @@ import { redisService } from "@/lib/datalayer/redis.service";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
-
-export const dynamic = "force-dynamic";
 
 async function getDataBlogPosts() {
   try {

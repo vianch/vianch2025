@@ -84,20 +84,24 @@ const ImageModal: FC<ImageModalProps> = ({
     };
   }, [isOpen, onClose, hasNavigation, onPrev, onNext, isFirst, isLast]);
 
-  useEffect(() => {
-    // If image is already preloaded, skip loading state
+  // Render-time state adjustment: reset loading state when image changes
+  const [prevImageUrl, setPrevImageUrl] = useState(image.url);
+  if (image.url !== prevImageUrl) {
+    setPrevImageUrl(image.url);
     if (isPreloaded) {
       setIsImageLoading(false);
       setShowLowQuality(false);
     } else {
       setIsImageLoading(true);
       setShowLowQuality(true);
+    }
+  }
 
-      // Preload low quality image first for faster initial display
-      if (isClient()) {
-        const lowQualityImg = new window.Image();
-        lowQualityImg.src = lowQualityImageUrl;
-      }
+  // Preload low quality image for progressive loading
+  useEffect(() => {
+    if (!isPreloaded && isClient()) {
+      const lowQualityImg = new window.Image();
+      lowQualityImg.src = lowQualityImageUrl;
     }
   }, [image.url, isPreloaded, lowQualityImageUrl]);
 
