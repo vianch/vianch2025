@@ -21,14 +21,6 @@ interface ContentfulQueryEntries
 
 type EntriesByQuery<T> = T;
 
-type EntriesResponseType<ContentType> = {
-  items: ContentType[] | Partial<ContentType>[];
-  total: number;
-  skip: number;
-  limit: number;
-  page: number;
-};
-
 interface ContentfulErrorResponse {
   status: number;
   message: string;
@@ -93,9 +85,3 @@ interface PageItem {
 interface PageCollectionResponse {
   pageCollection: Collection<PageItem>;
 }
-
-type ContentfulVariables = {
-  slug?: string;
-  skip?: number;
-  [key: string]: string | number | undefined;
-};

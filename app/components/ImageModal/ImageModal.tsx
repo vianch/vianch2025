@@ -7,6 +7,7 @@ import styles from "./ImageModal.module.css";
 
 /* Constants */
 import { KeyNames } from "@/lib/constants/ui.constants";
+import { LowQualityImageConfig, ModalImageConfig } from "@/lib/constants/images.constants";
 
 /* Utils */
 import { getContentfulImage } from "@/lib/utils/images.utils";
@@ -46,22 +47,8 @@ const ImageModal: FC<ImageModalProps> = ({
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
   const [showLowQuality, setShowLowQuality] = useState<boolean>(false);
 
-  const defaultImageConfig: ImageConfig = {
-    fit: "thumb",
-    h: 1080,
-    f: "center",
-    q: 90,
-  };
-
-  const lowQualityConfig: ImageConfig = {
-    fit: "thumb",
-    h: 400,
-    f: "center",
-    q: 30,
-  };
-
-  const imageUrl = getContentfulImage(image.url, imageConfig ?? defaultImageConfig);
-  const lowQualityImageUrl = getContentfulImage(image.url, lowQualityConfig);
+  const imageUrl = getContentfulImage(image.url, imageConfig ?? ModalImageConfig);
+  const lowQualityImageUrl = getContentfulImage(image.url, LowQualityImageConfig);
   const isPreloaded = preloadedImages?.has(imageUrl) ?? false;
 
   useEffect(() => {

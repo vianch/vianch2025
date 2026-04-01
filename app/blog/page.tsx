@@ -47,7 +47,6 @@ async function getDataBlogPosts() {
             featureImage {
               url
             }
-            body
             tags
           }
         }

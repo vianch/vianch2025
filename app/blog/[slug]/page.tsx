@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { cache, ReactElement } from "react";
 import { notFound } from "next/navigation";
 import { gql } from "graphql-request";
 
@@ -23,7 +23,7 @@ type BlogPostSlugPageProps = {
   }>;
 };
 
-async function getBlogPostData({ params }: BlogPostSlugPageProps) {
+const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
   try {
     const { slug } = await params;
 
@@ -78,7 +78,7 @@ async function getBlogPostData({ params }: BlogPostSlugPageProps) {
     console.error("Error fetching blog post:", error);
     return null;
   }
-}
+});
 
 export async function generateMetadata({ params }: BlogPostSlugPageProps): Promise<Metadata> {
   const postData = await getBlogPostData({ params });

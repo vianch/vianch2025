@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, PropsWithChildren, ReactElement, useRef, useEffect } from "react";
+import { FC, PropsWithChildren, ReactElement, useRef, useEffect, useCallback } from "react";
 
 type InfiniteScrollProps = PropsWithChildren<{
   hasMore?: boolean;
@@ -24,20 +24,23 @@ const InfiniteScroll: FC<InfiniteScrollProps> = ({
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const firstLoadRef = useRef(true);
 
-  const handleObserver = async (entries: IntersectionObserverEntry[]) => {
-    const firstIntersecting = entries[0]?.isIntersecting;
+  const handleObserver = useCallback(
+    async (entries: IntersectionObserverEntry[]) => {
+      const firstIntersecting = entries[0]?.isIntersecting;
 
-    if (firstLoadRef.current) {
-      firstLoadRef.current = false;
-      if (firstIntersecting) {
-        return;
+      if (firstLoadRef.current) {
+        firstLoadRef.current = false;
+        if (firstIntersecting) {
+          return;
+        }
       }
-    }
 
-    if (firstIntersecting && hasMore && next && !isLoading) {
-      await next();
-    }
-  };
+      if (firstIntersecting && hasMore && next && !isLoading) {
+        await next();
+      }
+    },
+    [hasMore, next, isLoading]
+  );
 
   useEffect(() => {
     if (observerRef.current) {
@@ -45,9 +48,9 @@ const InfiniteScroll: FC<InfiniteScrollProps> = ({
     }
 
     observerRef.current = new IntersectionObserver(handleObserver, {
-      root: null, // observes within the viewport
-      rootMargin: rootMargin, // Start loading before reaching the target
-      threshold: scrollThreshold, // trigger when the sentinel is fully visible
+      root: null,
+      rootMargin: rootMargin,
+      threshold: scrollThreshold,
     });
 
     if (sentinelRef.current) {

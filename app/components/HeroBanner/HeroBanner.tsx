@@ -9,6 +9,9 @@ import HeroBannerPlaceholder from "../HeroBannerPlaceholder/HeroBannerPlaceholde
 import defaultStyles from "./HeroBanner.module.css";
 import secondaryStyles from "./HeroBannerSecondary.module.css";
 
+/* Constants */
+import { HeroImageConfig } from "@/lib/constants/images.constants";
+
 /* Utils */
 import { isClient } from "@/lib/utils/ui.utils";
 import { getContentfulImage } from "@/lib/utils/images.utils";
@@ -34,12 +37,7 @@ const HeroBanner: FC<HeroBannerProps> = ({
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const styles = variant === "default" ? defaultStyles : secondaryStyles;
   const hasLink = !!link;
-  const imageUrl = getContentfulImage(heroImage, {
-    fit: "thumb",
-    w: 1920,
-    f: "center",
-    q: 90,
-  });
+  const imageUrl = getContentfulImage(heroImage, HeroImageConfig);
 
   useEffect(() => {
     if (isClient()) {

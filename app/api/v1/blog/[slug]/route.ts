@@ -65,7 +65,7 @@ export const GET = async (request: Request, context: { params: Promise<{ slug: s
     }
 
     // Store in cache if Redis is available
-    if (redisService.getStatus()) {
+    if (redisService.getStatus().isAvailable) {
       await redisService.set(cacheKey, response);
     }
 

@@ -15,8 +15,8 @@ import { ErrorMessages, ErrorTypes } from "@/lib/constants/contentful.constants"
 export const GET = async (request: Request) => {
   try {
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+    const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "10", 10) || 10));
     const skip = (page - 1) * limit;
 
     // Try to get data from cache first
@@ -41,7 +41,6 @@ export const GET = async (request: Request) => {
             featureImage {
               url
             }
-            body
             tags
           }
         }
@@ -60,7 +59,7 @@ export const GET = async (request: Request) => {
     }
 
     // Store in cache if Redis is available
-    if (redisService.getStatus()) {
+    if (redisService.getStatus().isAvailable) {
       await redisService.set(cacheKey, response);
     }
 
