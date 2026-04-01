@@ -2,6 +2,8 @@ import { cache, ReactElement } from "react";
 import { notFound } from "next/navigation";
 import { gql } from "graphql-request";
 
+export const dynamic = "force-dynamic";
+
 /* Components */
 import Breadcrumbs from "@/app/components/Breadcrumbs/Breadcrumbs";
 import BlogPost from "@/app/components/BlogPost/BlogPost";

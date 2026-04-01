@@ -1,7 +1,7 @@
 "use client";
 
 import Loading from "@components/Loading/Loading";
-import { FC, ReactElement, useState, useEffect } from "react";
+import { FC, ReactElement, useState } from "react";
 
 /* API */
 import { getCollection } from "@/lib/api/gallery";
@@ -19,7 +19,6 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
   const [images, setImages] = useState<GalleryItem[]>(
     initialCollection?.gallery.imagesCollection.items
   );
-  const [hasMore, setHasMore] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const isFullWidth = !initialCollection?.overrideImageLinks;
@@ -34,6 +33,10 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
     return currentImages.length + items.length < total;
   };
 
+  const [hasMore, setHasMore] = useState(() =>
+    calculateHasMore(initialCollection?.gallery.imagesCollection.items, initialCollection)
+  );
+
   const fetchNextPage = async () => {
     setIsLoading(true);
     const nextPage = await getCollection({ slug: initialCollection.slug, page: page + 1 });
@@ -45,10 +48,6 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
     setImages(newSetImages);
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    setHasMore(calculateHasMore(images, initialCollection));
-  }, [initialCollection]);
 
   return (
     <main className={`${!isFullWidth ? "container container-padding-lg" : ""}`}>

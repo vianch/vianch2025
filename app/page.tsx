@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { gql } from "graphql-request";
 
+export const dynamic = "force-dynamic";
+
 /* Components */
 import HomePage from "./HomePage";
 
