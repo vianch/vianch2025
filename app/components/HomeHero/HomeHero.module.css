@@ -196,6 +196,10 @@
     font-size: clamp(2.8rem, 10vw, 4.8rem);
   }
 
+  .divider {
+    display: none;
+  }
+
   .description {
     display: none;
   }

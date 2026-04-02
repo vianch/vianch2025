@@ -125,7 +125,7 @@ const Page = async (): Promise<ReactElement> => {
   }
 
   return (
-    <main>
+    <main data-page="home">
       <HomePage collections={pageData.collectionsCollection.items ?? []} />
     </main>
   );

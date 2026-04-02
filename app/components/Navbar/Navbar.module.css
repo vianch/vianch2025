@@ -34,4 +34,8 @@
     justify-content: center;
     position: relative;
   }
+
+  :global(body:has(main[data-page="home"])) .navbar {
+    position: absolute;
+  }
 }
