@@ -19,6 +19,13 @@ export const HeroImageConfig: ImageConfig = {
   q: 90,
 };
 
+export const MediumQualityImageConfig: ImageConfig = {
+  fit: "thumb",
+  h: 400,
+  f: "center",
+  q: 75,
+};
+
 export const LowQualityImageConfig: ImageConfig = {
   fit: "thumb",
   h: 400,
