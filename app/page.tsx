@@ -125,7 +125,7 @@ const Page = async (): Promise<ReactElement> => {
   }
 
   return (
-    <main className="container container-padding-lg">
+    <main>
       <HomePage collections={pageData.collectionsCollection.items ?? []} />
     </main>
   );
