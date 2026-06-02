@@ -110,10 +110,11 @@ export const generateMetadata = (props: SeoProps): Metadata => {
     twitterImage,
     noindex = false,
     nofollow = false,
-    structuredData,
   } = props;
 
-  const pageTitle = title ? `${title} | ${DefaultSeo.title}` : DefaultSeo.title;
+  // Avoid the "VIANCH | VIANCH" duplication when a page title is the brand itself.
+  const isBrandTitle = !title || title.trim().toLowerCase() === DefaultSeo.title.toLowerCase();
+  const pageTitle = isBrandTitle ? DefaultSeo.titleDefault : `${title} | ${DefaultSeo.title}`;
   const robots = noindex
     ? nofollow
       ? RobotsContent.NoFollowNoIndex
@@ -133,6 +134,8 @@ export const generateMetadata = (props: SeoProps): Metadata => {
       description,
       type: getOpenGraphType(ogType),
       locale: DefaultSeo.locale,
+      siteName: DefaultSeo.title,
+      ...(canonicalUrl && { url: generateCanonicalUrl(canonicalUrl) }),
       ...(ogImage && {
         images: [
           {
@@ -149,6 +152,7 @@ export const generateMetadata = (props: SeoProps): Metadata => {
       card: twitterCard,
       title: pageTitle,
       description,
+      site: DefaultSeo.twitterHandle,
       creator: twitterCreator,
       ...(twitterImage && {
         images: [
@@ -166,19 +170,8 @@ export const generateMetadata = (props: SeoProps): Metadata => {
     }),
   };
 
-  // Add structured data if provided
-  if (structuredData) {
-    // Create JSON-LD structured data
-    const jsonLd = JSON.stringify({
-      "@context": "https://schema.org",
-      ...structuredData,
-    });
-
-    // Add to metadata
-    metadata.other = {
-      "application/ld+json": jsonLd,
-    };
-  }
-
+  // Structured data (JSON-LD) is rendered via the <JsonLd /> component, not the
+  // Metadata API — `metadata.other` emits <meta> tags, which Google does not parse
+  // as structured data. See lib/utils/structured-data.utils.ts.
   return metadata;
 };
