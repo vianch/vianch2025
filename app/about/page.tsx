@@ -3,11 +3,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 /* Components */
-import AboutTerminal from "./AboutTerminal";
 import JsonLd from "../components/JsonLd/JsonLd";
 
 /* Constants */
-import { Employer, OgType, Projects, SocialLinks } from "@/lib/constants/seo.constants";
+import { DefaultSeo, Employer, OgType, Projects, SocialLinks } from "@/lib/constants/seo.constants";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
@@ -119,6 +118,9 @@ const AboutPage = (): ReactElement => {
 
         <h2 className={styles.sectionTitle}>Find me</h2>
         <ul className={styles.socialLinks}>
+          <li>
+            <a href={`mailto:${DefaultSeo.email}`}>Email</a>
+          </li>
           {SocialLinks.map((social) => (
             <li key={social.url}>
               <a href={social.url} target="_blank" rel="noopener noreferrer">
@@ -127,10 +129,6 @@ const AboutPage = (): ReactElement => {
             </li>
           ))}
         </ul>
-      </section>
-
-      <section className={styles.terminalSection}>
-        <AboutTerminal />
       </section>
     </>
   );

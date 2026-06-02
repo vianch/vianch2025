@@ -96,10 +96,6 @@
   list-style: none;
 }
 
-.terminalSection {
-  margin-top: 24px;
-}
-
 @media (max-width: 600px) {
   .bio {
     padding: 72px 18px 32px;

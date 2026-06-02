@@ -1,0 +1,52 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 70vh;
+  padding: 96px 24px;
+  color: var(--foreground);
+}
+
+.code {
+  font-family: var(--font-primary);
+  font-size: clamp(4rem, 18vw, 9rem);
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+  color: var(--color-orange);
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 600;
+  margin: 8px 0 0;
+}
+
+.message {
+  max-width: 420px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--color-grey-700);
+  margin: 16px 0 32px;
+}
+
+.homeLink {
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border: 1px solid var(--color-orange);
+  border-radius: 999px;
+  color: var(--color-orange);
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.homeLink:hover {
+  background-color: var(--color-orange);
+  color: var(--background, #fff);
+}
