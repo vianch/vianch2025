@@ -22,7 +22,6 @@ declare global {
     twitterImage?: SeoImage;
     noindex?: boolean;
     nofollow?: boolean;
-    structuredData?: Record<string, unknown>;
   }
 
   interface MetadataProps extends SeoProps {
