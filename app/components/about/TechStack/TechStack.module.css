@@ -1,0 +1,37 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.chip {
+  font-family: var(--font-secondary);
+  font-size: var(--text-sm);
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--color-grey-200);
+  border-radius: 999px;
+  background: var(--background);
+  color: var(--color-grey-700);
+  cursor: default;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease,
+    color 0.25s ease,
+    background 0.25s ease;
+}
+
+.chip:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-orange);
+  background: rgba(252, 163, 17, 0.08);
+  color: var(--color-navy);
+}
+
+@media (prefers-color-scheme: dark) {
+  .chip:hover {
+    color: var(--color-light);
+  }
+}

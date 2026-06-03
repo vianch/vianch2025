@@ -1,0 +1,45 @@
+.section {
+  margin-top: 8rem;
+  scroll-margin-top: 8rem;
+}
+
+.header {
+  max-width: 60ch;
+  margin-bottom: 2.4rem;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: var(--h2);
+  font-weight: var(--font-extrabold);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--foreground);
+  margin: 0 0 1rem;
+}
+
+.description {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-light);
+  line-height: var(--leading-relaxed);
+  color: var(--color-grey-700);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .section {
+    margin-top: 5.5rem;
+  }
+}

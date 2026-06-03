@@ -1,0 +1,77 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--color-grey-200);
+  border-radius: 1.5rem;
+  background: var(--background);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-grey-300);
+  box-shadow: 0 1.4rem 3rem rgba(20, 33, 61, 0.1);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.name {
+  font-family: var(--font-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--foreground);
+}
+
+.arrow {
+  font-size: var(--text-lg);
+  color: var(--color-grey-400);
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.card:hover .arrow {
+  color: var(--color-orange);
+  transform: translate(0.2rem, -0.2rem);
+}
+
+.description {
+  flex: 1;
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-light);
+  line-height: var(--leading-relaxed);
+  color: var(--color-grey-700);
+  margin: 0;
+}
+
+.host {
+  font-family: var(--font-secondary);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-grey-500);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

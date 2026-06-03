@@ -2,13 +2,11 @@ import { ImageResponse } from "next/og";
 
 /* Constants */
 import { DefaultSeo } from "@/lib/constants/seo.constants";
+import { OgImageContentType, OgImageSize } from "@/lib/constants/ui.constants";
 
 export const alt = "VIANCH — Victor Chavarro, Photographer & Software Engineer";
-export const size = {
-  width: 1200,
-  height: 630,
-};
-export const contentType = "image/png";
+export const size = OgImageSize;
+export const contentType = OgImageContentType;
 
 const OpenGraphImage = (): Response => {
   return new ImageResponse(
