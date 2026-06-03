@@ -46,7 +46,6 @@ export const SocialProfiles = [
   "https://github.com/vianch",
   "https://www.instagram.com/_vianch",
   "https://x.com/vianch_tog",
-  "https://www.behance.net/vianch",
   "https://www.behance.net/vianch_tog",
 ] as const;
 
@@ -58,7 +57,7 @@ export const SocialLinks = [
   { label: "LinkedIn", url: "https://www.linkedin.com/in/vianch" },
   { label: "GitHub", url: "https://github.com/vianch" },
   { label: "Instagram", url: "https://www.instagram.com/_vianch" },
-  { label: "Behance", url: "https://www.behance.net/vianch" },
+  { label: "Behance", url: "https://www.behance.net/vianch_tog" },
   { label: "X (Twitter)", url: "https://x.com/vianch_tog" },
 ] as const;
 
