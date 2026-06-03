@@ -1,0 +1,115 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item {
+  border: 1px solid var(--color-grey-200);
+  border-radius: 1.2rem;
+  background: var(--background);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.item[data-open="true"] {
+  border-color: var(--color-grey-300);
+}
+
+.questionHeading {
+  margin: 0;
+  font-size: inherit;
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  min-height: auto;
+  padding: 1.8rem 2rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  text-align: left;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.question:hover {
+  color: var(--color-navy);
+}
+
+.toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.toggle::before,
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.4rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-orange);
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.item[data-open="true"] .toggle::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* Smooth height reveal via the grid-rows 0fr→1fr technique. */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.item[data-open="true"] .panel {
+  grid-template-rows: 1fr;
+}
+
+.answer {
+  overflow: hidden;
+  margin: 0;
+  padding: 0 2rem;
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-light);
+  line-height: var(--leading-relaxed);
+  color: var(--color-grey-700);
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    padding 0.35s ease;
+}
+
+.item[data-open="true"] .answer {
+  padding: 0 2rem 1.8rem;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .toggle::before,
+  .toggle::after,
+  .answer {
+    transition: none;
+  }
+}

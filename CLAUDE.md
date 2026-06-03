@@ -41,9 +41,10 @@ Content lives in **Contentful CMS**, fetched via **GraphQL** (`graphql-request`)
 
 - **`lib/datalayer/`** — Core services: `contentful.service.ts` (GraphQL fetching, error handling, cache headers) and `redis.service.ts` (singleton Redis client with retry logic)
 - **`lib/api/`** — Client-side API wrappers (`fetchApi` calls internal `/api/v1/` routes): `blog.ts`, `gallery.ts`, `client.ts`
-- **`lib/constants/`** — Contentful config, SEO defaults, terminal content, UI constants
-- **`lib/utils/`** — Date formatting, image processing, SEO metadata generation, URL helpers
-- **`types/`** — Global type declarations (`.d.ts` files): `contentful.d.ts`, `blog.d.ts`, `gallery.d.ts`, `graphql.d.ts`, `seo.d.ts`, `ui.d.ts`, `api.d.ts`, `images.d.ts`
+- **`lib/constants/`** — All shared static content and configuration: Contentful config, SEO defaults (`seo.constants.ts`), UI config (`ui.constants.ts`, including Open Graph image size/type), and page content such as `about.constants.ts` (every About-page copy block, dataset, and timing value)
+- **`lib/utils/`** — Pure shared helpers: date formatting, image processing, SEO metadata generation, URL helpers (`url.utils.ts`, including `getHostname`)
+- **`app/components/icons/`** — Reusable single-purpose SVG icon components (one per file, e.g. `GitHub.tsx`, `Mail.tsx`, `Camera.tsx`), all typed with the shared `Icon` props
+- **`types/`** — Global type declarations (`.d.ts` files): `contentful.d.ts`, `blog.d.ts`, `gallery.d.ts`, `graphql.d.ts`, `seo.d.ts`, `ui.d.ts`, `api.d.ts`, `images.d.ts`, `about.d.ts` (About content shapes), `icons.d.ts` (shared `Icon` props), `snipPet.d.ts`
 
 ### Routes
 
@@ -84,6 +85,22 @@ Component-scoped styles use CSS Modules (`.module.css`). Fonts: Geist (sans) and
 @utils/*      → lib/utils/*
 @types/*      → ./types/*
 ```
+
+## Code Organization Standards
+
+Keep components focused on rendering and interaction; everything else has a home. These rules are enforced by convention and detailed in `.claude/rules/architecture.md`.
+
+1. **No large static datasets, content blocks, UI copy, or configuration values inside components.** Components render and handle behavior; they do not own their content.
+2. **Static content lives under `lib/constants/`.** Arrays, copy strings, headings, labels, and config objects are extracted there (reuse an existing file before creating a new one).
+3. **Shared utility functions live under `lib/utils/`** as pure functions (e.g. `getHostname` in `url.utils.ts`).
+4. **Reusable SVG icons live in `app/components/icons/`** — one icon per file, default-exported.
+5. **Reusable icon props use the shared `Icon` type** in `types/icons.d.ts`; never redeclare per-icon prop types.
+6. **Components primarily focus on rendering and interaction logic** (state, effects, event handlers, layout).
+7. **New About-page content is added to `lib/constants/about.constants.ts`** (copy, datasets, section headings, timings), and its shapes to `types/about.d.ts`.
+8. **UI-related configuration values are stored in `lib/constants/ui.constants.ts`** (e.g. `OgImageSize`, `OgImageContentType`, key/event names).
+9. **Avoid defining constants inside component files** unless they are component-specific runtime values that cannot be shared (e.g. a local lookup mapping iconKeys/labels to imported icon components).
+
+Type declarations never live in constant or util files (`.constants.ts` / `.utils.ts`); put them in `types/**/*.d.ts`.
 
 ## Code Style
 

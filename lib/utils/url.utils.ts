@@ -28,3 +28,18 @@ export const getBaseUrl = (): string => {
 export const getGalleryPath = (slug: string): string => {
   return `/gallery/${slug}`;
 };
+
+/**
+ * @function getHostname
+ * @description Extracts the bare hostname (without a leading "www.") from a URL,
+ * falling back to the original string if it cannot be parsed.
+ * @param {string} url - Absolute URL to parse
+ * @returns {string} Hostname without the "www." prefix, or the original input
+ */
+export const getHostname = (url: string): string => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+};

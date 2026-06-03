@@ -89,7 +89,7 @@ export const getProfilePageNode = (): Record<string, unknown> => ({
   "@type": "ProfilePage",
   "@id": `${generateCanonicalUrl("/about")}#profilepage`,
   url: generateCanonicalUrl("/about"),
-  name: "About VIANCH — Victor Chavarro",
+  name: "About VIANCH, Victor Chavarro",
   description: "About Victor Chavarro (VIANCH): a London-based photographer and software engineer.",
   isPartOf: { "@id": WebSiteId },
   mainEntity: { "@id": PersonId },
@@ -109,6 +109,28 @@ export const getBreadcrumbNode = (
     position: index + 1,
     name: item.name,
     item: generateCanonicalUrl(item.path),
+  })),
+});
+
+/**
+ * Builds an FAQPage node from question/answer pairs. The answers MUST match the
+ * copy rendered visibly on the page (Google requires parity), so callers should
+ * pass the same `AboutFaqs` constant the UI renders.
+ * @param items - Ordered question/answer pairs
+ * @returns Schema.org FAQPage node (without @context)
+ */
+export const getFaqNode = (
+  items: readonly { answer: string; question: string }[]
+): Record<string, unknown> => ({
+  "@type": "FAQPage",
+  "@id": `${generateCanonicalUrl("/about")}#faq`,
+  mainEntity: items.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
   })),
 });
 

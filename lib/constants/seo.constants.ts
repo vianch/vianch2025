@@ -107,6 +107,64 @@ export const KnowsAbout = [
   "Computer Science",
 ] as const;
 
+/**
+ * About-page FAQ. This is the single source of truth shared by the visible
+ * accordion (app/components/about/AboutFaq) and the FAQPage JSON-LD node
+ * (structured-data.utils). Google requires the visible copy and the schema to
+ * match, so both must read from here — never duplicate the text.
+ *
+ * The questions are written around the queries that disambiguate the VIANCH
+ * entity ("who is vianch", "what does victor chavarro do", "is vianch a
+ * photographer") to strengthen positioning for the brand in search.
+ */
+export const AboutFaqs = [
+  {
+    answer:
+      "VIANCH is the personal brand of Victor Chavarro, a London-based photographer and " +
+      "full-stack software engineer. Under VIANCH he publishes a photography portfolio of street, " +
+      "cultural, and travel work alongside his web development and software engineering projects.",
+    question: "Who is VIANCH?",
+  },
+  {
+    answer:
+      "Victor Chavarro is a Senior Software Engineer at TodayTix Group, where he builds across the " +
+      "stack, from the partner-facing Portal app to the Platform commerce service. Outside of " +
+      "engineering he works as a photographer, shooting street, cultural, and travel photography.",
+    question: "What does Victor Chavarro do?",
+  },
+  {
+    answer:
+      "Yes. VIANCH shoots street, cultural, and travel photography, and the collections are published " +
+      "across vianch.com. Photography and software engineering are the two crafts at the centre of the " +
+      "VIANCH brand.",
+    question: "Is VIANCH a photographer?",
+  },
+  {
+    answer:
+      "Victor specialises in AI-assisted engineering. With his team he builds a full agentic toolkit on " +
+      "Claude Code: a marketplace of 30+ specialised skills and agents, custom MCP servers including a " +
+      "knowledge-graph memory palace, multi-agent orchestration, and automated pipelines for code review, " +
+      "PR triage, and AI supply-chain security.",
+    question: "What does Victor build with AI?",
+  },
+  {
+    answer:
+      "VIANCH is based in London, England. You can reach Victor by email at hello@vianch.com or through " +
+      "the social profiles linked on this page, including LinkedIn, GitHub, Instagram, and Behance.",
+    question: "Where is VIANCH based and how can I get in touch?",
+  },
+] as const;
+
+/**
+ * Page-specific keyword set for the About page, layered on top of the site-wide
+ * DefaultSeo.keywords. Reinforces the bio/profile intent of this URL.
+ */
+export const AboutKeywords =
+  "VIANCH, Victor Chavarro, about VIANCH, who is VIANCH, Victor Chavarro photographer, " +
+  "Victor Chavarro software engineer, London photographer, full-stack engineer London, " +
+  "senior software engineer, TodayTix Group engineer, AI-assisted engineering, Claude Code, " +
+  "street photography, travel photography, portfolio";
+
 export const OgType = {
   Website: "website",
   Article: "article",
