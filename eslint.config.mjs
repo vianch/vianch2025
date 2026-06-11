@@ -11,6 +11,7 @@ const eslintConfig = defineConfig([
     rules: {
       quotes: ["error", "double"],
       "@next/next/no-img-element": "off",
+      "@next/next/no-html-link-for-pages": "off",
       "react-hooks/exhaustive-deps": "off",
       "jsx-quotes": ["error", "prefer-double"],
       indent: [
