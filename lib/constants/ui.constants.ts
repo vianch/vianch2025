@@ -13,6 +13,9 @@ export const EventNames = {
   Scroll: "scroll",
 };
 
+/* Home hero rotation: how long each collection stays on screen before crossfading to the next. */
+export const HeroRotationIntervalMs = 7000;
+
 /* Open Graph image dimensions and MIME type, shared by every opengraph-image route. */
 export const OgImageSize = {
   height: 630,

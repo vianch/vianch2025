@@ -98,6 +98,7 @@ export async function generateMetadata(_: unknown, parent: ResolvingMetadata): P
     return resolvedParent as Metadata;
   }
 
+  console.log(pageData);
   const coverImage = pageData.collectionsCollection?.items[0]?.coverImage;
 
   return generateSeoMetadata({
