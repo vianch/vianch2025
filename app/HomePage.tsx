@@ -8,24 +8,26 @@ import ImageMarquee from "./components/ImageMarquee/ImageMarquee";
 
 /* Utils */
 import { getGalleryPath } from "@/lib/utils/url.utils";
-import { getHeroSlides, getMarqueeImages, getRandomIndex } from "@/lib/utils/gallery.utils";
+import { getMarqueeImages } from "@/lib/utils/gallery.utils";
 
 type HomePageProps = {
   collections: GalleryCollectionItem[];
 };
 
 const HomePage = ({ collections }: HomePageProps): ReactElement => {
-  const tail = collections.slice(1);
+  const [hero, ...tail] = collections;
   const marqueeImages = getMarqueeImages(collections);
-  /* Built server-side on every request (the route is force-dynamic): each collection slide gets a
-     random image from its gallery, and the rotation starts on a random collection */
-  const heroSlides = getHeroSlides(collections);
-  const initialSlideIndex = getRandomIndex(heroSlides.length);
 
   return (
     <>
-      {/* Full-screen immersive hero rotating through every collection */}
-      <HomeHero initialSlideIndex={initialSlideIndex} slides={heroSlides} />
+      {/* Full-screen immersive hero */}
+      <HomeHero
+        heroImage={hero.coverImage.url}
+        title={hero.title}
+        year={hero.year.toString()}
+        description={hero.description}
+        link={hero.slug ? getGalleryPath(hero.slug) : null}
+      />
 
       {/* Marquee right under the hero */}
       {marqueeImages.length > 4 && <ImageMarquee images={marqueeImages} />}
