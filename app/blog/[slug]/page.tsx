@@ -2,22 +2,29 @@ import { cache, ReactElement } from "react";
 import { notFound } from "next/navigation";
 import { gql } from "graphql-request";
 
-export const dynamic = "force-dynamic";
+// ISR: each post is rendered once, then served from cache with hourly background refresh.
+export const revalidate = 3600;
 
 /* Components */
 import Breadcrumbs from "@/app/components/Breadcrumbs/Breadcrumbs";
 import BlogPost from "@/app/components/BlogPost/BlogPost";
+import JsonLd from "@/app/components/JsonLd/JsonLd";
 import { Metadata } from "next";
 
 /* Constants */
-import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
+import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
-import { redisService } from "@/lib/datalayer/redis.service";
+import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
+import {
+  buildSchemaGraph,
+  getBlogPostingNode,
+  getBreadcrumbNode,
+} from "@/lib/utils/structured-data.utils";
 
 type BlogPostSlugPageProps = {
   params: Promise<{
@@ -33,16 +40,7 @@ const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
       return null;
     }
 
-    // Try to get data from cache first
-    const cacheKey = `blog:v2:${slug}`;
-    const cachedData = await redisService.get<BlogCollectionResponse>(cacheKey);
-
-    if (cachedData?.blogCollection?.items?.[0]) {
-      return cachedData.blogCollection.items[0];
-    }
-
-    const { isAvailable } = redisService.getStatus();
-
+    // No Redis here: ISR caches the rendered HTML; Redis stays on the API routes only.
     const query = gql`
       query ($slug: String!) {
         blogCollection(where: { slug: $slug }) {
@@ -64,20 +62,9 @@ const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
 
     const response = await fetchEntriesByQuery<BlogCollectionResponse>(query, { slug });
 
-    if (!response?.blogCollection?.items?.[0]) {
-      return null;
-    }
-
-    const postData = response.blogCollection.items[0];
-
-    // Store in cache if Redis is available
-    if (isAvailable) {
-      await redisService.set(cacheKey, response);
-    }
-
-    return postData;
+    return response?.blogCollection?.items?.[0] ?? null;
   } catch (error) {
-    console.error("Error fetching blog post:", error);
+    logger.error("Error fetching blog post", error, { page: "blog-post" });
     return null;
   }
 });
@@ -97,6 +84,12 @@ export async function generateMetadata({ params }: BlogPostSlugPageProps): Promi
   return generateSeoMetadata({
     title: postData.title,
     description: postData.shortDescription,
+    // Per-post keywords: post tags first, then the site-wide set.
+    ...(postData.tags?.length > 0 && {
+      keywords: `${postData.tags.join(", ")}, ${DefaultSeo.keywords}`,
+    }),
+    articlePublishedTime: postData.publishedAt,
+    articleTags: postData.tags,
     twitterCard: TwitterCard.SummaryLargeImage,
     ogType: OgType.Blog,
     ogImage: postData?.featureImage && {
@@ -118,8 +111,18 @@ const BlogPostSlugPage = async ({ params }: BlogPostSlugPageProps): Promise<Reac
     notFound();
   }
 
+  const postSchema = buildSchemaGraph([
+    getBlogPostingNode(postData),
+    getBreadcrumbNode([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: postData.title, path: `/blog/${postData.slug}` },
+    ]),
+  ]);
+
   return (
     <section className="container-xs container-padding-lg">
+      <JsonLd data={postSchema} />
       <Breadcrumbs path="blog" slug={postData.slug} />
       <BlogPost post={postData} />
     </section>

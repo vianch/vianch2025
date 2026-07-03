@@ -1,5 +1,6 @@
 export const contentfulDefaultHost = "https://cdn.contentful.com";
 export const contentfulGraphQlDefaultHost = "https://graphql.contentful.com";
+export const contentfulImagesHost = "https://images.ctfassets.net";
 
 export const contentfulLocalEndpoints = {
   graphQlContentfulEndpoint: (spaceId: string, environmentId: string) =>

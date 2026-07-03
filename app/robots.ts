@@ -9,8 +9,8 @@ const robots = (): MetadataRoute.Robots => ({
   rules: {
     userAgent: "*",
     allow: "/",
-    // Keep API routes and the internal component showcase out of the index.
-    disallow: ["/api/", "/styleguide"],
+    // Keep API routes, internal tooling, and test pages out of the index.
+    disallow: ["/api/", "/styleguide", "/monitoring", "/sentry-example-page"],
   },
   sitemap: `${baseUrl}/sitemap.xml`,
   host: baseUrl,

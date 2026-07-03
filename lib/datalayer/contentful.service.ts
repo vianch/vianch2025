@@ -1,12 +1,16 @@
 import { request } from "graphql-request";
 import { NextResponse } from "next/server";
 
+import { logger } from "../services/logger/logger.service";
+
 import {
   contentfulLocalEndpoints,
   CacheHeaders,
   ResponseHeaders,
   DefaultCacheConfig,
   CacheDurations,
+  ErrorMessages,
+  ErrorTypes,
 } from "../constants/contentful.constants";
 
 /**
@@ -61,29 +65,36 @@ export const handleErrorResponse = ({
  *  - details: Additional error information
  */
 export const handleContentfulError = (error: unknown): NextResponse => {
+  const namedError = error as { name?: string; message?: string };
+
+  // Expected miss, not an incident: respond 404 and skip Sentry.
+  if (namedError?.name === ErrorTypes.NotFoundError) {
+    return handleErrorResponse({
+      error: namedError.message || ErrorMessages.NotFoundError,
+      details: {},
+      code: 404,
+    });
+  }
+
+  logger.error("Contentful request failed", error, { service: "contentful" });
+
   if (error instanceof Error && "response" in error) {
     const graphQLError = error as GraphQLClientError;
     const statusCode = graphQLError.response?.status || 500;
     const message = graphQLError.response?.errors?.[0]?.message || "GraphQL Error";
 
+    // Full GraphQL error (query, variables, raw response) goes to Sentry only —
+    // leaking it to the client exposes internals.
     return handleErrorResponse({
       error: message,
-      details: { errors: graphQLError },
+      details: {},
       code: statusCode,
     });
   }
 
-  if (error instanceof Error) {
-    return handleErrorResponse({
-      error: error.message,
-      details: { error: String(error) },
-      code: 500,
-    });
-  }
-
   return handleErrorResponse({
-    error: "An unknown error occurred",
-    details: { error: String(error) },
+    error: ErrorMessages.InternalServerError,
+    details: {},
     code: 500,
   });
 };
@@ -94,9 +105,12 @@ export const handleContentfulError = (error: unknown): NextResponse => {
  * @returns {NextResponse} JSON response with the error details
  */
 export const throwJsonError = (error: Error | ContentfulErrorResponse | unknown): NextResponse => {
-  const handledError = handleContentfulError(error);
+  // Routes pass already-built responses (e.g. the not-found case) — don't re-wrap them.
+  if (error instanceof NextResponse) {
+    return error;
+  }
 
-  return handledError;
+  return handleContentfulError(error);
 };
 
 /**

@@ -1,3 +1,6 @@
+/* Services */
+import { logger } from "@/lib/services/logger/logger.service";
+
 /* Utils */
 import { getBaseUrl } from "@/lib/utils/url.utils";
 
@@ -14,28 +17,26 @@ export const fetchApi = async <T>(
   const url = new URL(`/api/v1/${endpoint}`, getBaseUrl());
 
   if (params) {
-    Object.entries(params)?.forEach(([key, value]) => {
+    Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined) {
         url.searchParams.append(key, String(value));
       }
     });
   }
 
-  const isPage = url?.href?.toString()?.includes("pages");
-  const response = await fetch(
-    url?.href?.toString() || url.toString(),
-    isPage ? { cache: "no-store" } : {}
-  );
+  const isPage = endpoint.startsWith("pages");
 
-  if (!response) {
-    throw new Error("Failed to fetch data");
+  try {
+    const response = await fetch(url.href, isPage ? { cache: "no-store" } : {});
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.error || `Failed to fetch ${endpoint} (${response.status})`);
+    }
+
+    return data;
+  } catch (error) {
+    logger.error("API request failed", error, { endpoint });
+    throw error;
   }
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "Failed to fetch data");
-  }
-
-  return data;
 };

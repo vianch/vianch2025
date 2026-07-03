@@ -17,7 +17,7 @@ type HomePageProps = {
 const HomePage = ({ collections }: HomePageProps): ReactElement => {
   const tail = collections.slice(1);
   const marqueeImages = getMarqueeImages(collections);
-  /* Built server-side on every request (the route is force-dynamic): each collection slide gets a
+  /* Built server-side on every ISR revalidation: each collection slide gets a
      random image from its gallery, and the rotation starts on a random collection */
   const heroSlides = getHeroSlides(collections);
   const initialSlideIndex = getRandomIndex(heroSlides.length);

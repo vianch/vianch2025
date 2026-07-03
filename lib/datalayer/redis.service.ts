@@ -1,5 +1,7 @@
 import { Redis, type SetCommandOptions } from "@upstash/redis";
 
+import { logger } from "../services/logger/logger.service";
+
 class RedisService {
   private static instance: RedisService;
   private redis: Redis | null = null;
@@ -33,14 +35,14 @@ class RedisService {
   }
 
   private handleConnectionError(error: Error): void {
-    console.error("Redis connection error:", error);
+    logger.error("Redis connection error", error, { service: "redis" });
     this.isAvailable = false;
     this.lastError = error;
   }
 
   private async reconnect(): Promise<void> {
     if (this.retryCount >= this.maxRetries) {
-      console.warn("Max Redis reconnection attempts reached");
+      logger.warn("Max Redis reconnection attempts reached", { service: "redis" });
       return;
     }
 

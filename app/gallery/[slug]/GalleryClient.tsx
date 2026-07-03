@@ -37,16 +37,24 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
     calculateHasMore(initialCollection?.gallery.imagesCollection.items, initialCollection)
   );
 
-  const fetchNextPage = async () => {
+  const fetchNextPage = async (): Promise<void> => {
     setIsLoading(true);
-    const nextPage = await getCollection({ slug: initialCollection.slug, page: page + 1 });
-    const nextCollection = nextPage.items[0];
-    const newSetImages = [...images, ...nextCollection?.gallery.imagesCollection.items];
 
-    setHasMore(calculateHasMore(images, nextCollection));
-    setPage(page + 1);
-    setImages(newSetImages);
-    setIsLoading(false);
+    try {
+      const nextPage = await getCollection({ slug: initialCollection.slug, page: page + 1 });
+      const nextCollection = nextPage.items[0];
+
+      if (nextCollection) {
+        setHasMore(calculateHasMore(images, nextCollection));
+        setPage(page + 1);
+        setImages([...images, ...nextCollection.gallery.imagesCollection.items]);
+      }
+    } catch {
+      // Already reported to Sentry by fetchApi; stop asking for more pages.
+      setHasMore(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

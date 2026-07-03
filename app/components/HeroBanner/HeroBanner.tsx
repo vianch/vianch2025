@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useState, useEffect } from "react";
+import { preload } from "react-dom";
 
 /* Components */
 import HeroBannerPlaceholder from "../HeroBannerPlaceholder/HeroBannerPlaceholder";
@@ -38,6 +39,10 @@ const HeroBanner: FC<HeroBannerProps> = ({
   const styles = variant === "default" ? defaultStyles : secondaryStyles;
   const hasLink = !!link;
   const imageUrl = getContentfulImage(heroImage, HeroImageConfig);
+
+  /* LCP: start the banner download from the SSR HTML instead of waiting for
+     hydration — the effect below then resolves instantly from the browser cache */
+  preload(imageUrl, { as: "image", fetchPriority: "high" });
 
   useEffect(() => {
     if (isClient()) {

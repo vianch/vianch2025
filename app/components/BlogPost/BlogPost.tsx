@@ -1,5 +1,11 @@
 import { ReactElement } from "react";
 
+/* Constants */
+import { HeroImageConfig } from "@/lib/constants/images.constants";
+
+/* Utils */
+import { getContentfulImage } from "@/lib/utils/images.utils";
+
 /* Components */
 import DateHandler from "@/app/components/DateHandler/DateHandler";
 import MarkdownRenderer from "@/app/components/MarkdownRenderer/MarkdownRenderer";
@@ -18,7 +24,12 @@ const BlogPost = ({ post }: BlogPostProps): ReactElement => {
     <>
       {featureImage && featureImage?.url && (
         <div className={styles.bannerContainer}>
-          <img className={styles.image} src={featureImage.url} alt={title} />
+          <img
+            className={styles.image}
+            src={getContentfulImage(featureImage.url, HeroImageConfig)}
+            alt={title}
+            fetchPriority="high"
+          />
 
           {title && (
             <div className={styles.titleBannerContainer}>

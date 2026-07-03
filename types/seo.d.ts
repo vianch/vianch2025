@@ -14,6 +14,8 @@ declare global {
     description?: string;
     keywords?: string;
     author?: string;
+    articlePublishedTime?: string;
+    articleTags?: string[];
     canonicalUrl?: string;
     ogType?: OgTypeValues;
     ogImage?: SeoImage;
