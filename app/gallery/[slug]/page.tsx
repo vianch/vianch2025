@@ -3,14 +3,14 @@ import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { gql } from "graphql-request";
 
-export const dynamic = "force-dynamic";
+// ISR: each collection is rendered once, then served from cache with hourly background refresh.
+export const revalidate = 3600;
 
 /* Components */
 import GalleryClient from "./GalleryClient";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
-import { redisService } from "@/lib/datalayer/redis.service";
 import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
@@ -30,15 +30,8 @@ const getCollectionData = cache(async (slug: string) => {
   try {
     const pageNumber = 1;
 
-    // Try to get data from cache first
-    const cacheKey = `collections:v2:${slug}:${pageNumber}`;
-    const cachedData = await redisService.get<GalleryCollectionResponse>(cacheKey);
-
-    if (cachedData?.galleryCollectionCollection?.items?.[0]) {
-      return cachedData.galleryCollectionCollection.items[0];
-    }
-
-    const { isAvailable } = redisService.getStatus();
+    // No Redis here: ISR caches the rendered HTML; Redis stays on the API routes
+    // that serve the client-side infinite scroll.
     const limit = 50;
     const skip = (pageNumber - 1) * limit;
     const variables = {
@@ -83,18 +76,8 @@ const getCollectionData = cache(async (slug: string) => {
     `;
 
     const response = await fetchEntriesByQuery<GalleryCollectionResponse>(query, variables);
-    const initialCollection = response?.galleryCollectionCollection?.items?.[0];
 
-    if (!initialCollection) {
-      return null;
-    }
-
-    // Store in cache if Redis is available
-    if (isAvailable) {
-      await redisService.set(cacheKey, response);
-    }
-
-    return initialCollection;
+    return response?.galleryCollectionCollection?.items?.[0] ?? null;
   } catch (error) {
     logger.error("Error fetching collection data", error, { page: "gallery" });
     return null;

@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
 import { gql } from "graphql-request";
 
-export const dynamic = "force-dynamic";
+// ISR: serve prerendered HTML from the edge cache (fast TTFB) and refresh in the
+// background every hour. Contentful content changes rarely; hero randomness now
+// rotates per revalidation instead of per request.
+export const revalidate = 3600;
 
 /* Components */
 import HomePage from "./HomePage";
@@ -13,7 +16,6 @@ import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
-import { redisService } from "@/lib/datalayer/redis.service";
 import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
@@ -25,17 +27,8 @@ const getPageData = cache(async () => {
     const limit = 20;
     const slug = "home";
 
-    // Try to get data from cache first
-    const cacheKey = `pages:v2:${slug}`;
-    const cachedData = await redisService.get<PageCollectionResponse>(cacheKey);
-
-    if (cachedData?.pageCollection?.items?.[0]) {
-      return cachedData.pageCollection.items[0];
-    }
-
-    const { isAvailable } = redisService.getStatus();
-
-    // If not in cache, fetch from Contentful
+    // No Redis here: the rendered HTML is cached by ISR; Redis (which uses no-store
+    // fetches that would force this route dynamic) stays on the API routes only.
     const query = gql`
       query ($slug: String, $limit: Int) {
         pageCollection(where: { slug_contains: $slug }) {
@@ -73,18 +66,8 @@ const getPageData = cache(async () => {
     `;
 
     const response = await fetchEntriesByQuery<PageCollectionResponse>(query, { slug, limit });
-    const pageData = response?.pageCollection?.items?.[0];
 
-    if (!pageData) {
-      return null;
-    }
-
-    // Store in cache if Redis is available
-    if (isAvailable) {
-      await redisService.set(cacheKey, response);
-    }
-
-    return pageData;
+    return response?.pageCollection?.items?.[0] ?? null;
   } catch (error) {
     logger.error("Error fetching page data", error, { page: "home" });
     return null;

@@ -2,7 +2,8 @@ import { cache, ReactElement } from "react";
 import { notFound } from "next/navigation";
 import { gql } from "graphql-request";
 
-export const dynamic = "force-dynamic";
+// ISR: each post is rendered once, then served from cache with hourly background refresh.
+export const revalidate = 3600;
 
 /* Components */
 import Breadcrumbs from "@/app/components/Breadcrumbs/Breadcrumbs";
@@ -15,7 +16,6 @@ import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
-import { redisService } from "@/lib/datalayer/redis.service";
 import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
@@ -40,16 +40,7 @@ const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
       return null;
     }
 
-    // Try to get data from cache first
-    const cacheKey = `blog:v2:${slug}`;
-    const cachedData = await redisService.get<BlogCollectionResponse>(cacheKey);
-
-    if (cachedData?.blogCollection?.items?.[0]) {
-      return cachedData.blogCollection.items[0];
-    }
-
-    const { isAvailable } = redisService.getStatus();
-
+    // No Redis here: ISR caches the rendered HTML; Redis stays on the API routes only.
     const query = gql`
       query ($slug: String!) {
         blogCollection(where: { slug: $slug }) {
@@ -71,18 +62,7 @@ const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
 
     const response = await fetchEntriesByQuery<BlogCollectionResponse>(query, { slug });
 
-    if (!response?.blogCollection?.items?.[0]) {
-      return null;
-    }
-
-    const postData = response.blogCollection.items[0];
-
-    // Store in cache if Redis is available
-    if (isAvailable) {
-      await redisService.set(cacheKey, response);
-    }
-
-    return postData;
+    return response?.blogCollection?.items?.[0] ?? null;
   } catch (error) {
     logger.error("Error fetching blog post", error, { page: "blog-post" });
     return null;

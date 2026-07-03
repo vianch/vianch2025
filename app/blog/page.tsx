@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { gql } from "graphql-request";
 
-export const dynamic = "force-dynamic";
+// ISR: cached HTML with hourly background refresh — new posts appear within the hour.
+export const revalidate = 3600;
 
 /* Constants */
 import { BlogCopy } from "@/lib/constants/blog.constants";
@@ -15,7 +16,6 @@ import JsonLd from "@/app/components/JsonLd/JsonLd";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
-import { redisService } from "@/lib/datalayer/redis.service";
 import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
@@ -32,16 +32,7 @@ async function getDataBlogPosts() {
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    // Try to get data from cache first
-    const cacheKey = `blog:v2:${page}:${limit}`;
-    const cachedData = await redisService.get<BlogCollectionResponse>(cacheKey);
-
-    if (cachedData?.blogCollection?.items) {
-      return cachedData.blogCollection.items;
-    }
-
-    const { isAvailable } = redisService.getStatus();
-
+    // No Redis here: ISR caches the rendered HTML; Redis stays on the API routes only.
     const query = gql`
       query ($skip: Int, $limit: Int) {
         blogCollection(skip: $skip, limit: $limit, order: publishedAt_DESC) {
@@ -63,16 +54,7 @@ async function getDataBlogPosts() {
 
     const response = await fetchEntriesByQuery<BlogCollectionResponse>(query, { skip, limit });
 
-    if (!response?.blogCollection?.items) {
-      return null;
-    }
-
-    // Store in cache if Redis is available
-    if (isAvailable) {
-      await redisService.set(cacheKey, response);
-    }
-
-    return response.blogCollection.items;
+    return response?.blogCollection?.items ?? null;
   } catch (error) {
     logger.error("Error fetching blog posts", error, { page: "blog" });
     return null;

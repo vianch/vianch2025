@@ -3,8 +3,10 @@ interface CacheControl {
   maxStaleWhileRevalidateAge: number;
 }
 
-interface ContentfulQueryEntries
-  extends Record<string, string | number | boolean | null | undefined> {
+interface ContentfulQueryEntries extends Record<
+  string,
+  string | number | boolean | null | undefined
+> {
   content_type?: string;
   include?: LevelsInResponse | number | undefined;
   locale?: Locales | string | undefined;

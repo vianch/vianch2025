@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactElement, useEffect, useState } from "react";
+import { preload } from "react-dom";
 import Link from "next/link";
 
 /* Components */
@@ -72,6 +73,13 @@ const HomeHero = ({ initialSlideIndex = 0, slides }: HomeHeroProps): ReactElemen
     return <section className={styles.hero} />;
   }
 
+  /* LCP: emit a <link rel="preload"> for the first slide during SSR so the browser
+     starts downloading the hero before hydration runs the JS preloader */
+  preload(getContentfulImage(activeSlide.imageUrl, HeroImageConfig), {
+    as: "image",
+    fetchPriority: "high",
+  });
+
   const activeLink = activeSlide.slug ? getGalleryPath(activeSlide.slug) : null;
   const activeKey = activeSlide.slug || activeSlide.title;
 
@@ -90,7 +98,13 @@ const HomeHero = ({ initialSlideIndex = 0, slides }: HomeHeroProps): ReactElemen
               className={`${styles.slide} ${isActive ? styles.slideActive : ""}`}
               aria-hidden={!isActive}
             >
-              <img className={styles.imageLqip} src={lqipUrl} alt="" aria-hidden="true" />
+              <img
+                className={styles.imageLqip}
+                src={lqipUrl}
+                alt=""
+                aria-hidden="true"
+                loading={isActive ? "eager" : "lazy"}
+              />
               {Boolean(loadedImages[highQualityUrl]) && (
                 <img className={styles.imageHq} src={highQualityUrl} alt={slide.title} />
               )}
