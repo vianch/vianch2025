@@ -7,17 +7,24 @@ export const dynamic = "force-dynamic";
 /* Components */
 import Breadcrumbs from "@/app/components/Breadcrumbs/Breadcrumbs";
 import BlogPost from "@/app/components/BlogPost/BlogPost";
+import JsonLd from "@/app/components/JsonLd/JsonLd";
 import { Metadata } from "next";
 
 /* Constants */
-import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
+import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
 import { redisService } from "@/lib/datalayer/redis.service";
+import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
+import {
+  buildSchemaGraph,
+  getBlogPostingNode,
+  getBreadcrumbNode,
+} from "@/lib/utils/structured-data.utils";
 
 type BlogPostSlugPageProps = {
   params: Promise<{
@@ -77,7 +84,7 @@ const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
 
     return postData;
   } catch (error) {
-    console.error("Error fetching blog post:", error);
+    logger.error("Error fetching blog post", error, { page: "blog-post" });
     return null;
   }
 });
@@ -97,6 +104,12 @@ export async function generateMetadata({ params }: BlogPostSlugPageProps): Promi
   return generateSeoMetadata({
     title: postData.title,
     description: postData.shortDescription,
+    // Per-post keywords: post tags first, then the site-wide set.
+    ...(postData.tags?.length > 0 && {
+      keywords: `${postData.tags.join(", ")}, ${DefaultSeo.keywords}`,
+    }),
+    articlePublishedTime: postData.publishedAt,
+    articleTags: postData.tags,
     twitterCard: TwitterCard.SummaryLargeImage,
     ogType: OgType.Blog,
     ogImage: postData?.featureImage && {
@@ -118,8 +131,18 @@ const BlogPostSlugPage = async ({ params }: BlogPostSlugPageProps): Promise<Reac
     notFound();
   }
 
+  const postSchema = buildSchemaGraph([
+    getBlogPostingNode(postData),
+    getBreadcrumbNode([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: postData.title, path: `/blog/${postData.slug}` },
+    ]),
+  ]);
+
   return (
     <section className="container-xs container-padding-lg">
+      <JsonLd data={postSchema} />
       <Breadcrumbs path="blog" slug={postData.slug} />
       <BlogPost post={postData} />
     </section>

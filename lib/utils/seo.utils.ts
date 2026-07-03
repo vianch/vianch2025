@@ -102,6 +102,8 @@ export const generateMetadata = (props: SeoProps): Metadata => {
     description = DefaultSeo.description,
     keywords = DefaultSeo.keywords,
     author = DefaultSeo.author,
+    articlePublishedTime,
+    articleTags,
     canonicalUrl,
     ogType = OgType.Website,
     ogImage,
@@ -169,6 +171,17 @@ export const generateMetadata = (props: SeoProps): Metadata => {
       },
     }),
   };
+
+  // article:published_time / article:tag OG meta for posts — only valid when the OG type is article.
+  if (getOpenGraphType(ogType) === "article" && articlePublishedTime) {
+    metadata.openGraph = {
+      ...metadata.openGraph,
+      type: "article",
+      publishedTime: articlePublishedTime,
+      authors: [author],
+      ...(articleTags && articleTags.length > 0 && { tags: [...articleTags] }),
+    };
+  }
 
   // Structured data (JSON-LD) is rendered via the <JsonLd /> component, not the
   // Metadata API — `metadata.other` emits <meta> tags, which Google does not parse

@@ -135,6 +135,61 @@ export const getFaqNode = (
 });
 
 /**
+ * Builds the Blog node for the /blog listing page, linking every visible post.
+ * Tells Google (and AI search) that this URL is the authoritative index of
+ * VIANCH's writing, published by the Person entity.
+ * @param posts - Posts rendered on the listing page
+ * @returns Schema.org Blog node (without @context)
+ */
+export const getBlogNode = (
+  posts: readonly Pick<BlogPost, "publishedAt" | "slug" | "title">[]
+): Record<string, unknown> => ({
+  "@type": "Blog",
+  "@id": `${generateCanonicalUrl("/blog")}#blog`,
+  url: generateCanonicalUrl("/blog"),
+  name: "VIANCH Blog",
+  description:
+    "Articles on full-stack engineering, AI-assisted development, and photography by Victor Chavarro (VIANCH).",
+  inLanguage: "en",
+  author: { "@id": PersonId },
+  publisher: { "@id": PersonId },
+  isPartOf: { "@id": WebSiteId },
+  blogPost: posts.map((post) => ({
+    "@type": "BlogPosting",
+    headline: post.title,
+    url: generateCanonicalUrl(`/blog/${post.slug}`),
+    ...(post.publishedAt && { datePublished: post.publishedAt }),
+  })),
+});
+
+/**
+ * Builds the BlogPosting node for a single post page. The strongest article
+ * signal for both classic Google results and AI Overviews: headline, dates,
+ * author entity, image, and keywords all resolve against the Person node.
+ * @param post - The post rendered on the page
+ * @returns Schema.org BlogPosting node (without @context)
+ */
+export const getBlogPostingNode = (post: BlogPost): Record<string, unknown> => {
+  const postUrl = generateCanonicalUrl(`/blog/${post.slug}`);
+
+  return {
+    "@type": "BlogPosting",
+    "@id": `${postUrl}#blogposting`,
+    url: postUrl,
+    mainEntityOfPage: postUrl,
+    headline: post.title,
+    ...(post.shortDescription && { description: post.shortDescription }),
+    ...(post.publishedAt && { datePublished: post.publishedAt, dateModified: post.publishedAt }),
+    ...(post.featureImage?.url && { image: post.featureImage.url }),
+    ...(post.tags?.length > 0 && { keywords: post.tags.join(", ") }),
+    inLanguage: "en",
+    author: { "@id": PersonId },
+    publisher: { "@id": PersonId },
+    isPartOf: { "@id": WebSiteId },
+  };
+};
+
+/**
  * Wraps schema nodes into a single JSON-LD graph document.
  * @param nodes - Schema.org nodes to include in the graph
  * @returns A JSON-LD document with a shared @context and @graph

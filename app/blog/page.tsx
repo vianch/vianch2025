@@ -6,17 +6,25 @@ import { gql } from "graphql-request";
 export const dynamic = "force-dynamic";
 
 /* Constants */
+import { BlogCopy } from "@/lib/constants/blog.constants";
 import { OgType } from "@/lib/constants/seo.constants";
 
 /* Components */
 import BlogPostList from "@/app/components/BlogPostList/BlogPostList";
+import JsonLd from "@/app/components/JsonLd/JsonLd";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
 import { redisService } from "@/lib/datalayer/redis.service";
+import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
+import {
+  buildSchemaGraph,
+  getBlogNode,
+  getBreadcrumbNode,
+} from "@/lib/utils/structured-data.utils";
 
 async function getDataBlogPosts() {
   try {
@@ -65,20 +73,16 @@ async function getDataBlogPosts() {
     }
 
     return response.blogCollection.items;
-  } catch (err) {
-    console.error("Error fetching blog posts:", err);
+  } catch (error) {
+    logger.error("Error fetching blog posts", error, { page: "blog" });
     return null;
   }
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const posts = await getDataBlogPosts();
-
-  const description = !posts ? "VIANCH BLOG UNDER MAINTENANCE" : "VIANCH BLOG";
-
   return generateSeoMetadata({
-    title: "Blog",
-    description: description,
+    title: BlogCopy.title,
+    description: BlogCopy.description,
     ogType: OgType.Blog,
     canonicalUrl: "/blog",
   });
@@ -91,7 +95,20 @@ const BlogPage = async (): Promise<ReactElement> => {
     notFound();
   }
 
-  return <BlogPostList posts={posts} />;
+  const blogSchema = buildSchemaGraph([
+    getBlogNode(posts),
+    getBreadcrumbNode([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+    ]),
+  ]);
+
+  return (
+    <>
+      <JsonLd data={blogSchema} />
+      <BlogPostList posts={posts} />
+    </>
+  );
 };
 
 export default BlogPage;

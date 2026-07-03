@@ -18,7 +18,8 @@ export const GET = async (
 ) => {
   try {
     const { slug, page = "1" } = await context.params;
-    const pageNumber = parseInt(page, 10);
+    // Clamp so a non-numeric or negative segment can't produce NaN/negative skip values.
+    const pageNumber = Math.max(1, parseInt(page, 10) || 1);
 
     // Try to get data from cache first
     // Cache key version updated to v2 to invalidate old cached responses

@@ -8,7 +8,10 @@ const GoogleAnalytics: FC = () => {
 
   return (
     <>
-      <Script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} />
+      <Script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`}
+      />
       <Script
         id="google-analytics"
         dangerouslySetInnerHTML={{
@@ -17,7 +20,7 @@ const GoogleAnalytics: FC = () => {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', '${gaMeasurementId}');
+            gtag('config', ${JSON.stringify(gaMeasurementId)});
           `,
         }}
       />

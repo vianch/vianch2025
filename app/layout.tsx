@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { preconnect } from "react-dom";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -11,6 +12,7 @@ import GoogleAnalytics from "./components/GoogleAnalytics/GoogleAnalytics";
 import JsonLd from "./components/JsonLd/JsonLd";
 
 /* Constants */
+import { contentfulImagesHost } from "@/lib/constants/contentful.constants";
 import { DefaultSeo } from "@/lib/constants/seo.constants";
 
 /* Utils */
@@ -94,6 +96,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Every gallery/blog image is served from Contentful — warm the connection early.
+  preconnect(contentfulImagesHost);
+
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>

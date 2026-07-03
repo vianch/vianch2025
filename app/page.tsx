@@ -14,6 +14,7 @@ import { OgType, TwitterCard } from "@/lib/constants/seo.constants";
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
 import { redisService } from "@/lib/datalayer/redis.service";
+import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
@@ -85,7 +86,7 @@ const getPageData = cache(async () => {
 
     return pageData;
   } catch (error) {
-    console.error("Error fetching page data:", error);
+    logger.error("Error fetching page data", error, { page: "home" });
     return null;
   }
 });

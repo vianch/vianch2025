@@ -6,6 +6,7 @@ import { DefaultSeo } from "@/lib/constants/seo.constants";
 
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
+import { logger } from "@/lib/services/logger/logger.service";
 
 // Regenerate at request time so new blog posts / collections appear automatically.
 export const dynamic = "force-dynamic";
@@ -41,7 +42,7 @@ const getBlogEntries = async (): Promise<MetadataRoute.Sitemap> => {
         priority: 0.6,
       }));
   } catch (error) {
-    console.error("Sitemap: failed to fetch blog entries:", error);
+    logger.error("Sitemap: failed to fetch blog entries", error, { page: "sitemap" });
     return [];
   }
 };
@@ -73,7 +74,7 @@ const getGalleryEntries = async (): Promise<MetadataRoute.Sitemap> => {
         priority: 0.7,
       }));
   } catch (error) {
-    console.error("Sitemap: failed to fetch gallery entries:", error);
+    logger.error("Sitemap: failed to fetch gallery entries", error, { page: "sitemap" });
     return [];
   }
 };

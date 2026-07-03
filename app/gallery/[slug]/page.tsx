@@ -11,6 +11,7 @@ import GalleryClient from "./GalleryClient";
 /* Services */
 import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
 import { redisService } from "@/lib/datalayer/redis.service";
+import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
 import { generateMetadata as generateSeoMetadata } from "@/lib/utils/seo.utils";
@@ -95,7 +96,7 @@ const getCollectionData = cache(async (slug: string) => {
 
     return initialCollection;
   } catch (error) {
-    console.error("Error fetching collection data:", error);
+    logger.error("Error fetching collection data", error, { page: "gallery" });
     return null;
   }
 });
