@@ -32,7 +32,8 @@ async function getDataBlogPosts() {
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    // No Redis here: ISR caches the rendered HTML; Redis stays on the API routes only.
+    // No Redis here: this route has working ISR (cached HTML, ~1 Contentful hit/hour).
+    // Upstash's no-store fetches would force it dynamic and lose the edge cache.
     const query = gql`
       query ($skip: Int, $limit: Int) {
         blogCollection(skip: $skip, limit: $limit, order: publishedAt_DESC) {

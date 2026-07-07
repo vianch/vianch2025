@@ -33,8 +33,9 @@ const GalleryClient: FC<GalleryClientProps> = ({ initialCollection }): ReactElem
     return currentImages.length + items.length < total;
   };
 
-  const [hasMore, setHasMore] = useState(() =>
-    calculateHasMore(initialCollection?.gallery.imagesCollection.items, initialCollection)
+  const [hasMore, setHasMore] = useState(
+    initialCollection?.gallery.imagesCollection.items.length <
+      initialCollection?.gallery.imagesCollection.total
   );
 
   const fetchNextPage = async (): Promise<void> => {
