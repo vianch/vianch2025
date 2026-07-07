@@ -10,7 +10,7 @@ export const revalidate = 3600;
 import GalleryClient from "./GalleryClient";
 
 /* Services */
-import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
+import { fetchEntriesByQueryCached } from "@/lib/datalayer/contentful.service";
 import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
@@ -30,8 +30,9 @@ const getCollectionData = cache(async (slug: string) => {
   try {
     const pageNumber = 1;
 
-    // No Redis here: ISR caches the rendered HTML; Redis stays on the API routes
-    // that serve the client-side infinite scroll.
+    // Redis read-through on top of ISR: ISR caches the HTML per deploy, Redis (24h TTL)
+    // keeps Contentful hits at ~1/day per collection and survives deployments.
+    // Key matches app/api/v1/collections/[slug]/[page] so SSR primes the page-1 entry.
     const limit = 50;
     const skip = (pageNumber - 1) * limit;
     const variables = {
@@ -75,7 +76,11 @@ const getCollectionData = cache(async (slug: string) => {
       }
     `;
 
-    const response = await fetchEntriesByQuery<GalleryCollectionResponse>(query, variables);
+    const response = await fetchEntriesByQueryCached<GalleryCollectionResponse>(
+      `collections:v2:${slug}:${pageNumber}`,
+      query,
+      variables
+    );
 
     return response?.galleryCollectionCollection?.items?.[0] ?? null;
   } catch (error) {

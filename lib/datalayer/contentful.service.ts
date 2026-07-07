@@ -2,6 +2,7 @@ import { request } from "graphql-request";
 import { NextResponse } from "next/server";
 
 import { logger } from "../services/logger/logger.service";
+import { redisService } from "./redis.service";
 
 import {
   contentfulLocalEndpoints,
@@ -184,4 +185,34 @@ export const fetchEntriesByQuery = async <ContentType>(
     const handledError = handleContentfulError(error);
     throw handledError;
   }
+};
+
+/**
+ * Read-through cached variant of fetchEntriesByQuery: Redis first, Contentful on miss.
+ * Callers must use the same cache key as the API route serving the same query so the
+ * SSR render and the client-side API share (and prime) a single cache entry.
+ * Redis down → falls through to Contentful; the page still renders.
+ * @param cacheKey - Redis key (e.g. `collections:v2:${slug}:1`)
+ * @param query - GraphQL query string
+ * @param config - Query variables and other configuration options
+ * @returns {Promise<EntriesByQuery<ContentType>>} Query results typed to the specified ContentType
+ */
+export const fetchEntriesByQueryCached = async <ContentType>(
+  cacheKey: string,
+  query: string,
+  config: ContentfulQueryEntries
+): Promise<EntriesByQuery<ContentType>> => {
+  const cachedResponse = await redisService.get<EntriesByQuery<ContentType>>(cacheKey);
+
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  const response = await fetchEntriesByQuery<ContentType>(query, config);
+
+  if (redisService.getStatus().isAvailable) {
+    await redisService.set(cacheKey, response);
+  }
+
+  return response;
 };

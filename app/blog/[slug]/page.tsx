@@ -15,7 +15,7 @@ import { Metadata } from "next";
 import { DefaultSeo, OgType, TwitterCard } from "@/lib/constants/seo.constants";
 
 /* Services */
-import { fetchEntriesByQuery } from "@/lib/datalayer/contentful.service";
+import { fetchEntriesByQueryCached } from "@/lib/datalayer/contentful.service";
 import { logger } from "@/lib/services/logger/logger.service";
 
 /* Utils */
@@ -40,7 +40,8 @@ const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
       return null;
     }
 
-    // No Redis here: ISR caches the rendered HTML; Redis stays on the API routes only.
+    // Redis read-through on top of ISR: 24h TTL keeps Contentful hits at ~1/day per post
+    // and survives deployments. Key matches app/api/v1/blog/[slug] so both share one entry.
     const query = gql`
       query ($slug: String!) {
         blogCollection(where: { slug: $slug }) {
@@ -60,7 +61,11 @@ const getBlogPostData = cache(async ({ params }: BlogPostSlugPageProps) => {
       }
     `;
 
-    const response = await fetchEntriesByQuery<BlogCollectionResponse>(query, { slug });
+    const response = await fetchEntriesByQueryCached<BlogCollectionResponse>(
+      `blog:v2:${slug}`,
+      query,
+      { slug }
+    );
 
     return response?.blogCollection?.items?.[0] ?? null;
   } catch (error) {
