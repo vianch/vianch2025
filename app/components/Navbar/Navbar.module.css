@@ -8,11 +8,25 @@
   justify-content: space-between;
   flex-flow: row nowrap;
   align-items: center;
-  padding: 1rem;
-  position: absolute;
+  padding: 1rem 2rem;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: var(--z-index-navbar);
+  transition:
+    background-color 0.4s ease,
+    height 0.4s ease;
+}
+
+.navbarScrolled {
+  background-color: var(--background-alpha);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  height: 6rem;
+}
+
+.navbarScrolled a {
+  color: var(--color-white);
 }
 
 .navLinks {
@@ -23,6 +37,8 @@
 .navbar a {
   margin-right: 1rem;
   font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 .navbar a:last-child {
@@ -32,10 +48,5 @@
 @media (max-width: 769px) {
   .navbar {
     justify-content: center;
-    position: relative;
-  }
-
-  :global(body:has(main[data-page="home"])) .navbar {
-    position: absolute;
   }
 }
