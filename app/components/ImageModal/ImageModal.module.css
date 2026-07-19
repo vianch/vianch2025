@@ -1,148 +1,240 @@
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  inset: 0;
+  z-index: var(--z-index-modal);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: var(--z-index-modal);
   padding: 2rem;
 }
 
-@keyframes breathe {
-  0% {
-    opacity: 0.3;
+/* Backdrop is its own layer so it can fade in without delaying the loader /
+   image / controls, which must appear instantly. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(10, 10, 10, 0.82), rgba(0, 0, 0, 0.94));
+  backdrop-filter: blur(14px);
+  animation: overlayIn 0.4s ease both;
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
   }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 0.3;
+  to {
+    opacity: 1;
   }
 }
 
-@keyframes fill {
-  0% {
-    background: transparent;
-  }
-  100% {
-    background: var(--color-white);
-  }
+.stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 92vw;
+  max-height: 84vh;
+  margin: 0;
+}
+
+.image {
+  max-width: 92vw;
+  max-height: 84vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform-origin: top left;
+  transition: opacity 0.3s ease-in-out;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.lowQuality {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  filter: blur(12px);
+  opacity: 0.6;
+  box-shadow: none;
 }
 
 .loader {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 24px;
-  height: 24px;
-  border: 2px solid var(--color-white);
-  animation: fill 1s ease-in-out infinite alternate;
   z-index: 1;
-}
-
-.modal {
-  position: relative;
-  max-width: 90vw;
-  min-width: 40px;
-  min-height: 40px;
-  background-color: var(--background);
-  overflow: hidden;
-  padding: 1.25rem;
-  transition:
-    width 0.5s ease-in-out,
-    height 0.5s ease-in-out;
-}
-
-.opening {
-  background-color: var(--color-black);
-}
-
-.opened {
-  background-color: var(--color-white);
-}
-
-.closeButton {
-  position: absolute;
   color: var(--color-white);
-  right: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  cursor: pointer;
-  background-color: #0000003f;
-  z-index: var(--z-index-modal);
-  width: 4rem;
-  height: 4rem;
+  transform: translate(-50%, -50%);
 }
 
-.image {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
+.aperture {
+  display: block;
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.4));
 }
 
-.lowQuality {
-  position: absolute;
-  top: 1.25rem;
-  left: 1.25rem;
-  right: 1.25rem;
-  bottom: 1.25rem;
+.blades {
+  transform-origin: 12px 12px;
+  animation: aperture 1.6s linear infinite;
 }
 
-.caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 4rem;
+.blades path {
+  fill: currentColor;
+  fill-opacity: 0.55;
+}
+
+/* Monotonic clockwise spin (0 -> 360, always to the right), with a gentle
+   iris breathe layered on top. Full turn keeps the loop seamless. */
+@keyframes aperture {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.82);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Meta panel — bottom-left, reference-style staggered reveal */
+.meta {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 2.5rem;
+  max-width: min(420px, 80vw);
+  margin: 0;
   color: var(--color-white);
+  pointer-events: none;
+}
+
+.counter {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-geist-mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  animation: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
 }
 
 .title {
-  font-size: var(--text-lg);
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.6rem, 4vw, 2.75rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  animation: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.13s both;
 }
 
 .description {
   font-size: var(--text-sm);
-  opacity: 0.9;
+  font-weight: 300;
+  line-height: 1.5;
+  opacity: 0.85;
+  animation: revealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.21s both;
+}
+
+@keyframes revealUp {
+  from {
+    transform: translateY(1.4rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Controls */
+.closeButton {
+  position: fixed;
+  top: 1.75rem;
+  right: 1.75rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: rotate(90deg);
 }
 
 .navButton {
-  position: absolute;
+  position: fixed;
   top: 50%;
-  transform: translateY(-50%);
-  background-color: var(--color-black);
-  color: var(--color-white);
-  border: none;
-  font-size: 3rem;
-  width: 4rem;
-  height: 5rem;
+  z-index: 1;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  color: var(--color-white);
+  font-size: 2rem;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
   cursor: pointer;
-  z-index: var(--z-index-modal);
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
+  transform: translateY(-50%);
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .navButton:hover {
-  opacity: 0.3;
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .prevButton {
-  left: 1.25rem;
-  border-radius: 0;
+  left: 1.75rem;
 }
 
 .nextButton {
-  right: 1.3rem;
-  border-radius: 0;
+  right: 1.75rem;
+}
+
+@media (max-width: 768px) {
+  .meta {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .navButton {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+  }
+
+  .prevButton {
+    left: 0.75rem;
+  }
+
+  .nextButton {
+    right: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .counter,
+  .title,
+  .description,
+  .blades {
+    animation: none;
+  }
 }
