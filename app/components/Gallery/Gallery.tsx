@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState, useEffect, KeyboardEvent } from "react";
+import { FC, useState, useEffect, useRef, KeyboardEvent } from "react";
 import Link from "next/link";
 
 /* Constants */
@@ -39,7 +39,11 @@ const Gallery: FC<GalleryProps> = ({
   const [preloadedModalImages, setPreloadedModalImages] = useState<Set<string>>(new Set());
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const thumbRefs = useRef<Map<number, HTMLImageElement>>(new Map());
   const styles = masonry ? MasonryGalleryStyles : GalleryStyles;
+
+  const getOriginRect = (index: number): DOMRect | null =>
+    thumbRefs.current.get(index)?.getBoundingClientRect() ?? null;
 
   // Calculate columns for desktop
   const desktopColumns = images.length < 10 ? images.length : 6;
@@ -197,6 +201,13 @@ const Gallery: FC<GalleryProps> = ({
           const imageContent = (
             <>
               <img
+                ref={(element) => {
+                  if (element) {
+                    thumbRefs.current.set(index, element);
+                  } else {
+                    thumbRefs.current.delete(index);
+                  }
+                }}
                 className={styles.image}
                 src={imageUrl}
                 alt={image.title ?? "Gallery Image"}
@@ -241,9 +252,12 @@ const Gallery: FC<GalleryProps> = ({
           }}
           image={selectedImage}
           hideTitle={hideTitle}
+          index={selectedImageIndex ?? undefined}
+          total={images.length}
+          getOriginRect={getOriginRect}
           onPrev={handlePrevImage}
           onNext={handleNextImage}
-          hasNavigation={images.filter((img) => !img.link).length > 1}
+          hasNavigation={images.filter((galleryImage) => !galleryImage.link).length > 1}
           isFirst={selectedImageIndex === getFirstNonLinkedImageIndex()}
           isLast={selectedImageIndex === getLastNonLinkedImageIndex()}
           imageConfig={ModalImageConfig}
